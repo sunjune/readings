@@ -1,0 +1,20 @@
+The use of mobile devices to surf the web is growing at an astronomical pace, but unfortunately much of the web isn't optimized for those mobile devices. Mobile devices are often constrained by display size and require a different approach to how content is laid out on screen.
+移动设备用于浏览网页的增长非常迅猛，但是大部分网站都没有为移动设备做优化。通常来说，移动设备受限于显示尺寸并且对于内容在屏幕上的布局也有不同的方式。
+
+In this lesson
+本节主要内容
+
+Set the viewport  设置viewport
+Size content to the viewport  在viewport中调整内容显示尺寸
+Use CSS media queries for responsiveness  使用CSS的媒体侦测实现响应性
+How to choose breakpoints 如何选择折行点
+
+There is a multitude of different screen sizes across phones, “phablets”, tablets, desktops, game consoles, TVs, even wearables. Screen sizes will always be changing, so it’s important that your site can adapt to any screen size, today or in the future.
+各种不同的屏幕尺寸实在是太多了，手机、平板手机、平板电脑、游戏掌机、智能电视甚至还有可穿戴设备。屏幕尺寸总是在变化，所以重要的是你的站点要能适应任何屏幕尺寸，无论是现在还是将来。
+
+Responsive web design, originally defined by Ethan Marcotte in A List Apart responds to the needs of the users and the devices they’re using. The layout changes based on the size and capabilities of the device. For example, on a phone, users would see content shown in a single column view; a tablet might show the same content in two columns.
+响应式页面设计，最初是由Ethan Marcotte在A List Apart中定义为，对用户以及他们所用设备的需要作出回应。根据设备尺寸和功能调整页面布局。例如，在手机上用户会看到内容显示为一列，而在平板电脑上同样的内容会显示成两列。
+(A List Apart在线地址： http://alistapart.com/article/responsive-web-design/)
+
+
+
