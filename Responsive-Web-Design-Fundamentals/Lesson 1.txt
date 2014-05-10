@@ -16,5 +16,22 @@ Responsive web design, originally defined by Ethan Marcotte in A List Apart resp
 响应式页面设计，最初是由Ethan Marcotte在A List Apart中定义为，对用户以及他们所用设备的需要作出回应。根据设备尺寸和功能调整页面布局。例如，在手机上用户会看到内容显示为一列，而在平板电脑上同样的内容会显示成两列。
 (A List Apart在线地址： http://alistapart.com/article/responsive-web-design/)
 
+Set the viewport
+设置viewport
+Pages optimized for a variety of devices must include a meta viewport element in the head of the document. A meta viewport tag gives the browser instructions on how to control the page’s dimensions and scaling.
+要为各种设备优化页面，必须在document的头部包含名为viewport的meta标签。viewport这个meta标签告诉浏览器如何控制页面的尺寸和缩放比例。
+
+Key Takeaways
+要点
+Use meta viewport tag to control the width and scaling of the browsers viewport.
+使用viewport这个meta标签来控制浏览器可见窗口的宽度和缩放
+Include width=device-width to match the screen's width in device independent pixels.
+包含width=device-width来匹配与设备像素无关的屏幕宽度
+Include initial-scale=1 to establish a 1:1 relationship between CSS pixels and device independent pixels.
+包含initial-scale=1在CSS像素和与设备无关像素之间建立1:1的关系
+Ensure your page is accessible by not disabling user scaling.
+确保你的页面没有禁止用户缩放
+
+
 
 
