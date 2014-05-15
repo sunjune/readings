@@ -38,7 +38,7 @@ In order to attempt to provide the best experience, mobile browsers will render 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 Using the meta viewport value width=device-width instructs the page to match the screen’s width in device independent pixels. This allows the page to reflow content to match different screen sizes, whether rendered on a small mobile phone or a large desktop monitor.
-将viewport这个meta标签的值设为width=device-width，让页面用与设备无关的像素来匹配屏幕宽度。这样一来页面就可以重排内容来适应不同的屏幕宽度，无论是在手机这种小屏幕还是桌面这种大显示器。
+将viewport这个meta标签的值设为width=device-width，让页面用与设备无关的像素来匹配屏幕宽度。这样一来页面就可以重排内容来适应不同的屏幕宽度，无论是在手机的小屏幕还是桌面设备的大显示器。
 
 Some browsers will keep the page’s width constant when rotating to landscape mode, and zoom rather than reflow to fill the screen. Adding the attribute initial-scale=1 instructs browsers to establish a 1:1 relationship between CSS pixels and device independent pixels regardless of device orientation, and allows the page to take advantage of the full landscape width.
 有些浏览器在旋转到横屏模式的时候会保持页面宽度不变，用缩放而不是重排来填充屏幕。加入initial-scale=1的属性值，无论设备是什么方向都可以让浏览器在CSS像素和与设备无关的像素之间建立1:1的关系，并且页面可以充分利用完整的横屏宽度。
@@ -46,4 +46,36 @@ Some browsers will keep the page’s width constant when rotating to landscape m
 Remember
 Use a comma to separate attributes to ensure older browsers can properly parse the attributes.
 记住用逗号来分隔属性以确保旧版浏览器能正确解析它们。
+
+Ensure an accessible viewport
+确保可访问的屏显区域
+In addition to setting an initial-scale, you can also set the minimum-scale, maximum-scale and user-scalable attributes on the viewport. When set, these can disable the user’s ability to zoom the viewport, potentially causing accessibility issues.
+除了能为viewport设置initial-scale以外还有minimum-scale，maximum-scale以及user-scalable属性可供设置。这些属性被设置后会禁止用户缩放行为，有可能造成可访问性方面的问题。
+
+Size content to the viewport
+调整内容的大小适应屏显区域
+On both desktop and mobile devices, users are used to scrolling websites vertically but not horizontally, and forcing the user to scroll horizontally or to zoom out in order to see the whole page results in a poor user experience.
+不管是在桌面在移动设备上，用户都习惯于纵向滚动而不是横向，如果只能横向滚动或者缩小才能看清楚整个页面会导致很差的用户体验。
+
+TL;DR
+简而言之
+Do not use large fixed width elements.
+不要使用固定宽度太大的元素
+Content should not rely on a particular viewport width to render well.
+页面显示效果不能只考虑某些特定的屏宽
+Use CSS media queries to apply different styling for small and large screens.
+使用CSS媒体侦测为不同大小的屏幕提供不同的样式
+
+When developing a mobile site with a meta viewport tag, it’s easy to accidentally create page content that doesn’t quite fit within the specified viewport. For example, an image that is displayed at a width wider than the viewport can cause the viewport to scroll horizontally. You should adjust this content to fit within the width of the viewport, so that the user does not need to scroll horizontally.
+在开发移动网站时使用viewport这个meta标签，极有可能建立一个对指定的屏显区域适应的不是很好的页面。例如，一个图片以超过屏幕的宽度显示，就会造成出现横向滚动条。你应该调整这部分内容来适应屏显区域的宽度，这样用户就不用横向滚动浏览了。
+
+Since screen dimensions and width in CSS pixels vary widely between devices (e.g. between phones and tablets, and even between different phones), content should not rely on a particular viewport width to render well.
+不同设备的屏幕分辨率与CSS像素的宽度差别非常大（比如手机和平板，甚至不同的手机之间），页面显示效果不能只考虑某些特定屏显区域。
+
+Setting large absolute CSS widths for page elements (such as the example below), will cause the div to be too wide for the viewport on a narrower device (e.g. a device with a width of 320 CSS pixels, such as an iPhone). Instead, consider using relative width values, such as width: 100%. Similarly, beware of using large absolute positioning values that may cause the element to fall outside the viewport on small screens.
+给页面元素设置很大的绝对宽度样式（比如下面的例子），将会在较窄的设备上（比如iPhone这种只有320像素宽的）导致div宽度超过屏显区域。所以尽量考虑使用相对宽度，比如width: 100%。与此类似，使用大的绝对定位也可能在小屏幕导致页面元素跑到屏显区域之外。
+
+
+
+
 
