@@ -75,7 +75,9 @@ Since screen dimensions and width in CSS pixels vary widely between devices (e.g
 Setting large absolute CSS widths for page elements (such as the example below), will cause the div to be too wide for the viewport on a narrower device (e.g. a device with a width of 320 CSS pixels, such as an iPhone). Instead, consider using relative width values, such as width: 100%. Similarly, beware of using large absolute positioning values that may cause the element to fall outside the viewport on small screens.
 给页面元素设置很大的绝对宽度样式（比如下面的例子），将会在较窄的设备上（比如iPhone这种只有320像素宽的）导致div宽度超过屏显区域。所以尽量考虑使用相对宽度，比如width: 100%。与此类似，使用大的绝对定位也可能在小屏幕导致页面元素跑到屏显区域之外。
 
-
-
+Use CSS media queries for responsiveness
+使用CSS媒体侦测来实现响应
+Media queries are simple filters that can be applied to CSS styles. They make it easy to change styles based on the characteristics of the device rendering the content, including the display type, width, height, orientation and even resolution.
+媒体侦测是可以应用于CSS样式的简单过滤器。使用它们可以很容易地实现基于设备特征而改变样式来渲染页面，包括显示类型、高度、屏幕方向甚至分辨率。
 
 
