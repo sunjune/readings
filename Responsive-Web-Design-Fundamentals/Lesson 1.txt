@@ -32,6 +32,18 @@ Include initial-scale=1 to establish a 1:1 relationship between CSS pixels and d
 Ensure your page is accessible by not disabling user scaling.
 确保你的页面没有禁止用户缩放
 
+In order to attempt to provide the best experience, mobile browsers will render the page at a desktop screen width (usually about 980px, though this varies across devices), and then try to make the content look better by increasing font sizes and scaling the content to fit the screen. For users, this means that font sizes may appear inconsistently and they have to double-tap or pinch-zoom in order to be able to see and interact with the content.
+为了试图提供最佳体验，移动设备浏览器将按桌面宽度渲染页面（因设备而异，通常是980px），并且力图通过增大字号和缩放内容适应屏幕来让内容看起来好一些。对用户来说，这就意味着字体大小会不一致并且要对页面内容连按放大或双指缩放来看清楚或与之交互。
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+Using the meta viewport value width=device-width instructs the page to match the screen’s width in device independent pixels. This allows the page to reflow content to match different screen sizes, whether rendered on a small mobile phone or a large desktop monitor.
+将viewport这个meta标签的值设为width=device-width，让页面用与设备无关的像素来匹配屏幕宽度。这样一来页面就可以重排内容来适应不同的屏幕宽度，无论是在手机这种小屏幕还是桌面这种大显示器。
+
+Some browsers will keep the page’s width constant when rotating to landscape mode, and zoom rather than reflow to fill the screen. Adding the attribute initial-scale=1 instructs browsers to establish a 1:1 relationship between CSS pixels and device independent pixels regardless of device orientation, and allows the page to take advantage of the full landscape width.
+有些浏览器在旋转到横屏模式的时候会保持页面宽度不变，用缩放而不是重排来填充屏幕。加入initial-scale=1的属性值，无论设备是什么方向都可以让浏览器在CSS像素和与设备无关的像素之间建立1:1的关系，并且页面可以充分利用完整的横屏宽度。
+
+Remember
+Use a comma to separate attributes to ensure older browsers can properly parse the attributes.
+记住用逗号来分隔属性以确保旧版浏览器能正确解析它们。
 
