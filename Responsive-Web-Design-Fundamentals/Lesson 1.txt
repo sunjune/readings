@@ -80,4 +80,98 @@ Use CSS media queries for responsiveness
 Media queries are simple filters that can be applied to CSS styles. They make it easy to change styles based on the characteristics of the device rendering the content, including the display type, width, height, orientation and even resolution.
 媒体侦测是可以应用于CSS样式的简单过滤器。使用它们可以很容易地实现基于设备特征而改变样式来渲染页面，包括显示类型、高度、屏幕方向甚至分辨率。
 
+TL;DR
+简而言之
+Media queries can be used to apply styles based on device characteristics.
+媒体侦测可用于按设备特征应用不同的样式
+Use min-width over min-device-width to ensure the broadest experience.
+使用min-width比min-device-width来确保在更大范围得到良好体验
+Use relative sizes for elements to avoid breaking layout.
+给元素定义相对大小来避免撑开页面
+
+For example, you could place all styles necessary for printing inside a print media query:
+例如，在用于打印页面的媒体侦测中应用所有必须的样式
+
+<link rel="stylesheet" href="print.css" media="print">
+
+In addition to using the media attribute in the stylesheet link, there are two other ways to apply media queries that can be embedded in a CSS file: @media and @import. For performance reasons, either of the first two methods are recommended over the @import syntax.
+除了在外链样式表中使用媒体属性，还有其他两种可以嵌入在CSS文件中的申请媒体侦测的办法：@media和@import。出于性能上的考虑@import不如前两种值得推荐。
+
+@media print {
+  /* print style sheets go here */
+}
+
+@import url(print.css) print;
+
+The logic that applies to media queries is not mutually exclusive and any filter that meets that criteria the resulting CSS block will be applied using the standard rules of precedence in CSS.
+适用于媒体查询的逻辑不是相互排斥的，并且符合该标准所产生的CSS块将使用CSS中的优先标准规则被应用于任何过滤器。
+
+Apply media queries based on viewport size
+基于屏显区域大小应用媒体侦测
+
+Media queries enable us to create a responsive experience, where specific styles are applied to small screens, large screens and anywhere in between. The media query syntax allows for the creation of rules that can be applied depending on device characteristics.
+当要给大小不同的屏幕指定不同的样式时，通过媒体侦测可以创建响应式体验。媒体侦测的语法允许根据设备特征而创建规则。
+
+@media (query) {
+  /* CSS Rules used when query matches */
+}
+
+While there are several different items we can query on, the ones used most often for responsive web design are min-width, max-width, min-height and max-height.
+有很多用来侦测的项，在响应式网页设计中最常用的有min-width，max-width，min-height和max-height。
+
+
+min-width 	Rules applied for any browser width over the value defined in the query.
+            浏览器的宽度超过指定的值
+max-width 	Rules applied for any browser width under the value defined in the query.
+            浏览器的宽度低于指定的值
+min-height	Rules applied for any browser height over the value defined in the query.
+            浏览器的高度超过指定的值
+max-height	Rules applied for any browser height under the value defined in the query.
+            浏览器的高度低于指定的值
+            
+orientation=portrait	Rules applied for any browser where the height is greater than or equal to the width.
+                      浏览器的高度大于或等于宽度（竖向）
+orientation=landscape	Rules for any browser where the width is greater than the height.
+                      浏览器的宽度大于高度（横向）
+
+Let’s take a look an example:
+举例看一下：
+
+    <link rel="stylesheet" media="(max-width: 640px)" href="max-640px.css">
+    <link rel="stylesheet" media="(min-width: 640px)" href="min-640px.css">
+    <link rel="stylesheet" media="(orientation: portrait)" href="portrait.css">
+    <link rel="stylesheet" media="(orientation: landscape)" href="landscape.css">
+    <style>
+      @media (min-width: 500px) and (max-width: 600px) {
+        h1 {
+          color: fuchsia;
+        }
+
+        .desc:after {
+          content:" In fact, it's between 500px and 600px wide.";
+        }
+      }
+    </style>
+
+    When the browser is between 0px and 640px wide, max-640px.css will be applied.
+    当宽度在0px到640px之间时，使用max-640px.css
+    When the browser is between 500px and 600px wide, styles within the @media will be applied.
+    当宽度在500px到600px之间时，使用在@media中定义的样式
+    When the browser is 640px or wider, min-640px.css will be applied.
+    当宽度大于等于640px时，使用min-640px.css
+    When the browser width is greater than the height, landscape.css will be applied.
+    当宽度超过高度时，使用landscape.css
+    When the browser height is greater than the width, portrait.css will be applied.
+    当高度超过宽度时，使用portrait.css
+
+A note on min-device-width
+关于min-device-width的一点备注
+In addition to *-width, it is also possible to create queries based on *-device-width; the difference is subtle but very important. min-width is based on the size of the browser window, where as min-device-width is based on the size of the screen.
+除了*-width的语法，还可以创建基于的*-device-width的侦测；两者的区别很小但是非常重要。min-width是看浏览器窗口的大小，而min-device-width根据的则是屏幕的大小。
+
+On a mobile device, this really doesn’t matter that much as in most cases the user can’t resize the window, but on a desktop, users can control the size of their windows and will expect the content to adapt naturally. Therefore, you should avoid using *-device-width, since the page won’t respond when the desktop browser window is resized.
+在移动设备上，这个不是很重要因为大部分情况下用户是无法改变窗口大小的，但是在桌面设备上，用户可以调整窗口大小并且希望页面内容能自然适应窗口变化。此时要注意避免使用*-device-width，因为当桌面浏览器的窗口改变大小的时候页面是无法正确响应的。
+
+
+
 
