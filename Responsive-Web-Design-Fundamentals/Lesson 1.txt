@@ -201,8 +201,14 @@ How to choose breakpoints
 While it may be helpful to think about defining breakpoints based on device classes, use caution. Defining breakpoints based on specific devices, products, brand names or operating systems, that are in use today will result in a maintenance nightmare. Instead, the content itself should determine how the layout adjusts to its container.
 虽然基于设备类型定义换行点的考虑会有一定的用处，但是要慎用。为市面上特定的设备、产品、品牌或者操作系统定义换行点，维护起来就象噩梦一样。其实页面内容本身应决定如何为它的容器调整布局。
 
-
-
+TL;DR
+简而言之
+Create breakpoints based on content, never on specific devices, products or brands.
+要根据内容创建换行点，一定不要按特定设备产品或品牌。
+Design for the smallest mobile device first, then progressively enhance the experience as more screen real estate becomes available.
+首先考虑为最小的移动设备设计，然后逐步优化对更多屏幕的体验。
+Keep lines of text to a maximum of around 70 or 80 characters.
+保持一行文字最多70到80个字符。
 
 
 
