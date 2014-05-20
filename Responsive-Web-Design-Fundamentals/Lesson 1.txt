@@ -172,6 +172,37 @@ In addition to *-width, it is also possible to create queries based on *-device-
 On a mobile device, this really doesn’t matter that much as in most cases the user can’t resize the window, but on a desktop, users can control the size of their windows and will expect the content to adapt naturally. Therefore, you should avoid using *-device-width, since the page won’t respond when the desktop browser window is resized.
 在移动设备上，这个不是很重要因为大部分情况下用户是无法改变窗口大小的，但是在桌面设备上，用户可以调整窗口大小并且希望页面内容能自然适应窗口变化。此时要注意避免使用*-device-width，因为当桌面浏览器的窗口改变大小的时候页面是无法正确响应的。
 
+Use relative units
+使用相对值单位
+A key concept behind responsive design is fluidity and proportionality as opposed to fixed width layouts. Using relative units for measurements can help simplify layouts and prevent accidentally creating components that are too big for the viewport.
+与固定宽度布局相比，响应式设计关键的概念是流动和比例。使用相对的计量单位可以简化布局并防止意外地创建大于屏显区域的组件。
+
+For example, setting width: 100% on a top level div, ensures that it spans the width of the viewport and is never too big or too small for the viewport. The div will fit, no matter if it’s a 320px wide iPhone, 342px wide Blackberry Z10 or a 360px wide Nexus 5.
+例如，为最顶层的div设置宽度为100%，可以确保它正好与屏显宽度相同。无论是320px宽的iPhone、342px宽的Blackberry Z10还是360px宽的Nexus 5，这个div都能很好适应。
+
+In addition, using relative units allows browsers to render the content based on the users zoom level without the need for adding horizontal scroll bars to the page.
+另外，使用相对单位还可以让浏览器根据用户的缩放级别来渲染内容，而无需为页面加上横向滚动条。
+
+示例：
+NO(固定宽度，不建议)
+div.fullWidth {
+  width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+YES(相对宽度，建议做法)
+div.fullWidth {
+  width: 100%;
+}
+
+How to choose breakpoints
+如何选择换行点
+While it may be helpful to think about defining breakpoints based on device classes, use caution. Defining breakpoints based on specific devices, products, brand names or operating systems, that are in use today will result in a maintenance nightmare. Instead, the content itself should determine how the layout adjusts to its container.
+虽然基于设备类型定义换行点的考虑会有一定的用处，但是要慎用。为市面上特定的设备、产品、品牌或者操作系统定义换行点，维护起来就象噩梦一样。其实页面内容本身应决定如何为它的容器调整布局。
+
+
+
 
 
 
