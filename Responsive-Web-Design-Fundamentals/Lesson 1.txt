@@ -197,18 +197,94 @@ div.fullWidth {
 }
 
 How to choose breakpoints
-如何选择换行点
+如何选择断点
 While it may be helpful to think about defining breakpoints based on device classes, use caution. Defining breakpoints based on specific devices, products, brand names or operating systems, that are in use today will result in a maintenance nightmare. Instead, the content itself should determine how the layout adjusts to its container.
-虽然基于设备类型定义换行点的考虑会有一定的用处，但是要慎用。为市面上特定的设备、产品、品牌或者操作系统定义换行点，维护起来就象噩梦一样。其实页面内容本身应决定如何为它的容器调整布局。
+虽然基于设备类型定义断点的考虑会有一定的用处，但是要慎用。为市面上特定的设备、产品、品牌或者操作系统定义断点，维护起来就象噩梦一样。其实页面内容本身应决定如何为它的容器调整布局。
 
 TL;DR
 简而言之
 Create breakpoints based on content, never on specific devices, products or brands.
-要根据内容创建换行点，一定不要按特定设备产品或品牌。
+要根据内容创建断点，一定不要按特定设备产品或品牌。
 Design for the smallest mobile device first, then progressively enhance the experience as more screen real estate becomes available.
 首先考虑为最小的移动设备设计，然后逐步优化对更多屏幕的体验。
 Keep lines of text to a maximum of around 70 or 80 characters.
 保持一行文字最多70到80个字符。
+
+Pick major breakpoints by starting small, then working up
+先按较小屏幕确定主要断点，然后再考虑大屏
+Design the content to fit on a small screen size first, then expand the screen until a breakpoint becomes necessary. This will allow you to optimize breakpoints based on content and maintain the fewest number of breakpoints possible.
+Let’s work through the example we saw at the beginning, the weather forecast. The first step is to make the forecast look good on a small screen.
+首先针对小屏幕尺寸设计页面，然后拉宽屏幕直到必须设置断点为止。这样可以优化基于内容的断点设置并且只要维护最少数量的断点。我们来通过本文开头那个天气预报页面的例子来实际演练一下。第一步就是让天气预报在小屏幕上看起来比较舒服。
+
+Next, resize the browser until there is too much white space between the elements and the forecast simply doesn’t look as good. The decision is somewhat subjective, but above 600px is certainly too wide.
+接下来，改变浏览器大小直到相邻元素之间的空隙太大以至于预报的内容看上去不舒服了。这样的判断比较主观，但是超过600px也确实太宽了。
+
+To insert a breakpoint at 600px, create two new stylesheets, one to use when the browser is 600px and below, and one for when it is wider than 600px.
+我们在600px处加一个断点，创建两个新的样式表，一个用在浏览器宽度不超过600px的时候，另一个用在超过600px的时候。
+
+    <link rel="stylesheet" href="weather.css">
+    <link rel="stylesheet" media="(max-width:600px)" href="weather-2-small.css">
+    <link rel="stylesheet" media="(min-width:601px)" href="weather-2-large.css">
+
+Finally, refactor the CSS. In this example, we’ve placed the common styles such as fonts, icons, basic positioning, colors in weather.css. Specific layouts for the small screen are then placed in weather-small.css and large screen styles are placed in weather-large.css.
+最后，把CSS重新写一遍。在这个例子中，我们将那些公用的样式比如字体、图标、基本位置、颜色等放在weather.css中。为小屏幕准备的特定布局放在weather-small.css，用于大屏幕的放在weather-large.css中。
+
+Pick minor breakpoints when necessary
+必要的话确立次要断点
+In addition to choosing major breakpoints when layout changes significantly, it is also helpful to adjust for minor changes. For example between major breakpoints, it may be helpful to adjust the margins or padding on an element, or increase the font size to make it feel more natural in the layout.
+除了当布局有显著变化时要选主要断点，为那些小的变化进行调整也是有帮助的。比如在两个主要断点之间，调整一元素的内外间距，或者增加字体大小等也可帮助布局看起来比较自然些。
+Let’s start by optimizing the small screen layout. In this case, let’s boost the font when the viewport width is greater than 360px. Second, when there is enough space, we can separate the high and low temperature so they’re on the same line, instead of on top of each other. And let’s also make the weather icons a bit larger.
+咱们从优化小屏幕布局开始吧。在这一节里，咱们在屏显区域超过360px时增强一下字体。然后，当有足够的空间时，把最高和最低气温分开排到同一行里，而不是一个放在另一个上面。同时也能把天气图标弄大点儿。
+
+    @media (min-width: 360px) {
+      body {
+        font-size: 1.0em;
+      }
+    }
+    
+    @media (min-width: 500px) {
+      .seven-day-fc .temp-low,
+      .seven-day-fc .temp-high {
+        display: inline-block;
+        width: 45%;
+      }
+    
+      .seven-day-fc .seven-day-temp {
+        margin-left: 5%;
+      }
+    
+      .seven-day-fc .icon {
+        width: 64px;
+        height: 64px;
+      }
+    }
+
+Similarly, for the large screens, it’s best to limit to maximum width of the forecast panel so it doesn’t consume the whole screen width.
+同样的，对于较大的屏幕，最好限制一下天气预报面板的最大宽度这样就不至于撑满整个屏幕了。
+
+    @media (min-width: 700px) {
+      .weather-forecast {
+        width: 700px;
+      }
+    }
+
+Optimize text for reading
+优化文本以便于阅读
+Classic readability theory suggests that an ideal column should contain 70 to 80 characters per line (about 8 to 10 words in English), thus each time the width of a text block grows past about 10 words, a breakpoint should be considered.
+传统的可读性理论建议一栏正文理想情况下每行应该包含70到80个字符（大约8到10个英文单词），这样的话每当文本块的宽度增长到大约10个单词的时候，就要考虑断点了。
+
+Let’s take a deeper look at the above blog post example. On smaller screens, the Roboto font at 1em works perfectly giving 10 words per line, but larger screens will require a breakpoint. In this case, if the browser width is greater than 575px, the ideal content width is 550px.
+一起深入地看一下上面例子中的这篇博客。在较小的屏幕上，使用大小为1em的Roboto字体正好每行10个单词，但在大一点的屏幕上就需要断点了。在这种情况下，如果浏览器宽度大于575px，内容宽度最好保持在550px。
+
+    @media (min-width: 575px) {
+      article {
+        width: 550px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+
 
 
 
