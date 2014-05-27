@@ -4,4 +4,25 @@ Responsive Web Design Patterns
 Responsive web design patterns are quickly evolving, but there are a handful of established patterns that work well across the desktop and mobile devices.
 响应式网页设计模式发展迅猛，但是只有少数既定的模式能都很好地适用于桌面和移动设备。
 
+In this lesson
+本节主要内容
+
+Mostly fluid  
+Column drop 
+Layout shifter  
+Tiny tweaks 
+Off canvas  
+
+Most layouts used by responsive web pages can be categorized into one of five patterns: mostly fluid, column drop, layout shifter, tiny tweaks and off canvas. In some cases, a page may use a combination of patterns, for example column drop and off canvas. These patterns, originally identified by Luke Wroblewski, provide a solid starting point for any responsive page.
+响应式网页使用的大部分布局都可以归类于以下5种模式之一：mostly fluid, column drop, layout shifter, tiny tweaks and off canvas。在某些情况下，页面可能用到多种模式的组合，比如column drop and off canvas。这些模式最初由Luke Wroblewski(http://www.lukew.com/ff/entry.asp?1514)总结并定义，为任何响应式网页提供了坚实的起点。
+
+The patterns
+模式
+To create simple, easy-to-understand samples, each the samples below were created with real markup using flexbox, typically with three content div’s contained within a primary container div. Each sample was written starting with the smallest view first and breakpoints were added when necessary. The flexbox layout mode is well supported for modern browsers, though may still require vendor prefixing for optimal support.
+为了创建简单易解的例子，以下几个示例均以使用flexbox(https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Flexible_boxes)的真实标签构建，典型的一个容器div里面包含三个内容div。每个示例均从最小化视图写起并在必要的时候加入断点。现代浏览器可以很好地支持flexbox布局模型(http://caniuse.com/#search=flexbox)，但可能仍然需要加上厂商前缀以获得更好的支持。
+
+
+
+
+
 
