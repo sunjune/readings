@@ -284,7 +284,7 @@ Let’s take a deeper look at the above blog post example. On smaller screens, t
       }
     }
 
-
-
-
-
+Never completely hide content
+切忌隐藏内容
+Be careful when choosing what content to hide or show depending on screen size. Don’t simply hide content just because you can’t fit it on screen. Screen size is not a definitive indication of what a user may want. For example, eliminating the pollen count from the weather forecast could be a serious issue for spring time allergy sufferers who need the information to determine if they can go outside or not.
+根据屏幕尺寸决定哪些内容需要隐藏或显示的时候一定要小心。不要只因一部分内容无法适应屏幕就把它设为隐藏。屏幕尺寸不是用户需求决定性的表现。比如，在天气预报中去掉花粉数量可能会对过敏患者造成影响，他们需要这些信息来决定是否能进行户外活动。
