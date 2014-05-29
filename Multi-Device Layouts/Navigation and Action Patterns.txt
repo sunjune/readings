@@ -64,6 +64,28 @@ Tab Bar
 A Tab Bar can be used as the main navigation for your site. It gives the user visibility of the main sections of your site as well as an easy way to identify where they are within your web app.
 选项卡栏可用作网站的主导航。它方便用户看到你网站中的主要内容以及在你的web app中很容易知道当前的位置在哪。
 
+The Tab Bar can be used to quickly switch between the sections of your site.
+标签栏可用于在你的网站主要内容之间快速切换。
+
+It’s only appropriate for sites with a relatively small structure, but users find it easy to glance at where they are, and where they can go, within your site.
+它只要使用相对较小的结构就行，但是用户会发现看一眼就能知道他们现在网站的哪部分以及还可以去哪。
+
+TL;DR
+总而言之
+  ·Use only if your site has no more than five sections.  只在你的网站栏目不超过5个的时候合使用它
+  ·Position below or above your main content. 可以放在主要内容的顶部或底部
+  ·Make it clear to the user which section is currently selected. 当前被选定的栏目要高亮显示
+
+Limit the total number of tabs to five or less, otherwise each icon and tap target becomes too small and users will struggle to hit the right tab.
+总数限制在5个以下，否则每个图标和可点按目标会变得很小使用用户很难按住正确的标签。
+
+Position your tabs above or below your main content, this is a trade off between what feels best to use and best suites your design.
+将标签放在主要内容的顶部或底部，要在易用性和整体设计之间做权衡。
+
+One advantage to using tabs is that it gives the user a consistent place to go for navigation and makes it easy to glance at where they are within the site.
+使用标签的一大优势就是它给用户提供固定的导航位置并且很容易一眼就看到自己在网站的哪部分。
+
+
 ================
 Navigation Drawer
 抽屉式导航栏
