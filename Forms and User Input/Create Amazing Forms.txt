@@ -9,26 +9,26 @@ Forms are hard to fill out on mobile. The best forms are the ones with the fewes
 
 =====================================================
 Simplify checkout with requestAutocomplete API
-使用请求自动完成API简化校验
+使用requestAutocompleteAPI简化校验
 =====================================================
 
 While `requestAutocomplete` was designed to help users fill out any form, today it's most common use is in eCommerce where shopping cart abandonment on the mobile web can be as high as 97%. Imagine 97% of people in a supermarket, with a cart brimming full of things that they want, flipping their cart over and walking out.
-请求自动完成就是设计用于帮助用户填写各种表单的，如今它在电子商务移动网站购物车结算时使用率最高达到97%(http://seewhy.com/blog/2012/10/10/97-shopping-cart-abandonment-rate-mobile-devices-concern-you/)。想象在一个超市里97%的用户推着满满的手推车熙熙攘攘地走出来的情景吧。
+requestAutocomplete就是设计用于帮助用户填写各种表单的，如今它在电子商务移动网站购物车结算时使用率最高达到97%(http://seewhy.com/blog/2012/10/10/97-shopping-cart-abandonment-rate-mobile-devices-concern-you/)。想象在一个超市里97%的用户推着满满的手推车熙熙攘攘地走出来的情景吧。
 
 TL;DR
 简而言之
   ·requestAutocomplete can greatly simplify the checkout process and improve the user experience.
-  请求自动完成可以大大简化检验过程并改善用户体验。
+  requestAutocomplete可以大大简化校验过程并改善用户体验。
   ·If requestAutocomplete is available, hide the checkout form and move people directly to the confirmation page.
-  如果请求自动完成可用，就隐藏校验表单并将用户指引到确认页面。
+  如果requestAutocomplete可用，就隐藏校验表单并将用户指引到确认页面。
   ·Ensure input fields include the appropriate autocomplete attribute.
   确保输入框包含适当的自动完成属性。
 
 Rather than the site relying on a particular payment provider, requestAutocomplete requests payment details (such as name, address and credit card information) from the browser, which are optionally stored by the browser much like other auto-complete fields.
-与那些依赖指定支付厂商的网站不同的是，请求自动完成需要从浏览器得到支付的详细信息（比如名称、地址、信用卡信息等），与其他的自动完成字段一样这些都会被浏览器随意地存储。
+与那些依赖指定支付厂商的网站不同的是，requestAutocomplete需要从浏览器得到支付的详细信息（比如名称、地址、信用卡信息等），与其他的自动完成字段一样这些都会被浏览器随意地存储。
 
 The ideal experience will show the requestAutocomplete dialog instead of loading the page that displays the checkout form. If all goes well, the user shouldn’t see the form at all. You can easily add requestAutoComplete to existing forms without having to change any field names. Simply add the autocomplete attribute to each form element with the appropriate value and add the requestAutocomplete() function on the form element. The browser will handle the rest.
-理想的体验将显示请求自动完成的提示而不是加载显示校验表单的页面。如果做得足够好，用户就该根本看不到表单。你可以为现有的表单加上请求自动完成功能功能而不用改动任何字段名。给每个表单项简单地加上autocomplete属性以及适当的默认值，然后给表单元素添加requestAutocomplete()函数即可。剩下的都让浏览器来处理吧。
+理想的体验将显示requestAutocomplete的提示而不是加载显示校验表单的页面。如果做得足够好，用户就该根本看不到表单。你可以为现有的表单加上requestAutocomplete功能功能而不用改动任何字段名。给每个表单项简单地加上autocomplete属性以及适当的默认值，然后给表单元素添加requestAutocomplete()函数即可。剩下的都让浏览器来处理吧。
 
     var doRAC = document.getElementById("doRAC");
     doRAC.addEventListener("click", doRequestAutocomplete);
@@ -64,6 +64,15 @@ Remember
 
 If you're asking for any kind of personal information or credit card data, ensure the page is served via SSL. Otherwise the dialog will warn the user their information may not be secure.
 如果你要请求任何个人信息或信用卡数据，确保页面是经由SSL协议打开的。否则对话框会警告用户他们的信息可能不安全。
+
+
+=====================================================
+Provide real-time validation
+提供实时校验
+=====================================================
+
+Real-time data validation doesn't just help to keep your data clean, but it also helps improve the user experience. Modern browsers have several built-in tools to help provide real-time data validation and may prevent the user from submitting an invalid form. Visual cues should be used to indicate whether a form has been completed properly.
+实时数据校验不仅可以保持你的数据不会乱，它还能帮助改善用户体验。现代浏览器提供多种内置工具助力实时数据校验并且阻止用户提交不合法表单。可视化的提示会指出表单是否被正确填写。
 
 
 
