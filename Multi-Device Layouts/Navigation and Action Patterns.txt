@@ -65,7 +65,7 @@ A Tab Bar can be used as the main navigation for your site. It gives the user vi
 选项卡栏可用作网站的主导航。它方便用户看到你网站中的主要内容以及在你的web app中很容易知道当前的位置在哪。
 
 The Tab Bar can be used to quickly switch between the sections of your site.
-标签栏可用于在你的网站主要内容之间快速切换。
+选项卡导航栏可用于在你的网站主要内容之间快速切换。
 
 It’s only appropriate for sites with a relatively small structure, but users find it easy to glance at where they are, and where they can go, within your site.
 它只要使用相对较小的结构就行，但是用户会发现看一眼就能知道他们现在网站的哪部分以及还可以去哪。
@@ -77,13 +77,13 @@ TL;DR
   ·Make it clear to the user which section is currently selected. 当前被选定的栏目要高亮显示
 
 Limit the total number of tabs to five or less, otherwise each icon and tap target becomes too small and users will struggle to hit the right tab.
-总数限制在5个以下，否则每个图标和可点按目标会变得很小使用用户很难按住正确的标签。
+总数限制在5个以下，否则每个图标和可点按目标会变得很小使用用户很难按住正确的选项卡。
 
 Position your tabs above or below your main content, this is a trade off between what feels best to use and best suites your design.
-将标签放在主要内容的顶部或底部，要在易用性和整体设计之间做权衡。
+将选项卡导航放在主要内容的顶部或底部，要在易用性和整体设计之间做权衡。
 
 One advantage to using tabs is that it gives the user a consistent place to go for navigation and makes it easy to glance at where they are within the site.
-使用标签的一大优势就是它给用户提供固定的导航位置并且很容易一眼就看到自己在网站的哪部分。
+使用选项卡导航的一大优势就是它给用户提供固定的导航位置并且很容易一眼就看到自己在网站的哪部分。
 
 
 ================
@@ -115,13 +115,13 @@ For users there is a small amount to learning to do to find the Navigation Drawe
 对于用户来说要花点时间找到导航抽屉，所以有一个清晰的菜单按钮是极其重要的。
 
 Tabs vs Navigation Drawer
-标签与抽屉的对比
+选项卡导航与抽屉式导航的对比
 
 Some developers find they get higher rates of interaction when using a tab bar instead of a Navigation Drawer.
-一些开发人员发现当使用标签导航时会有高得多的互动操作，抽屉式的则不然。
+一些开发人员发现当使用选项卡导航时会有高得多的互动操作，抽屉式的则不然。
 
 The choice is a trade off between the flexibility of the Navigation Drawer with the visibility of a Tab Bar which you should consider what is best suited to your site.
-选择标签导航和抽屉导航是要在抽屉式较好的扩展性和标签式更好的可视性之间权衡，看哪种更适合你的网站。
+选择选项卡导航和抽屉导航是要在抽屉式较好的扩展性和选项卡式更好的可视性之间权衡，看哪种更适合你的网站。
 
 
 ================
@@ -138,11 +138,11 @@ For many sites, especially content driven sites, this will be enough space since
 对于很多网站来说，特别是那些内容为主的网站，这就足够了因为基本上没有什么可用的动作。然而，web app就会发现有太多的动作需要放在界面上。
 
 If you aren’t using a tab and you have too many actions to fit on the App Bar, place actions in a bar along the bottom.
-如果你没有在用标签导航而且你有很多动作没办法放在应用导航栏里，就把它们放在底部导航栏吧。
+如果你没有在用选项卡导航而且你有很多动作没办法放在应用导航栏里，就把它们放在底部导航栏吧。
 
 TL;DR
   ·Only consider using this approach if you aren't using a Tab Bar.
-  在未使用标签导航栏的时候才考虑用这种方法。
+  在未使用选项卡导航栏的时候才考虑用这种方法。
   ·Stick to 5 items at most.
   导航最多放5条。
   ·Use when you need to add more actions than the App Bar can hold.
