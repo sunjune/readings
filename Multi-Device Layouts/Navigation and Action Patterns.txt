@@ -93,6 +93,37 @@ Navigation Drawer
 For sites with a larger number of sections and subsections the Navigation Drawer is a much better fit. It can be a scrollable off-canvas element to your site as well as be a common place for global state.
 对于有着大量内容和子节点的网站来说导航抽屉更加适用。它可是一个隐藏在屏幕以外的滚动块也可以是一个贯穿全站的公共位置。
 
+The Navigation Drawer is a slide in panel which is primarily used for displaying a sites navigation, but can also be used for displaying global state, i.e. user login.
+抽屉式导航栏是个滑入滑出的面板，主要用于显示网站导航，不过也可以用显示一些全局状态，比如用户登录等。
+
+A user accesses the drawer using a menu button at the top of the screen in the App Bar.
+通常用户使用屏幕顶部的应用导航栏中的菜单按钮来访问它。
+
+TL;DR
+总而言之
+  ·Your Navigation Drawer should be easily accessible to the user.
+  抽屉式导航应设计为便于用户访问。
+  ·If the number of sections is too large, consider grouping the items and expanding / contracting the groups. Avoid overwhelming your users.
+  如果导航栏数据过多，可以考虑将其加入组中并对组里项目收起和展开。避免太多的导航项给用户带来困扰。
+  ·Don't hide key actions inside the drawer. Actions like search should be prominently on the home page, not hidden in the drawer.
+  不要将关键动作隐藏在抽屉中。类似搜索这样的动作应该放在首页突出位置，而不是隐藏在抽屉中。
+
+The key advantages of this approach is that the content can grow inside a scrolling element, allowing for larger site structures and it takes up a very small amount of screen real estate.
+这种方法的关键优势在于内容能在滚动元素内随意扩展，考虑到更大的网站结构它也只在屏幕占用很小的空间。
+
+For users there is a small amount to learning to do to find the Navigation Drawer so having a clearly place menu button is extremely important.
+对于用户来说要花点时间找到导航抽屉，所以有一个清晰的菜单按钮是极其重要的。
+
+Tabs vs Navigation Drawer
+标签与抽屉的对比
+
+Some developers find they get higher rates of interaction when using a tab bar instead of a Navigation Drawer.
+一些开发人员发现当使用标签导航时会有高得多的互动操作，抽屉式的则不然。
+
+The choice is a trade off between the flexibility of the Navigation Drawer with the visibility of a Tab Bar which you should consider what is best suited to your site.
+选择标签导航和抽屉导航是要在抽屉式较好的扩展性和标签式更好的可视性之间权衡，看哪种更适合你的网站。
+
+
 ================
 Bottom Bar
 底部导航栏
@@ -100,8 +131,26 @@ Bottom Bar
 If you are developing a web app and find that the number of actions a user can perform is more than the App Bar can handle, the best option is to overflow into a Bottom Bar.
 如果你在开发web app并且发现用户要执行的动作无法只依靠应用导航栏来完成，最好的选项就是放到底部导航栏里。
 
+We’ve seen that the App Bar can be used for placing actions.
+我们已经看到了，应用导航栏可以放置很多动作。
 
+For many sites, especially content driven sites, this will be enough space since there are relatively few actions available. However, web apps may find they have more actions for sections of their UI.
+对于很多网站来说，特别是那些内容为主的网站，这就足够了因为基本上没有什么可用的动作。然而，web app就会发现有太多的动作需要放在界面上。
 
+If you aren’t using a tab and you have too many actions to fit on the App Bar, place actions in a bar along the bottom.
+如果你没有在用标签导航而且你有很多动作没办法放在应用导航栏里，就把它们放在底部导航栏吧。
 
+TL;DR
+  ·Only consider using this approach if you aren't using a Tab Bar.
+  在未使用标签导航栏的时候才考虑用这种方法。
+  ·Stick to 5 items at most.
+  导航最多放5条。
+  ·Use when you need to add more actions than the App Bar can hold.
+  只在应用导航栏放不下的情况下才用这种方法。
 
+The advantage of this is that you have more space for actions and it’s in a touch friendly area and gives you a secondary tier of actions.
+这个的优势在于你有更多的地方来放置动作，而且还是在易于点按的区域并且让你有了第二层动作条。
+
+Limit yourself to five actions at most, avoiding the buttons becoming to small and difficult to tap.
+放置的动作一定不要超过5个，避免按钮过小而且难以点按。
 
