@@ -1,0 +1,69 @@
+Create Amazing Forms
+创建超凡的表单
+
+Forms are hard to fill out on mobile. The best forms are the ones with the fewest inputs. Good forms provide semantic input types. Keys should change to match the user's input type; users pick a date in a calendar. Keep your user informed. Validation tools should tell the user what they need to do before submitting the form.
+在手机上填表单很困难。最好的表单是那些输入项最少的。好的表单提供语义化的输入类型。提示方式会随着用户输入类型而变化，比如用户可在一个日历上挑选日期。保持对用户进行提示。校验工具应该告知用户在提交表单之前还需要做什么。
+
+4 Guides available
+共有4篇教程
+
+=====================================================
+Simplify checkout with requestAutocomplete API
+使用请求自动完成API简化校验
+=====================================================
+
+While `requestAutocomplete` was designed to help users fill out any form, today it's most common use is in eCommerce where shopping cart abandonment on the mobile web can be as high as 97%. Imagine 97% of people in a supermarket, with a cart brimming full of things that they want, flipping their cart over and walking out.
+请求自动完成就是设计用于帮助用户填写各种表单的，如今它在电子商务移动网站购物车结算时使用率最高达到97%(http://seewhy.com/blog/2012/10/10/97-shopping-cart-abandonment-rate-mobile-devices-concern-you/)。想象在一个超市里97%的用户推着满满的手推车熙熙攘攘地走出来的情景吧。
+
+TL;DR
+简而言之
+  ·requestAutocomplete can greatly simplify the checkout process and improve the user experience.
+  请求自动完成可以大大简化检验过程并改善用户体验。
+  ·If requestAutocomplete is available, hide the checkout form and move people directly to the confirmation page.
+  如果请求自动完成可用，就隐藏校验表单并将用户指引到确认页面。
+  ·Ensure input fields include the appropriate autocomplete attribute.
+  确保输入框包含适当的自动完成属性。
+
+Rather than the site relying on a particular payment provider, requestAutocomplete requests payment details (such as name, address and credit card information) from the browser, which are optionally stored by the browser much like other auto-complete fields.
+与那些依赖指定支付厂商的网站不同的是，请求自动完成需要从浏览器得到支付的详细信息（比如名称、地址、信用卡信息等），与其他的自动完成字段一样这些都会被浏览器随意地存储。
+
+The ideal experience will show the requestAutocomplete dialog instead of loading the page that displays the checkout form. If all goes well, the user shouldn’t see the form at all. You can easily add requestAutoComplete to existing forms without having to change any field names. Simply add the autocomplete attribute to each form element with the appropriate value and add the requestAutocomplete() function on the form element. The browser will handle the rest.
+理想的体验将显示请求自动完成的提示而不是加载显示校验表单的页面。如果做得足够好，用户就该根本看不到表单。你可以为现有的表单加上请求自动完成功能功能而不用改动任何字段名。给每个表单项简单地加上autocomplete属性以及适当的默认值，然后给表单元素添加requestAutocomplete()函数即可。剩下的都让浏览器来处理吧。
+
+    var doRAC = document.getElementById("doRAC");
+    doRAC.addEventListener("click", doRequestAutocomplete);
+
+    form = document.getElementById("usrForm");
+    form.addEventListener("autocompleteerror", requestAutocompleteError);
+    form.addEventListener("autocomplete", requestAutocompleteCompleted);
+
+    if (form.requestAutocomplete) {
+      isRACSupported(true, "");
+    } else {
+      isRACSupported(false, "Please complete the form manually.");
+    }
+
+The requestAutocomplete function on the form element indicates to the browser that it should populate the form. As a security feature, the function must be called via a user gesture like a touch or mouse click. A dialog is then displayed asking the user permission to populate the fields and which details they want to populate it with.
+表单元素的requestAutocomplete函数各浏览器指出它应该填充这个表单。作为一项安全功能，这个函数必须由用户手势比如手指点按或鼠标点击来调用。然后会显示一个对话框请求用户授权以向该字段填入他们想要的内容。
+
+    function requestAutocompleteCompleted(evt) {
+      console.log("requestAutocomplete Completed", evt);
+      form.classList.toggle("hidden", false);
+    }
+
+    function requestAutocompleteError(evt) {
+      console.log("requestAutocomplete Error", evt);
+      isRACSupported(false, "An error occured attempting to autocomplete the form.");
+    }
+
+Upon completion of requestAutocomplete, the function will either fire the autocomplete event if it finished successfully, or autocompleteerror if it was unable to complete the form. If it completed successfully and the form validates to your needs, simply submit the form and proceed to the final confirmation.
+在requestAutocomplete将近完成时，如果成功完成就会触发autocomplete事件否则就触发autocompleteerror事件。如果成功完成并且表单符合你的需要，则只要简单地提交表单并进行到最终确认页即可。
+
+Remember
+切记
+
+If you're asking for any kind of personal information or credit card data, ensure the page is served via SSL. Otherwise the dialog will warn the user their information may not be secure.
+如果你要请求任何个人信息或信用卡数据，确保页面是经由SSL协议打开的。否则对话框会警告用户他们的信息可能不安全。
+
+
+
