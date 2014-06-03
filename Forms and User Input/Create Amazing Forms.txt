@@ -8,62 +8,71 @@ Forms are hard to fill out on mobile. The best forms are the ones with the fewes
 共有4篇教程
 
 =====================================================
-Simplify checkout with requestAutocomplete API
-使用requestAutocompleteAPI简化校验
+Choose the best input type
+选择最佳输入类型
 =====================================================
 
-While `requestAutocomplete` was designed to help users fill out any form, today it's most common use is in eCommerce where shopping cart abandonment on the mobile web can be as high as 97%. Imagine 97% of people in a supermarket, with a cart brimming full of things that they want, flipping their cart over and walking out.
-requestAutocomplete就是设计用于帮助用户填写各种表单的，如今它在电子商务移动网站购物车结算时使用率最高达到97%(http://seewhy.com/blog/2012/10/10/97-shopping-cart-abandonment-rate-mobile-devices-concern-you/)。想象在一个超市里97%的用户推着满满的手推车熙熙攘攘地走出来的情景吧。
+Every tap counts. Users appreciate websites that automatically present number pads for entering phone numbers, or automatically advance fields as they entered them. Look for opportunities to eliminate wasted taps in your forms.
+每一次的点按累积起来。用户会很欣赏那些在输入电话号码时自动呈现数字面板或者其它的自动呈现高级选项的网站。尽量减少在表单中的无效点按。
 
 TL;DR
 简而言之
-  ·requestAutocomplete can greatly simplify the checkout process and improve the user experience.
-  requestAutocomplete可以大大简化校验过程并改善用户体验。
-  ·If requestAutocomplete is available, hide the checkout form and move people directly to the confirmation page.
-  如果requestAutocomplete可用，就隐藏校验表单并将用户指引到确认页面。
-  ·Ensure input fields include the appropriate autocomplete attribute.
-  确保输入框包含适当的自动完成属性。
+  ·Choose the most appropriate input type for your data to simplify input.
+  为你的数据选择最恰当的输入类型以简化输入操作
+  ·Offer suggestions as the user types with the datalist element.
+  在用户输入时通过datalist为其提供建议
 
-Rather than the site relying on a particular payment provider, requestAutocomplete requests payment details (such as name, address and credit card information) from the browser, which are optionally stored by the browser much like other auto-complete fields.
-与那些依赖指定支付厂商的网站不同的是，requestAutocomplete需要从浏览器得到支付的详细信息（比如名称、地址、信用卡信息等），与其他的自动完成字段一样这些都会被浏览器随意地存储。
+HTML5 input types
+HTML5输入类型
 
-The ideal experience will show the requestAutocomplete dialog instead of loading the page that displays the checkout form. If all goes well, the user shouldn’t see the form at all. You can easily add requestAutoComplete to existing forms without having to change any field names. Simply add the autocomplete attribute to each form element with the appropriate value and add the requestAutocomplete() function on the form element. The browser will handle the rest.
-理想的体验将显示requestAutocomplete的提示而不是加载显示校验表单的页面。如果做得足够好，用户就该根本看不到表单。你可以为现有的表单加上requestAutocomplete功能功能而不用改动任何字段名。给每个表单项简单地加上autocomplete属性以及适当的默认值，然后给表单元素添加requestAutocomplete()函数即可。剩下的都让浏览器来处理吧。
+HTML5 introduced a number of new input types. These new input types give hints to the browser about what type of keyboard layout to display for on-screen keyboards. Users are more easily able to enter the required information without having to change their keyboard and only see the appropriate keys for that input type.
+HTML5提供了大量新增的输入类型。这些新的输入类型可以告诉浏览器显示什么样的虚拟键盘样式。用户更易于输入要求的信息而不必改变键盘样式，只会看到和当前输入类型相关的键。
 
-    var doRAC = document.getElementById("doRAC");
-    doRAC.addEventListener("click", doRequestAutocomplete);
+url
+For entering a URL. It must start with a valid URI scheme, for example http://, ftp:// or mailto:.	
+tel
+For entering phone numbers. It does not enforce a particular syntax for validation, so if you want to ensure a particular format, you can use pattern.	
+email
+For entering email addresses, and hints that the @ should be shown on the keyboard by default. You can add the multiple attribute if more than one email address will be provided.	
+search
+A text input field styled in a way that is consistent with the platform's search field.	
+number
+For numeric input, can be any rational integer or float value.	
+range
+For number input, but unlike the number input type, the value is less important. It is displayed to the user as a slider control.	
+datetime-local
+For entering a date and time value where the time zone provided is the local time zone.	
+date
+For entering a date (only) with no time zone provided.	
+time
+For entering a time (only) with no time zone provided.	
+week
+For entering a week (only) with no time zone provided.	
+month
+For entering a month (only) with no time zone provided.	
+color
+For picking a color.	
 
-    form = document.getElementById("usrForm");
-    form.addEventListener("autocompleteerror", requestAutocompleteError);
-    form.addEventListener("autocomplete", requestAutocompleteCompleted);
+Offer suggestions during input with datalist
+在输入过程中通过datalist提供建议
 
-    if (form.requestAutocomplete) {
-      isRACSupported(true, "");
-    } else {
-      isRACSupported(false, "Please complete the form manually.");
-    }
+The datalist element isn’t an input type, but a list of suggested input values to associated with a form field. It lets the browser suggest autocomplete options as the user types. Unlike select elements where users must scan long lists to find the value they’re looking for, and limiting them only to those lists, datalists provide hints as the user types.
+这个datalist元素并不是个输入类型，而是绑定在某个表单字段上建议输入的值列表。它使得浏览器在用户输入的时候给出自动完成的建议选项。不象下拉列表那样用户必须在很长的列表中去找到想要的值，而且限制为只能是固定的列表，datalist可以在用户输入时给出提示。
 
-The requestAutocomplete function on the form element indicates to the browser that it should populate the form. As a security feature, the function must be called via a user gesture like a touch or mouse click. A dialog is then displayed asking the user permission to populate the fields and which details they want to populate it with.
-表单元素的requestAutocomplete函数各浏览器指出它应该填充这个表单。作为一项安全功能，这个函数必须由用户手势比如手指点按或鼠标点击来调用。然后会显示一个对话框请求用户授权以向该字段填入他们想要的内容。
-
-    function requestAutocompleteCompleted(evt) {
-      console.log("requestAutocomplete Completed", evt);
-      form.classList.toggle("hidden", false);
-    }
-
-    function requestAutocompleteError(evt) {
-      console.log("requestAutocomplete Error", evt);
-      isRACSupported(false, "An error occured attempting to autocomplete the form.");
-    }
-
-Upon completion of requestAutocomplete, the function will either fire the autocomplete event if it finished successfully, or autocompleteerror if it was unable to complete the form. If it completed successfully and the form validates to your needs, simply submit the form and proceed to the final confirmation.
-在requestAutocomplete将近完成时，如果成功完成就会触发autocomplete事件否则就触发autocompleteerror事件。如果成功完成并且表单符合你的需要，则只要简单地提交表单并进行到最终确认页即可。
+    <label for="frmFavChocolate">Favorite Type of Chocolate</label>
+    <input type="text" name="fav-choc" id="frmFavChocolate" list="chocType">
+    <datalist id="chocType">
+      <option value="white">
+      <option value="milk">
+      <option value="dark">
+    </datalist>
 
 Remember
 切记
 
-If you're asking for any kind of personal information or credit card data, ensure the page is served via SSL. Otherwise the dialog will warn the user their information may not be secure.
-如果你要请求任何个人信息或信用卡数据，确保页面是经由SSL协议打开的。否则对话框会警告用户他们的信息可能不安全。
+The datalist values are provided as suggestions, and users are not restricted to the suggestions provided.
+放在datalist里面的值只是提供建议，并不能强制用户使用它们。
+
 
 
 =====================================================
@@ -231,4 +240,61 @@ You should show the user all of the issues on the form at once, rather than show
 应该给用户一次显示出全部的问题，而不是每次显示一个。
 
 
+=====================================================
+Simplify checkout with requestAutocomplete API
+使用requestAutocompleteAPI简化校验
+=====================================================
+
+While `requestAutocomplete` was designed to help users fill out any form, today it's most common use is in eCommerce where shopping cart abandonment on the mobile web can be as high as 97%. Imagine 97% of people in a supermarket, with a cart brimming full of things that they want, flipping their cart over and walking out.
+requestAutocomplete就是设计用于帮助用户填写各种表单的，如今它在电子商务移动网站购物车结算时使用率最高达到97%(http://seewhy.com/blog/2012/10/10/97-shopping-cart-abandonment-rate-mobile-devices-concern-you/)。想象在一个超市里97%的用户推着满满的手推车熙熙攘攘地走出来的情景吧。
+
+TL;DR
+简而言之
+  ·requestAutocomplete can greatly simplify the checkout process and improve the user experience.
+  requestAutocomplete可以大大简化校验过程并改善用户体验。
+  ·If requestAutocomplete is available, hide the checkout form and move people directly to the confirmation page.
+  如果requestAutocomplete可用，就隐藏校验表单并将用户指引到确认页面。
+  ·Ensure input fields include the appropriate autocomplete attribute.
+  确保输入框包含适当的自动完成属性。
+
+Rather than the site relying on a particular payment provider, requestAutocomplete requests payment details (such as name, address and credit card information) from the browser, which are optionally stored by the browser much like other auto-complete fields.
+与那些依赖指定支付厂商的网站不同的是，requestAutocomplete需要从浏览器得到支付的详细信息（比如名称、地址、信用卡信息等），与其他的自动完成字段一样这些都会被浏览器随意地存储。
+
+The ideal experience will show the requestAutocomplete dialog instead of loading the page that displays the checkout form. If all goes well, the user shouldn’t see the form at all. You can easily add requestAutoComplete to existing forms without having to change any field names. Simply add the autocomplete attribute to each form element with the appropriate value and add the requestAutocomplete() function on the form element. The browser will handle the rest.
+理想的体验将显示requestAutocomplete的提示而不是加载显示校验表单的页面。如果做得足够好，用户就该根本看不到表单。你可以为现有的表单加上requestAutocomplete功能功能而不用改动任何字段名。给每个表单项简单地加上autocomplete属性以及适当的默认值，然后给表单元素添加requestAutocomplete()函数即可。剩下的都让浏览器来处理吧。
+
+    var doRAC = document.getElementById("doRAC");
+    doRAC.addEventListener("click", doRequestAutocomplete);
+
+    form = document.getElementById("usrForm");
+    form.addEventListener("autocompleteerror", requestAutocompleteError);
+    form.addEventListener("autocomplete", requestAutocompleteCompleted);
+
+    if (form.requestAutocomplete) {
+      isRACSupported(true, "");
+    } else {
+      isRACSupported(false, "Please complete the form manually.");
+    }
+
+The requestAutocomplete function on the form element indicates to the browser that it should populate the form. As a security feature, the function must be called via a user gesture like a touch or mouse click. A dialog is then displayed asking the user permission to populate the fields and which details they want to populate it with.
+表单元素的requestAutocomplete函数各浏览器指出它应该填充这个表单。作为一项安全功能，这个函数必须由用户手势比如手指点按或鼠标点击来调用。然后会显示一个对话框请求用户授权以向该字段填入他们想要的内容。
+
+    function requestAutocompleteCompleted(evt) {
+      console.log("requestAutocomplete Completed", evt);
+      form.classList.toggle("hidden", false);
+    }
+
+    function requestAutocompleteError(evt) {
+      console.log("requestAutocomplete Error", evt);
+      isRACSupported(false, "An error occured attempting to autocomplete the form.");
+    }
+
+Upon completion of requestAutocomplete, the function will either fire the autocomplete event if it finished successfully, or autocompleteerror if it was unable to complete the form. If it completed successfully and the form validates to your needs, simply submit the form and proceed to the final confirmation.
+在requestAutocomplete将近完成时，如果成功完成就会触发autocomplete事件否则就触发autocompleteerror事件。如果成功完成并且表单符合你的需要，则只要简单地提交表单并进行到最终确认页即可。
+
+Remember
+切记
+
+If you're asking for any kind of personal information or credit card data, ensure the page is served via SSL. Otherwise the dialog will warn the user their information may not be secure.
+如果你要请求任何个人信息或信用卡数据，确保页面是经由SSL协议打开的。否则对话框会警告用户他们的信息可能不安全。
 
