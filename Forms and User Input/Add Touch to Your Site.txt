@@ -1,0 +1,29 @@
+Add Touch to Your Site
+给你的网站加上触控
+
+Touchscreens are available on more and more devices, ranging from phones up to desktop screens. When your users choose to interact with your UI, your app should respond to their touch in intuitive and beautiful ways.
+从手机到桌面越来越多的设备都使用了触摸屏。当用户决定要和你的用户界面交互时，你的app应该能用简洁优雅的方式来做出响应。
+
+2 Guides available
+2篇教程可用
+
+=========================================
+Stateful Elements Respond to Touch
+有状态的元素来响应触控
+=========================================
+
+The simplest way to reassure a user that their touch isn't ignored is to change your UI as they press down. Changing a background color can make all the difference and is simple to do.
+在用户触摸的时候改变用户界面是最简单的打消他们疑虑的办法（否则他们会以为没按对）。改变背景颜色就可以明显区别出来而且很容易实现。
+
+
+
+
+
+=========================================
+Implement Custom Gestures
+自定义手势
+=========================================
+
+Using touch events you can create custom interactions for your UI. The question is how can you do this efficiently, keeping your frame rate high and your users happy.
+
+
