@@ -15,6 +15,127 @@ Stateful Elements Respond to Touch
 The simplest way to reassure a user that their touch isn't ignored is to change your UI as they press down. Changing a background color can make all the difference and is simple to do.
 在用户触摸的时候改变用户界面是最简单的打消他们疑虑的办法（否则他们会以为没按对）。改变背景颜色就可以明显区别出来而且很容易实现。
 
+Add Touch States
+添加触摸状态
+
+Have you ever touched or clicked an element on a web page and questioned whether the site actually detected it?
+你是否有过这样的经历，在一个网页上点击一个元素却不知道网站有没有正确地觉察到？
+
+Simply altering the color of elements as users touch parts of your UI gives a basic reassurance that your site is working. Not only does this alleviate frustration, but can also give a snappy and responsive feel to your site.
+当用户在你的界面某部分的元素上按下时只要简单地改一下它的颜色就可以给出一个坚定的信号显示你的网站工作正常。这不仅能减轻用户的沮丧感，而且还能让你的网站让人感觉反应很灵敏。
+
+Use Pseudo Classes to Change UI for each Touch State
+使用伪类为每个触摸状态改变界面
+
+The fastest way to support touch is to change the UI in response to a DOM element’s change in state.
+要支持触摸最快的实现方法就是改变界面来回应DOM元素的状态变化。
+
+TL;DR
+简而言之
+
+  ·Make your site feel snappy and responsive: change the UI for each state :hover, :active and :focus.
+  要让你的网站感觉响应灵敏：为每种状态改变界面，比如 :hover、:active、:focus。
+  ·Don’t override a browser’s default responses to touch and focus unless you are implementing your own UI changes.
+  尽量不要覆盖浏览器默认的触摸和获得焦点的响应方式，除非你要优化自己的界面变化。
+  ·Disable text selection on elements user’s will touch, unless there’s a good reason why users might need to copy / select the text.
+  禁用那些用户会触摸到的元素的文本选择，除非有非常好的理由解释用户为什么需要复制或选择这些文本。
+
+DOM elements can be in one of the following states, default, focus, hover, and active. To change our UI for each of these states, we need to apply styles to the following pseudo classes :hover, :focus and :active as shown below:
+DOM树中的元素会有以下状态之一：default、focus、focus、hover以及active。为了在这些状态发生时改变界面，我们需要应用这些伪类 :hover、:focus、:active，举例如下：
+
+    .btn {
+      background-color: #4285f4;
+    }
+
+    .btn:hover {
+      background-color: #296CDB;
+    }
+
+    .btn:focus {
+      background-color: #0F52C1;
+    
+      /* The outline parameter surpresses the border
+      color / outline when focused */
+      outline: 0;
+    }
+
+    .btn:active {
+      background-color: #0039A8;
+    }
+
+参考资料：See Pseudo classes for touch states
+https://developers.google.com/web/fundamentals/input/touch-input/activestates/#pseudo-classes-for-touch-states
+
+Hover and Focus Stickiness
+悬浮和获得焦点粘性
+
+  On most mobile browsers hover and/or focus states will apply to an element after it’s been tapped.
+  在大多数移动浏览器上一个元素被点按时悬停和获得焦点状态都被应用。
+  
+  Consider carefully what styles you set and how they will look to the user after they finish their touch.
+  一定要考虑清楚设置什么样式，以及用户触摸之后看上去是怎样的。
+  
+  Bear in mind that anchor tags and buttons may have different behaviour in different browsers, so assume in some cases hover will remain and in others focus will remain.
+  考虑到锚点标签和按钮在不同的浏览器里会有不同的表现，可能在某些情况下保持悬停某些时候又保持获得焦点。
+
+
+Enabling Active State Support on iOS
+启用iOS的active状态支持
+
+Unfortunately, Safari on iOS does not apply the active state by default, to get it working you need to add a touchstart event listener to the document body or to each element.
+不幸的是，iOS的Safari默认不能应用active状态，要用到它你需要给document body或每个元素加一个touchstart事件监听器。
+
+You should do this behind a user agent test so it’s only run on iOS devices.
+你应该先探测一下用户代理再加，这样就只在iOS设备上运行。
+
+Adding a touch start to the body has the advantage of applying to all elements in the DOM, however this may have performance issues when scrolling the page.
+给body加上touchstart好处是可以应用于DOM里的所有元素，但是当滚动页面的时候可能会造成性能问题。
+
+window.onload = function() {
+  if(/iP(hone|ad)/.test(window.navigator.userAgent)) {
+    document.body.addEventListener('touchstart', function() {}, false);
+  }
+};
+
+The alternative is to add the touch start listeners to all the interactable elements in the page, alleviating some of the performance concerns.
+为所有可交互的页面元素上加上touchstart监听，和尽量减少性能问题之间，要做个取舍。
+
+window.onload = function() {
+  if(/iP(hone|ad)/.test(window.navigator.userAgent)) {
+    var elements = document.querySelectorAll('button');
+    var emptyFunction = function() {};
+    for(var i = 0; i < elements.length; i++) {
+      elements[i].addEventListener('touchstart', emptyFunction, false);
+    }
+  }
+};
+
+Override Default Browser Styles for Touch States
+为触摸状态覆盖浏览器默认样式
+
+Once you add styles for the different states, you’ll notice that most browsers implement their own styles to respond to a user’s touch, you should override these defaults when you’ve added your own styles.
+当你为不同的状态加样式时，你会注意到大部分浏览器对用户触摸执行自己的样式，你要加自己的样式就应该覆盖这些默认值。
+
+Remember
+切记
+  ·Only override browser styles if you are implementing your own!
+  仅在执行你自己的样式时才要覆盖浏览器样式！
+
+Override Tap Highlight Styles
+覆盖点按高亮样式
+
+When mobile devices first launched, a number of sites didn’t have styling for the active state. As a result, many browsers add a highlight color or style to elements when a user touches them.
+当移动设备刚问世的时候，很多网站都没有为active状态准备样式。于是，很多浏览器都为用户触摸动作给元素加了样式或颜色。
+
+Safari and Chrome add a tap highlight color which can be prevented with the -webkit-tap-highlight-color CSS property:
+Safari和Chrome加的点按高亮颜色可以用-webkit-tap-highlight-color这个CSS属性来阻止：
+
+    /* Webkit / Chrome Specific CSS to remove tap
+    highlight color */
+    .btn {
+      -webkit-tap-highlight-color: transparent;
+    }
+
 
 
 
@@ -25,5 +146,5 @@ Implement Custom Gestures
 =========================================
 
 Using touch events you can create custom interactions for your UI. The question is how can you do this efficiently, keeping your frame rate high and your users happy.
-
+使用触摸事件可以为你的用户界面创建自定义交互。问题是你怎么高效地来做这个事，要保持帧速率较高且让用户满意。
 
