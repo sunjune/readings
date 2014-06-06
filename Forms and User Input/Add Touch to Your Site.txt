@@ -136,7 +136,58 @@ Safari和Chrome加的点按高亮颜色可以用-webkit-tap-highlight-color这�
       -webkit-tap-highlight-color: transparent;
     }
 
+Internet Explorer on Windows Phone has a similar behavior, but is suppressed via a meta tag:
+Windows Phone上面的Internet Explorer也有类似的行为，不过是通过meta标签来阻止的：
 
+<meta name="msapplication-tap-highlight" content="no">
+
+Override FirefoxOS Button State Styles
+覆盖FirefoxOS按钮状态样式
+
+The Firefox -moz-focus-inner pseudo class includes an outline on touchable elements. You can remove this outline by setting the border: 0.
+Firefox的-moz-focus-inner伪类在可触摸元素包含了一个外廓线。将border设为0可以移除这个外廓线。
+
+If you are using a <button> element, you get a gradient applied to your button which you can remove by setting background-image: none.
+如果你在用button元素，会有一个渐变应用于按钮上，可以通过设置background-image: none来消除它。
+
+    /* Firefox Specific CSS to remove button
+    differences and focus ring */
+    .btn {
+      background-image: none;
+    }
+
+    .btn::-moz-focus-inner {
+      border: 0;
+    }
+
+Override Element Outline in Focus State
+在获得焦点状态下覆盖元素外廓线
+
+Suppress the outline color when an element is focused using outline: 0.
+使用outlive: 0为一个元素获得焦点时阻止其外廓线颜色。
+
+.btn:focus {
+  outline: 0;
+
+  // Add replacement focus styling here (i.e. border)
+}
+
+Disable user-select on UI which Responds to Touch
+在响应触摸的界面上禁止用户选定
+
+Some mobile browsers will select text if the user long presses on the screen. This can result in a bad user experience if the user accidentally presses down on a button for too long. You can prevent this from happening using the user-select CSS property.
+一些移动浏览器会在用户长按屏幕的时候选定文本。这会造成很坏的用户体验，比如用户不小心在一个按钮上按的时间长了一点。你可以用user-select样式属性来阻止这种情况的发生。
+
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+Remember
+切记
+
+  You should be cautious not to disable user selection if the information on the element may be useful to the user (phone number, e-mail address, and so on).
+  要注意的是，如果元素上的信息对用户可能是有用的，这时不要禁止用户选定。
 
 
 
