@@ -265,13 +265,46 @@ Touch, mouse and Pointer Events are the building blocks for adding new gestures 
 触摸、鼠标和指针事件都是组成你应用的构件。
 
 Include these events in the addEventListener() method, along with the event’s callback function and a boolean. The boolean determines whether you should catch the event before or after other elements have had the opportunity to catch and interpret the events (true means we want the event before other elements):
-将这些事件包含在addEventListener()方法中，
+将这些事件包含在addEventListener()方法中，连同事件的回调函数以及一个布尔值。这个布尔值将决定你是否应该先于其他元素捕捉该事件，或在其他元素有机会捕捉并解释这个事件之后（返回true值意味着我们想赶在其他元素之前获得这个事件）。
 
+    // Check if pointer events are supported.
+    if (window.navigator.msPointerEnabled) {
+      // Add Pointer Event Listener
+      swipeFrontElement.addEventListener('MSPointerDown', this.handleGestureStart, true);
+    } else {
+      // Add Touch Listener
+      swipeFrontElement.addEventListener('touchstart', this.handleGestureStart, true);
+    
+      // Add Mouse Listener
+      swipeFrontElement.addEventListener('mousedown', this.handleGestureStart, true);
+    }
 
+This code first checks to see if Pointer Events are supported by testing for window.navigator.msPointerEnabled. If they aren’t, we add listeners for touch and mouse events instead.
+这段代码首先通过window.navigator.msPointerEnabled来确定是否支持Pointer事件。如果不支持，就添加触摸和鼠标事件的监听器。
 
+Handle Single-Element Interaction
+处理单个元素交互
 
+In the short snippet of code above you may have noticed that we only add the starting event listener, this is a conscious decision.
+你可能注意到在上面的代码片段里我们只添加了开始事件的监听器，这是有意识这样做的。
 
+By adding the move and end event listeners once the gesture has started on the element itself, the browser can check if the touch occured in a region with a touch event listener and if it’s not, can handle it faster by not having to run any additional javascript.
+当手势在该元素上开始进行的时候再添加划动和结束事件，浏览器可以用触摸事件监听器在一个区域范围内检查是否发生了触摸动作，而且不用添加其他任何其他的脚本就可以快速处理。
 
+The steps taken to implement this are:
+执行的步骤如下：
+
+  1、Add the start events listener to an element.
+  给一个元素加上开始事件监听器。
+  2、Inside your touch start method, bind the move and end elements to the document. The reason for binding the move and end events to the document is so that we receive all events regardless of whether they occur on the original element or not.
+  在你的触摸开始文件中，给document绑定划动和结束元素。给document绑定划动和结束事件的原因是不管它们是否发生在原来的元素上我们都可以接收到所有的事件。
+  3、Handle the move events.
+  处理划动事件。
+  4、On the end event, remove the move and end listeners from the document.
+  在结束事件上，从document中移除划动和结束监听器。
+  
+Below is a snippet of our handleGestureStart method which adds the move and end events to the document:
+下面一段代码就是我们的handleGestureStart方法，给document添加了划动和结束事件。
 
 
 
