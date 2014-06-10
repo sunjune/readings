@@ -199,3 +199,95 @@ Implement Custom Gestures
 Using touch events you can create custom interactions for your UI. The question is how can you do this efficiently, keeping your frame rate high and your users happy.
 使用触摸事件可以为你的用户界面创建自定义交互。问题是你怎么高效地来做这个事，要保持帧速率较高且让用户满意。
 
+If you have an idea for custom interactions and gestures for your site there are two topics to keep in mind, how do I support the range of mobile browsers and how do I keep my frame rate high. In this article we'll look at exactly this.
+如果你想给网站加上自定义交互和手势操作，有两点是要好好考虑的：如何对移动浏览器的支持更广泛，如何保持较高的帧率。本篇文章就来探讨这两个方面。
+
+In this lesson
+本节内容：
+
+  ·Respond to Touch Input Using Events
+  使用事件来响应触摸输入
+  ·60fps while Using Touch
+  触摸操作时操持60fps
+  ·Control Scrolling using Touch Actions
+  使用触摸动作控制滚动
+  ·Reference
+  参考
+
+Respond to Touch Input Using Events
+使用事件来响应触摸输入
+
+Depending on what you would like to do with touch, you’re likely to fall into one of two camps:
+根据你想要用触摸来做什么操作，你有以下两种可能：
+
+  ·I want the user to interact with one particular element.
+  让用户与一个特定的元素互动
+  ·I want the user to interact with multiple elements at the same time.
+  让用户同时与多个元素互动
+
+There are trade offs to be had with both.
+两都都要有就得好好权衡一下了。
+
+If the user will only be able to interact with one element, you might want all touch events to be given to that one element, as long as the gesture initially started on the element itself. For example, moving a finger off the swipable element can still control the element.
+如果用户只能与一个元素交互，你可能想在元素的手势初始化的时候就把所有的触摸事件都加到它上面。例如，不在那个可移动的元素上划动手指依然能控制它。
+
+If, however, you expect users to interact with multiple elements at the same time (using multi-touch), you should restrict the touch to the specific element.
+然而，如果你希望用户同时与多个元素交互（使用多点触控），你应该限制触摸只对特定元素生效。
+
+TL;DR
+简而言之
+
+  ·For full device support, handle touch, mouse and MS Pointer Events.
+  为支持各种设备，要处理触摸、鼠标、指针事件。
+  ·Always bind start event listeners to the element itself.
+  总是要为元素本身绑定起始事件监听器
+  ·If you want the user to interact with one particular element, bind your move and end listeners to the document in the touchstart method; ensure you unbind them from the document in the end listener.
+  如果想让用户与特定的元素交互，绑定你的划动与结束监听器到document的touchstart方法上；确保在结束监听器从document解绑。
+  ·If you want to support multi-touch, either restrict move and end touch events to the element itself or handle all the touches on an element.
+  如果要支持多点触控，既要限制划动和结束触摸事件到元素自身，也要处理一个元素上所有的触摸操作。
+
+Add Event Listeners
+添加事件监听器
+
+Touch events and mouse events are implemented on most mobile browsers.
+触摸事件和鼠标事件在大部分移动浏览器上都可以执行。
+
+The event names you need to implement are touchstart, touchmove, touchend and touchcancel.
+要执行的事件名称有：touchstart、touchmove、touchend以及touchcancel。
+
+For some situations, you may find that you would like to support mouse interaction as well; which you can do with the mouse events: mousedown, mousemove, and mouseup.
+在某些情况下，你会发现同时想要支持鼠标交互；你可以用鼠标事件来做到这一点：mousedown、mousemove和mouseup。
+
+For Windows Phone devices, you need to support Pointer Events which are a new set of events. Pointer Events merge mouse and touch events into one set of callbacks. This is currently only supported in Internet Explorer 10+ with the events MSPointerDown, MSPointerMove, and MSPointerUp.
+对于Windows Phone设备来说，你需要支持一套新的指针事件。指针事件把鼠标和触摸事件整合到一套回调里了。只有在IE10以上的版本会支持MSPointerDown、MSPointerMove以及MSPointerUp。
+
+Touch, mouse and Pointer Events are the building blocks for adding new gestures into your application (see Touch, mouse and MS Pointer events).
+触摸、鼠标和指针事件都是组成你应用的构件。
+
+Include these events in the addEventListener() method, along with the event’s callback function and a boolean. The boolean determines whether you should catch the event before or after other elements have had the opportunity to catch and interpret the events (true means we want the event before other elements):
+将这些事件包含在addEventListener()方法中，
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
