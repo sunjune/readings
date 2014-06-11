@@ -306,15 +306,114 @@ The steps taken to implement this are:
 Below is a snippet of our handleGestureStart method which adds the move and end events to the document:
 下面一段代码就是我们的handleGestureStart方法，给document添加了划动和结束事件。
 
+    // Handle end gestures
+    this.handleGestureEnd = function(evt) {
+      evt.preventDefault();
+
+      if(evt.touches && evt.touches.length > 0) {
+        return;
+      }
+
+      isAnimating = false;
+    
+      // Remove Event Listeners
+      if (window.navigator.msPointerEnabled) {
+        // Remove Pointer Event Listeners
+        document.removeEventListener('MSPointerMove', this.handleGestureMove, true);
+        document.removeEventListener('MSPointerUp', this.handleGestureEnd, true);
+      } else {
+        // Remove Touch Listeners
+        document.removeEventListener('touchmove', this.handleGestureMove, true);
+        document.removeEventListener('touchend', this.handleGestureEnd, true);
+        document.removeEventListener('touchcancel', this.handleGestureEnd, true);
+    
+        // Remove Mouse Listeners
+        document.removeEventListener('mousemove', this.handleGestureMove, true);
+        document.removeEventListener('mouseup', this.handleGestureEnd, true);
+      }
+    
+      updateSwipeRestPosition();
+    }.bind(this);
+    
+Mouse events follow this same pattern since it’s easy for a user to accidentally move the mouse outside of the element, which results in the move events no longer firing. By adding the move event to the document, we’ll continue to get mouse movements regardless of where they are on the page.
+鼠标事件也跟从同样的模式，因为对用户来说很容易不小心把鼠标移动元素外面，这将导致移动事件不再有效。而将移动事件加到document上面，我们可以继续获得鼠标的位移不管它在页面的什么地方。
+
+You can use the "Show potential scroll bottlenecks" feature in Chrome DevTools to show how the touch events behave:
+你可以使用Chrome开发人员工具中的“显示潜在的滚动瓶颈”功能来观察触摸事件的表现。
+
+Handle Multi-Element Interaction
+处理多个元素交互
+
+If you expect your users to use multiple elements at once, you can add the move and end events listeners directly to the elements themselves. This applies to touch only, for mouse interactions you should continue to apply the mousemove and mouseup listeners to the document.
+如果你想让用户在同一时间使用多个元素，你可以把移动和结束事件监听器直接加到这些元素本身。这只应用于触摸，对于鼠标交互你该继续给document应用mousemove和mouseup监听器。
+
+Since we only wish to track touches on a particular element, we can add the move and end listeners for touch and pointer events to element straight away:
+既然我们只想对特定的元素跟踪触摸操作，我们可以立即给元素加上触摸和指针的移动和结束监听器。
+
+    // Check if pointer events are supported.
+    if (window.navigator.msPointerEnabled) {
+      // Add Pointer Event Listener
+      elementHold.addEventListener('MSPointerDown', this.handleGestureStart, true);
+      elementHold.addEventListener('MSPointerMove', this.handleGestureMove, true);
+      elementHold.addEventListener('MSPointerUp', this.handleGestureEnd, true);
+    } else {
+      // Add Touch Listeners
+      elementHold.addEventListener('touchstart', this.handleGestureStart, true);
+      elementHold.addEventListener('touchmove', this.handleGestureMove, true);
+      elementHold.addEventListener('touchend', this.handleGestureEnd, true);
+      elementHold.addEventListener('touchcancel', this.handleGestureEnd, true);
+
+      // Add Mouse Listeners
+      elementHold.addEventListener('mousedown', this.handleGestureStart, true);
+    }
+
+In our handleGestureStart and handleGestureEnd function, we add and remove the mouse event listeners to the document.
+在我们的handleGestureStart和handleGestureEnd函数里，我们给document添加又移动了鼠标事件监听器。
+
+    // Handle the start of gestures
+    this.handleGestureStart = function(evt) {
+      evt.preventDefault();
+
+      var point = getGesturePointFromEvent(evt);
+      initialYPos = point.y;
+    
+      if (!window.navigator.msPointerEnabled) {
+        // Add Mouse Listeners
+        document.addEventListener('mousemove', this.handleGestureMove, true);
+        document.addEventListener('mouseup', this.handleGestureEnd, true);
+      }
+    }.bind(this);
+
+    this.handleGestureEnd = function(evt) {
+      evt.preventDefault();
+    
+      if(evt.targetTouches && evt.targetTouches.length > 0) {
+        return;
+      }
+    
+      if (!window.navigator.msPointerEnabled) {
+        // Remove Mouse Listeners
+        document.removeEventListener('mousemove', this.handleGestureMove, true);
+        document.removeEventListener('mouseup', this.handleGestureEnd, true);
+      }
+
+      isAnimating = false;
+      lastHolderPos = lastHolderPos + -(initialYPos - lastYPos);
+    }.bind(this);
+
+60fps while Using Touch
+触摸操作时达到60fps
+
+Now that we have the start and end events taken care of we can actually respond to the touch events.
+现在我们有了起始和结束事件就可以准确地响应触摸事件了。
+
+Get and Store Touch Event Coordinates
 
 
+For any of the start and move events, you can easily extract x and y from an event.
 
 
-
-
-
-
-
+The following code snippet checks whether the event is from a touch event by looking for targetTouches, if it is then it extracts the clientX and clientY from the first touch. If the event is a mouse or pointer event then we extract clientX and clientY directly from the event itself.
 
 
 
