@@ -445,8 +445,49 @@ Each touch event has three lists containing touch data (see also Touch lists):
 In most cases, targetTouches gives you everything you need.
 大多数情况下，targetTouches都能给你想要的一切。
 
+Request Animation Frame
+请求动画帧
 
+Since the event callbacks are fired on the main thread, we want to run as little code as possible in the callback to keep our frame rate high, preventing jank.
+因为事件的回调发生在主线程，我们在回调中运行一段尽可能小的代码来保持高的帧率，以防止卡顿。
 
+Use requestAnimationFrame to change the UI in response to an event. This gives you an opportunity to update the UI when the browser is intending to draw a frame and will help you move some work out of your callback.
+使用requestAnimationFrame在响应一个事件的时候改变用户界面。这将给你一个机会在浏览器准备绘制一个框架页的时候更新用户界面，并且能帮你从回调里移除一些任务。
+
+A typical implementation is to save the x and y coordinates from the start and move events and request an animation frame in the move event callback.
+一次典型的执行过程就是从开始和移动事件中保存x和y坐标，并且在移动事件的回调中请求动画帧。
+
+In our demo, we store the initial touch position in handleGestureStart:
+下面的示例中，我们在handleGestureStart保存了初始的触摸位置：
+
+    // Handle the start of gestures
+    this.handleGestureStart = function(evt) {
+      evt.preventDefault();
+
+      if(evt.touches && evt.touches.length > 1) {
+        return;
+      }
+
+      // Add the move and end listeners
+      if (window.PointerEventsSupport) {
+        // Pointer events are supported.
+        document.addEventListener(pointerMoveName, this.handleGestureMove, true);
+        document.addEventListener(pointerUpName, this.handleGestureEnd, true);
+      } else {
+        // Add Touch Listeners
+        document.addEventListener('touchmove', this.handleGestureMove, true);
+        document.addEventListener('touchend', this.handleGestureEnd, true);
+        document.addEventListener('touchcancel', this.handleGestureEnd, true);
+    
+        // Add Mouse Listeners
+        document.addEventListener('mousemove', this.handleGestureMove, true);
+        document.addEventListener('mouseup', this.handleGestureEnd, true);
+      }
+    
+      initialTouchPos = getGesturePointFromEvent(evt);
+
+      swipeFrontElement.style.transition = 'initial';
+    }.bind(this);
 
 
 
