@@ -408,12 +408,42 @@ Now that we have the start and end events taken care of we can actually respond 
 现在我们有了起始和结束事件就可以准确地响应触摸事件了。
 
 Get and Store Touch Event Coordinates
-
+获取并保存触摸事件的坐标
 
 For any of the start and move events, you can easily extract x and y from an event.
-
+对于任何的开始和结束事件，你都能很容易地从事件中提取x和y坐标。
 
 The following code snippet checks whether the event is from a touch event by looking for targetTouches, if it is then it extracts the clientX and clientY from the first touch. If the event is a mouse or pointer event then we extract clientX and clientY directly from the event itself.
+下面的代码片段通过查找targetTouches来检查事件是否来自触摸操作，如果是就从第一次触摸提取clientX和clientY。如果事件是鼠标或指针那么我们就直接从事件本身得到clientX和clientY。
+
+    function getGesturePointFromEvent(evt) {
+        var point = {};
+
+        if(evt.targetTouches) {
+          // Prefer Touch Events
+          point.x = evt.targetTouches[0].clientX;
+          point.y = evt.targetTouches[0].clientY;
+        } else {
+          // Either Mouse event or Pointer Event
+          point.x = evt.clientX;
+          point.y = evt.clientY;
+        }
+
+        return point;
+      }
+
+Each touch event has three lists containing touch data (see also Touch lists):
+每个触摸事件都有三个列表，包含了相关触摸数据：
+
+  ·touches: list of all current touches on the screen, regardless of DOM element they are on.
+  touches: 列出屏幕上所有当前的触摸操作，而不管他们所在的DOM元素。
+  ·targetTouches: list of touches currently on the DOM element the event is bound to.
+  targetTouches: 列出事件所绑定的DOM元素上当前的触摸操作。
+  ·changedTouches: list of touches which changed resulting in the event being fired.
+  changedTouches: 列出事件触发时变化了的触摸操作。
+
+In most cases, targetTouches gives you everything you need.
+大多数情况下，targetTouches都能给你想要的一切。
 
 
 
