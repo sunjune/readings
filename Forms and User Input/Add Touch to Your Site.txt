@@ -489,6 +489,116 @@ In our demo, we store the initial touch position in handleGestureStart:
       swipeFrontElement.style.transition = 'initial';
     }.bind(this);
 
+The handleGestureMove method stores the y position before requesting an animation frame if we need to, passing in our onAnimFrame function as the callback:
+如果我们需要的话，handleGestureMove方法在请求动画帧之前保存了y坐标，通过作为回调的onAnimFrame。
+
+    var point = getGesturePointFromEvent(evt);
+    lastYPos = point.y;
+    
+      if(isAnimating) {
+        return;
+      }
+
+      isAnimating = true;
+      window.requestAnimFrame(onAnimFrame);
+    
+It’s in the onAnimFrame function that we change our UI to move the elements around. Initially we check to see if the gesture is still on-going to determine whether we should still animate or not, if so we use our initial and last y positions to calculate the new transform for our element.
+在onAnimFrame函数里我们改变用户界面将元素四处移动。最初我们检查手势是否还在继续，从而决定我们是否要继续动画，需要的话就用起始和最终的y坐标来计算元素新的动作。
+
+Once we’ve set the transform, we set the isAnimating variable to false so the next touch event will request a new animation frame.
+一旦我们设置了动作，要把isAnimating变量设置为false这样下次的触摸事件将请求一个新的动画帧。
+
+    function onAnimFrame() {
+        if(!isAnimating) {
+          return;
+        }
+    
+        var newYTransform = lastHolderPos + -(initialYPos - lastYPos);
+    
+        newYTransform = limitValueToSlider(newYTransform);
+    
+        var transformStyle = 'translateY('+newYTransform+'px)';
+        elementHold.style.msTransform = transformStyle;
+        elementHold.style.MozTransform = transformStyle;
+        elementHold.style.webkitTransform = transformStyle;
+        elementHold.style.transform = transformStyle;
+    
+        isAnimating = false;
+      }
+
+Control Gestures using Touch Actions
+用触摸动作来控制手势
+
+The CSS property touch-action allows you to control the default touch behavior of an element. In our examples, we use touch-action: none to prevent the browser from doing anything with a users touch, allowing us to intercept all of the touch events.
+touch-action这个CSS属性允许你控制一个元素默认的触摸行为。在下面的示例里，我们用touch-action: none来阻止浏览器对用户触摸做任何反应，我们可用它拦截所有触摸事件。
+
+    /* Pass all touches to javascript */
+    -ms-touch-action: none;
+    touch-action: none;
+    
+touch-action allows to disable gestures implemented by a browser, for example IE10+ supports double-tap zoom and by setting a touch-action of pan-x | pan-y | manipulation you are preventing the double-tap behavior.
+touch-action可以禁用由浏览器执行的手势，比如IE10以上的版本支持连按缩放，通过给touch-action设置pan-x|pan-y|manipulation你就能阻止连按行为。
+
+The benefit of this is that it allows you to implement these gestures yourself, but in the case of IE10+ you also remove the 300ms click delay.
+这样做的好处是允许你自己来执行这些手势，但是在诸如IE10以上版本的情况你也消除了300ms的点击延迟。
+
+Below is a list of the available parameters for touch-action.
+下面是touch-action的可用参数列表。
+
+  touch-action: auto	The browser will add the normal touch interactions which it supports. For example, scrolling in the x-axis, scrolling in the y-axis, pinch zoom and double tap.
+  浏览器会加入它所能支持的普通触摸交互。比如滚动x或y轴，捏或连按来缩放等。
+
+  touch-action: none	No touch interactions will be handled by the browser.
+  浏览器不再处理任何触摸交互。
+
+  touch-action: pan-x	Only horizontal scrolling will be handled by the browser; vertical scrolling and gestures will be disabled.
+  浏览器只处理水平方向滚动，垂直方向的滚动和手势都被禁止。
+
+  touch-action: pan-y	Only vertical scrolling will be handled by the browser; horizontal scrolling and gestures will be disabled.
+  浏览器只处理垂直方向的滚动，水平方向的滚动和手势都被禁止。
+
+  touch-action: manipulation	Scrolling in both directions and pinch zooming will be handled by the browser; all other gesture will be ignored by the browser.
+  浏览器处理垂直和水平方向的滚动以及捏缩放，所有其他的手势都被忽略。
+
+Remember
+切记
+
+Using touch-action: pan-x or touch-action: pan-y are great for being explicit in your intention that a user should only ever scroll vertically or horizontally on an element.
+使用touch-action: pan-x或touch-action: pan-y对于想要专注于用户只能在某个元素上朝某一个方向滚动很有用。
+
+Reference
+参考
+
+The definitive touch events reference can be found here: w3 Touch Events.
+触摸事件的定义参考可以在这里找到：http://www.w3.org/TR/touch-events/
+
+Touch, Mouse, and Pointer events
+
+
+These events are the building blocks for adding new gestures into your application:
+
+
+  touchstart, mousedown, pointerdown	This is called when a finger first touches an element or when the user clicks down on the mouse.
+  
+  touchmove, mousemove, pointermove	This is called when the user moves their finger across the screen or drags with the mouse.
+  
+  touchend, mouseup, pointerup	This is called when the user lifts their finger off of the screen or releases the mouse.
+  
+  touchcancel	This is called when the browser cancels the touch gestures.
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
