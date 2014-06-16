@@ -1,0 +1,52 @@
+Images
+图片
+
+A picture is worth 1000 words, and images play an integral part of every page. But they also often account for most of the downloaded bytes. With responsive web design not only can our layouts change based on device characteristics, but images as well.
+一幅图胜过千言万语，而且图片是每个页面的组成部分。但它们往往占用了大部分的下载流量。使用响应式设计不仅我们的布局可以根据设备规格来变化，图片同样也可以。
+
+Responsive images
+响应式图片
+
+Responsive web design means that not only can our layouts change based on device characteristics, but content as well. For example, on high resolution (2x) displays, high resolution graphics are needed to ensure sharpness. An image that is 50% width may work just fine when the browser is 800px wide, but will use too much real estate on a narrow phone, and still comes at the same bandwidth overhead when scaled down to fit on a smaller screen.
+响应式设计意味着不仅我们的布局能够基于设备规格改变，对于内容也一样。例如，在高分辨率显示屏上，高分辨率的图片要确保清晰。当浏览器有800px宽的时候50%宽的图片显示得还不错，但在一个窄屏幕手机上就会占太多地方，要占用同样的带宽而且被缩放以适应较小的屏幕。
+
+Art direction
+艺术方向
+
+Other times the image may need to be changed more drastically: changing the proportions, cropping and even replacing the entire image. In this case, changing the image is usually referred to as art direction. See responsiveimages.org/demos/ for more examples.
+另一些时候图片可能需要更大的变化：改变比例、裁切甚至替换掉整个图片。这时改变图片通常称之为艺术方向。可以在http://responsiveimages.org/demos/看到更多示例。
+
+Guides
+教程
+
+  01. Images in Markup — The `img` element is powerful – it downloads, decodes and renders content – and modern browsers support a range of image formats.
+  在标签里的图片 — img元素很强大 — 它可以下载、解码以及渲染内容 — 而且现代浏览器支持的图片格式很多。
+  
+  02. Images in CSS — The CSS `background` property is a powerful tool for adding complex images to elements, making it easy to add multiple images, cause them to repeat, and more.
+  CSS里的图片 —CSS的background属性是个强大的工具，可用于给元素添加复杂的图片，让添加多个图片变得容易，还能让它们重复等等。
+
+  03. Use SVG for icons — When adding icons to your page, use SVG icons where possible or in some cases, unicode characters.
+  用SVG做图标 — 在给你的页面加入图标的时候，可能的话请使用SVG图标或者在某些时候使用unicode字符。
+
+  04. Optimize images for performance — Images often account for most of the downloaded bytes and also often occupy a significant amount of the visual space on the page.
+  为性能而优化图片 — 图片通常会消耗大部分的下载流量，而且经常占用页面上很多可视面积。
+
+  05. Avoid images completely — Sometimes, the best image isn't actually an image at all. Whenever possible, use the native capabilities of the browser to provide the same or similar functionality.
+  避免使用全图片 — 有时候，最好的图片并不只是一个图片。无论何时，尽可能使用浏览器的本地能力来提供相同或相近的功能。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
