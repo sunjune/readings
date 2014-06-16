@@ -20,7 +20,7 @@ Guides
 教程
 
   01. Images in Markup — The `img` element is powerful – it downloads, decodes and renders content – and modern browsers support a range of image formats.
-  在标签里的图片 — img元素很强大 — 它可以下载、解码以及渲染内容 — 而且现代浏览器支持的图片格式很多。
+  图片标记 — img元素很强大 — 它可以下载、解码以及渲染内容 — 而且现代浏览器支持的图片格式很多。
   
   02. Images in CSS — The CSS `background` property is a powerful tool for adding complex images to elements, making it easy to add multiple images, cause them to repeat, and more.
   CSS里的图片 —CSS的background属性是个强大的工具，可用于给元素添加复杂的图片，让添加多个图片变得容易，还能让它们重复等等。
@@ -34,11 +34,71 @@ Guides
   05. Avoid images completely — Sometimes, the best image isn't actually an image at all. Whenever possible, use the native capabilities of the browser to provide the same or similar functionality.
   避免使用全图片 — 有时候，最好的图片并不只是一个图片。无论何时，尽可能使用浏览器的本地能力来提供相同或相近的功能。
 
+Images in Markup
+图片标记
 
+The `img` element is powerful – it downloads, decodes and renders content – and modern browsers support a range of image formats. Including images that work across devices is no different than for desktop, and only requires a few minor tweaks to create a good experience.
+img元素很强大 — 它可以下载、解码以及渲染内容 — 而且现代浏览器支持的图片格式很多。包括可以适应多种设备而与桌面保持一致的图片，而只需很少优化就能创建很好的体验。
 
+In this lesson
+本节主要内容
 
+  ·Enhance img’s with srcset for high DPI devices
+  通过srcset为高DPI设备强化img标签
+  
+  ·Other image techniques
+  其他的图片技术
 
+Remember to use relative units when specifying widths for images to prevent them from accidentally overflowing the viewport. For example, width: 50%;, will cause the image width to be 50% of the containing element (not the viewport or actual pixel size).
+为避免图片不小心从可视屏显溢出，指定宽度的时候切记使用相对单位。例如：width: 50%;，会指定图片宽度为容器元素（不是可视屏显或实际的像素大小）的50%。
 
+Because CSS allows content to overflow it’s container, it may be necessary use max-width: 100% to prevent images and other content from overflowing. For example:
+因为CSS允许内容从它所在的容器溢出，所以可能有必要用到max-width: 100%来避免图片和其他内容溢出。例如：
+
+  img, embed, object, video {
+    max-width: 100%;
+  }
+
+Be sure to provide meaningful descriptions via the alt attribute on img elements; these help make your site more accessible by providing context to screen readers and other assistive technologies.
+请确保在img的alt属性中提供有意义的注释；通过对屏幕用户提供上下文和其他无障碍技术会有助于使你的网站提高可访问性。
+
+Enhance img’s with srcset for high DPI devices
+以srcset为高DPI设备强化图片
+
+The srcset attribute enhances the behavior of the img element, making it easy to provide multiple image files for different device characteristics. In the same way that the image-set CSS function works, srcset allows the browser to choose the best image depending on the characteristics of the device, for example using a 2x image on a 2x display, or a 1x image on a 2x device when on a limited bandwidth network.
+srcset属性可以强化img元素的行为，使得为不同设备规格提供多个图片文件变得很容易。CSS的image-set函数也是同样的原理，srcset允许浏览器根据设备规格选择最佳图片，例如在2x显示时选择2x图片，或者在2x设备带宽有限的时候选择1x图片。
+
+<img src="photo.png" srcset="photo@2x.png 2x" ...>
+
+On browsers that don’t support srcset, the browser simply uses the default image file specified by the src attribute. This is why it is important to always include a 1x image that can be displayed on any device, regardless of capabilities. When srcset is supported, the comma-separated list of image/conditions is parsed and only the most appropriate image is downloaded and displayed.
+不支持srcset的浏览器，它只使用src属性指定的图片文件。无论浏览器能否支持，总是包含一个可以显示在任何设备上的1x图片是很重要的。当支持srcset的时候，逗号分隔的图片/条件列表就被解析而且只有最合适的图片会被下载和显示。
+
+While the conditions can include everything from pixel density to viewport width to viewport height, only pixel density is well supported today. To balance current behavior with future features, stick with simply providing the 2x image in the attribute.
+虽然条件可以包含从像素密度到可视屏显的宽度以及可视屏显的高度，但目前只有像素密度能被很好地支持。为了平衡当前行为与未来的功能，只要简单地坚持为这个属性提供2x图片吧。
+
+Other image techniques
+其他图片技术
+
+Compressive images
+压缩图片
+
+The compressive image technique serves a highly compressed 2x image to all devices, no matter the actual capabilities of the device. Depending on the type of image and level of compression, image quality may not appear to change, but the file size drops significantly.
+图片压缩技术为各种设备提供高压缩比的2x图片，无论该设备实际能力如何。视图片类型和压缩比而定，图片质量看上去没什么变化，但是文件大小会有大幅下降。
+
+Important
+重要
+
+  ·Use caution with the compressive technique because of the increased memory and decoding costs it requires. Resizing large images to fit on smaller screens is expensive and can be particularly painful on low-end devices where both memory and processing is limited.
+  要谨慎使用压缩技术因为它会增加内存与解码开销。调整大图片以适应小屏幕开销很大，尤其是在内存和处理器都受限的低端设备上会很痛苦。
+
+JavaScript image replacement
+JavaScript图片替换
+
+JavaScript image replacement checks the capabilities of the device and “does the right thing”. You can determine device pixel ratio via window.devicePixelRatio, get screen width and height, and even potentially do some network connection sniffing via navigator.connection or issuing a fake request. Once you’ve collected all of this information, you can decide which image to load.
+JavaScript图片替换会检查设备的支持能力并做出正确选择。你可以通过window.devicePixelRatio测定设备的像素比、得到屏幕宽和高、甚至有可能通过navigator.connection做一些网络连接的嗅探或发出一个伪装请求。一旦你收集了所有这些信息，你就能决定加载哪个图片。
+
+One big drawback to this approach is that using JavaScript means that you will delay image loading until at least the look-ahead parser has finished. This means that images won’t even start downloading until after the pageload event fires. In addition, the browser will most likely download both the 1x and 2x images, resulting in increased page weight.
+这种方法的一大缺点是，使用JavaScript意味着你会迟延图片的加载直到至少等前面的解析程序结束。这意味着图片在pageload事件发生之前甚至都不会开始下载。另外，浏览器将最有可能把1x和2x图片都下载，从而增加页面大小。
 
 
 
