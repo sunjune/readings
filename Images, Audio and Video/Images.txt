@@ -133,11 +133,145 @@ TL;DR
   ·Consider the performance costs when using JavaScript image replacement techniques or when serving highly compressed high resolution images to lower resolution devices.
   对较低分辨率设备，要考虑到使用JavaScript图片替换技术以及对高分辨率图片提供高压缩率时的性能开销。
 
+Use media queries for conditional image loading or art direction
+使用媒体侦测来实现图片有条件加载或艺术方向
+
+Media queries not only affect the page layout, but can also be used to conditionally load images or to provide art direction depending on the viewport width.
+媒体侦测不仅影响页面布局，而且可用于按条件加载图片或根据可视屏显宽度提供艺术方向。
+
+For example in the sample below, on smaller screens, only small.png is downloaded and applied to the content div, while on larger screens, background-image: url(body.png) is applied to the body and background-image: url(large.png) is applied to the content div.
+例如下面的示例，在较小的屏幕上，只下载small.png并应用于内容div，而在较大屏幕上，background-image: url(body.png)应用于body，background-image: url(large.png)应用于内容div。
+
+    .example {
+      height: 400px;
+      background-image: url(small.png);
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position-x: center;
+    }
+
+    @media (min-width: 500px) {
+      body {
+        background-image: url(body.png);
+      }
+      .example {
+        background-image: url(large.png);
+      }
+    }
+
+Use image-set to provide high res images
+使用image-set提供高res图片
+
+The image-set() function in CSS enhances the behavior background property, making it easy to provide multiple image files for different device characteristics. This allows the browser to choose the best image depending on the characteristics of the device, for example using a 2x image on a 2x display, or a 1x image on a 2x device when on a limited bandwidth network.
+CSS里的image-set()函数加强了background属性的行为，很容易为不同规格的设备提供多个图片文件。这就能让浏览器根据设备规格选择最佳图片，例如在2x显示器上使用2x图片，或者当网络带宽有限的情况下在2x显示器上使用1x图片。
+
+  background-image: image-set(
+    url(icon1x.jpg) 1x,
+    url(icon2x.jpg) 2x
+  );
+
+In addition to loading the correct image, the browser will also scale it accordingly. In other words, the browser assumes that 2x images are twice as large as 1x images, and so will scale the 2x image down by a factor of 2, so that the image appears to be the same size on the page.
+除了加载合适的图片，浏览器也会相应地缩放它。换句话说，浏览器会假定2x图片是1x图片的两倍大，会将其缩小2倍，这样图片就会在页面上显示成同样的大小。
+
+Support for image-set() is still new and is only supported in Chrome and Safari with the -webkit vendor prefix. Care must also be taken to include a fallback image for when image-set() is not supported, for example:
+对image-set()的支持还比较新而且只有Chrome和Safari通过-webkit厂商前缀来支持。同时必须注意要包含一个回调图片以防image-set()不被支持时用，例如：
+
+    .sample {
+      width: 128px;
+      height: 128px;
+      background-image: url(icon1x.png);
+      background-image: -webkit-image-set(
+        url(icon1x.png) 1x,
+        url(icon2x.png) 2x
+      );
+      background-image: image-set(
+        url(icon1x.png) 1x,
+        url(icon2x.png) 2x
+      );
+    }
+
+The above will load the appropriate asset in browsers that support image-set, and fall back to the 1x asset otherwise. The obvious caveat is that while image-set() browser support is low, most browsers will get the 1x asset.
+以上代码在支持image-set的浏览器里会加载适当的资源，否则就加载1x的资源。显然还得提醒一下image-set()的浏览器支持程度还很低，大部分浏览器都会加载1x资源。
 
 
+Use media queries to provide high res images or art direction
+使用媒体侦测提供高res图片或艺术方向
+
+Media queries can create rules based on the device pixel ratio, making it possible to specify different images for 2x vs 1x displays.
+媒体侦测可以创建基于设备像素比的规则，使得为2x及1x显示器指定不同的图片变得可能。
+
+  @media (min-resolution: 2dppx),
+  (-webkit-min-device-pixel-ratio: 2)
+  {
+    /* High dpi styles & resources here */
+  }
+
+Chrome, Firefox and Opera all support the standard (min-resolution: 2dppx), while Safari and Android Browser both require the older vendor prefixed syntax without the dppx unit. Remember, these styles are only loaded if the device matches the media query, and you must specify styles for the base case. This also provides the benefit of ensuring something will be rendered if the browser doesn’t support resolution specific media queries.
+Chrome、Firefox以及Opera都支持这个标准(min-resolution: 2dppx)，只是Safari和Android浏览器都要用旧版厂商前缀而且不带dppx单位。切记，只有在设备与媒体侦测相匹配的时候这些样式才会被加载，而且你必须为一般条件指定样式。这也有个好处就是确保在浏览器不支持特殊的媒体侦测时也可以渲染页面。
+
+    .sample {
+      width: 128px;
+      height: 128px;
+      background-image: url(icon1x.png);
+    }
+
+    @media (min-resolution: 2dppx), /* Standard syntax */
+    (-webkit-min-device-pixel-ratio: 2)  /* Safari & Android Browser */
+    {
+      .sample {
+        background-size: contain;
+        background-image: url(icon2x.png);
+      }
+    }
+
+You can also use the min-width syntax to display alternative images depending on the viewport size. This technique has the advantage that the image is not downloaded if media query doesn’t match. For example, bg.png is only downloaded and applied to the body if the browser width is 500px or greater:
+你也可以使用min-width基于可视屏显大小来显示替换图片。这个技术有个好处就是媒体侦测不匹配的话图片不会被下载。举例来说，如果浏览器宽度大于等于500px，就只下载bg.png并应用于body。
+
+  @media (min-width: 500px) {
+    body {
+      background-image: url(bg.png);
+    }
+  }
 
 
+=========================================
+Use SVG for icons
+为图标使用SVG
+=========================================
 
+When adding icons to your page, use SVG icons where possible or in some cases, unicode characters.
+在给你的页面添加图标的时候，尽可能使用SVG图标或者在某些情况下，使用unicode字符。
+
+In this lesson
+本节主要内容
+
+  ·Replace simple icons with unicode
+  将简单的图标替换为unicode
+  ·Replace complex icons with SVG
+  将复杂的图标替换为SVG
+  ·Use icon fonts with caution
+  要注意图标所用字体
+
+
+TL;DR
+简而言之
+
+  Use SVG or unicode for icons instead of raster images.
+  尽量用SVG或unicode来做图标而不是图片。
+
+Replace simple icons with unicode
+
+
+Many fonts include support for the myriad of unicode glyphs, which can be used instead of images. Unlike images, unicode fonts scale well, and look good no matter matter how small or large they appear on screen.
+很多字体都包含对无数可以用来替代图片的unicode字符和图形的支持。不象图片那样，unicode字体易于缩放，无论多大或多小它们显示在屏幕上看起来都很棒。
+
+Beyond the normal character set, unicode may include symbols for number forms (⅐), arrows (←), math operators (√), geometric shapes (★), control pictures (▶), braille patterns (⠏), music notation (♬), Greek letters (Ω), even chess pieces (♞).
+Including a unicode character is done in the same way named entities are: &#XXXX, where XXXX represents the unicode character number. For example:
+超越一般字符集的是，unicode可能包含数字符号(⅐)、箭头(←)、数学操作符(√)、几何图形(★)、操控指示图(▶),盲文模式(
+
+You're a super &#9733;
+
+You’re a super ★
 
 
 
