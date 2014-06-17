@@ -274,6 +274,66 @@ You're a super &#9733;
 You’re a super ★
 
 
+=========================================
+Replace complex icons with SVG
+用SVG替换复杂图标
+=========================================
+
+For more complex icon requirements, SVG icons are generally lightweight, easy to use and can be styled with CSS. SVG have a number of advantages over raster images:
+对于更复杂的图标需求，SVG图标通常是轻量的，易用且能通过CSS应用样式。相比静态图片SVG有很多优势：
+
+  ·They’re vector graphics that can be infinitely scaled.
+  它们是矢量图所以可以被无限缩放。
+  ·CSS effects such as color, shadowing, transparency and animations are straightforward.
+  诸如颜色、阴影、透明和动画等CSS效果是可以直接应用的。
+  ·SVG images can be inlined right in the document.
+  SVG图像可以正确地放在正文行内。
+  ·They are semantic.
+  它们是有语义的。
+  ·Provide better accessibility with the appropriate attributes.
+  通过适当的属性提供很好的可访问性。
+
+With SVG icons, you can either add icons using inline SVG, like this checkmark:
+对于SVG图标，你既可以使用行内SVG标签添加图标，象这个复选框：
+
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+             xmlns:xlink="http://www.w3.org/1999/xlink"
+             width="32" height="32" viewBox="0 0 32 32">
+          <path d="M27 4l-15 15-7-7-5 5 12 12 20-20z" fill="#000000"></path>
+        </svg>
+
+or by using an image tag, like this credit card icon:
+也可以使用图片标签，像这个信用卡图标：
+
+    <img src="credit.svg">.
+
+
+=========================================
+Use icon fonts with caution
+谨慎使用图标字体
+=========================================
+
+Icon fonts are popular, and can be easy to use, but have some drawbacks compared to SVG icons.
+图标字体很流行
+
+  ·They’re vector graphics that can be infinitely scaled, but may be anti-aliased resulting in icons that aren’t as sharp as expected.
+  它们是矢量图形可以被无限缩放，但是可能会做抗锯齿处理从而看起来不象期望中那么锐利。
+  ·Limited styling with CSS.
+  CSS应用样式有限。
+  ·Pixel perfect positioning can be difficult, depending on line-height, letter spacing, etc.
+  像素级的位置调整很困难，要看行间距、字符间距等等。
+  ·Are not semantic, and can be difficult to use with screen readers or other assistive technology.
+  非语义化的，而且很难用于读屏软件或其他无障碍技术。
+  ·Unless properly scoped, can result in a large file size for only using a small subset of the icons available.
+  除非有正确地范围划定，否则会产生只为一小部分图标可用而加载一个大的字体文件。
+
+There are hundreds of free and paid icon fonts available including Font Awesome, Pictos and Glyphicons.
+有数百种免费或收费的图标字体可用，其中包括Font Awesome(http://fortawesome.github.io/Font-Awesome/)、Pictos(http://pictos.cc/)以及Glyphicons(http://glyphicons.com/)。
+
+Be sure to balance the weight of the additional HTTP request and file size with the need for the icons. For example, if you only need a handful of icons, it may be better to use an image or an image sprite.
+一定要在对图标的需求和它所带来的额外的HTTP请求以及文件大小之间做好平衡。例如，如果你只是需要很少的几个图标，可能用图片或图片精灵更好一些。
+
+
 
 
 
