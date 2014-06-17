@@ -267,11 +267,18 @@ Many fonts include support for the myriad of unicode glyphs, which can be used i
 
 Beyond the normal character set, unicode may include symbols for number forms (⅐), arrows (←), math operators (√), geometric shapes (★), control pictures (▶), braille patterns (⠏), music notation (♬), Greek letters (Ω), even chess pieces (♞).
 Including a unicode character is done in the same way named entities are: &#XXXX, where XXXX represents the unicode character number. For example:
-超越一般字符集的是，unicode可能包含数字符号(⅐)、箭头(←)、数学操作符(√)、几何图形(★)、操控指示图(▶),盲文模式( (⠏)、乐谱标记♬)、希腊字母Ω),、甚至象棋的棋子(♞).。
+超越一般字符集的是，unicode可能包含数字符号(⅐)、箭头(←)、数学操作符(√)、几何图形(★)、操控指示图(▶),盲文模式(⠏)、乐谱标记(♬)、希腊字母(Ω),、甚至象棋的棋子(♞)。包含一个unicode字符同与命名一个实体一样的结束方式：&#XXXX，XXXX是unicode字符编码。例如：
 
 You're a super &#9733;
 
 You’re a super ★
+
+
+
+
+
+
+
 
 
 
