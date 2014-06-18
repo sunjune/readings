@@ -334,18 +334,164 @@ Be sure to balance the weight of the additional HTTP request and file size with 
 一定要在对图标的需求和它所带来的额外的HTTP请求以及文件大小之间做好平衡。例如，如果你只是需要很少的几个图标，可能用图片或图片精灵更好一些。
 
 
+=========================================
+Optimize images for performance
+为提高性能优化图片
+=========================================
+
+Images often account for most of the downloaded bytes and also often occupy a significant amount of the visual space on the page. As a result, optimizing images can often yield some of the largest byte savings and performance improvements for your website: the fewer bytes the browser has to download, the less competition there is for client's bandwidth and the faster the browser can download and display all the assets.
+图片通常会占很大的下载开销而且占据大量的页面可见区域。因此，优化图片通常能给你的网站带来最大的流量节约并提升性能：浏览器要下载的字节越少，对客户端的带宽占用就越少这样浏览器就可以更快地加载并显示所有的内容。
+
+In this lesson
+本节主要内容
+
+  ·Choose the right format
+  选择正确的格式
+  ·Reduce the file size
+  减小文件大小
+  ·Use image sprites
+  使用图片精灵
+  ·Consider lazy loading
+  考虑延迟加载
+
+TL;DR
+简而言之
+
+  ·Don't just randomly choose an image format, understand the different formats available, and use the format best suited.
+  不要随机选择图片格式，要理解不同格式的可用性，使用最合适的格式。
+  ·Include image optimization and compression tools into your workflow to reduce file sizes.
+  把图片优化和压缩工具包含到你的工作流中以减小文件体积。
+  ·Reduce the number of http requests by placing frequently used images into image sprites.
+  把常用图片合并到图片精灵中以减少http请求次数。
+  ·Consider loading images only after they’ve scrolled into view to improve the initial page load time and reduce the initial page weight.
+  只有在页面滚动到要显示的时候才加载图片以提高首屏页面加载速度并减少首屏大小。
+
+Choose the right format
+选择正确的格式
+
+There are two types of images to consider: vector images and raster images. For raster images, you also need to choose the right compression format, for example: GIF, PNG, JPG.
+有两种图片可以考虑：矢量图和光栅图。对于光栅图，你还需要选择正确的压缩格式，例如：GIF、PNG、JPG。
+
+Raster images, like photographs and other images which are represented as a grid of individual dots or pixels. Raster images typically come from a camera or scanner, or can be created in the browser with the canvas element. As the image size gets larger, the file size grows as well. When scaled larger than their original size, raster images get blurry as the browser needs to guess how to fill in the missing pixels.
+像照片或其他的一些光栅图呈现为单独的点或像素组成的格子。光栅图一般来自照片或扫描仪，或者通过canvas元素创建。图片尺寸越大，文件体积也就越大。当光栅图片被放大到超过它们的原始大小时会变得模糊，因为浏览器需要猜测如何填充多出来的像素。
+
+Vector images, such as logos and line art are be defined by a set of curves, lines, shapes and fill colors. Vector images are created with programs like Adobe Illustrator or Inkscape and saved to a vector format like SVG. Because vector images are built on simple primitives, they can be scaled without any loss in quality without a change in file size.
+矢量图，像那些由一系列曲线、直线、图形以及颜色填充来定义的logo和线条画。矢量图由Adobe Illustrator或Inkscape等软件生成并且保存为SVG之类的矢量格式。因为矢量图由基础图形构成，它们可以在不改变文件体积的情况下被任意缩放而不会有质量损失。
+
+When choosing the right format, it is important to consider both the origin of the image (raster or vector), and the content (colors, animation, text, etc). No one format will fit all image types and each has it’s own strengths and weaknesses.
+在选择了正确的格式之后，对原始图片(光栅或矢量)和内容(颜色、动画、文本等等)同时考虑是很重要的。没有一种格式能适合所有的图片类型，每种都有其优缺点。
+
+Start with these guidelines when choosing the right format:
+下面是选择正确格式的指导方针：
+
+  ·Use JPG for photographic images.
+  照片图像选JPG
+  ·Use SVG for vector art and solid color graphics such as logos and line art. If vector art is unavailable, try WebP or PNG.
+  为矢量图、logo和线条画等纯色图像选择SVG。如果矢量图不可用，试试WebP或者PNG。
+  ·Use PNG rather than GIF as it allows for more colors and offers better compression ratios.
+  优先考虑PNG，相比GIF它支持更多的颜色和更大的压缩比。
+  ·For longer animations, consider using <video> which provide better image quality and gives the user control over playback.
+  对于长的动画，考虑使用<video>，它提供更好的图像质量而且让用户进行播放控制。
+
+Reduce the file size
+减少文件体积
+
+Image file size can be considerably reduced by ‘post-processing’ them after saving. There are a number of tools for image compression – lossy and lossless, online, GUI, command line. Where possible, it’s best to try automating image optimization so that it’s a first-class citizen in your workflow.
+图像文件体积可以考虑在它们被保存之后通过“后处理”来减小。有很多图片压缩工具——有损和无损的、在线的、图界面的以及命令行的。有可能的话，最好试一下自动图片优化，在你的工作流程中它是最佳人选。
+
+Several tools are available that perform further, lossless compression on JPG and PNG files, with no effect on image quality. For JPG, try jpegtran or jpegoptim (available on Linux only; run with the –strip-all option). For PNG, try OptiPNG or PNGOUT.
+给出几种用来进一步无损压缩JPG和PNG文件且不影响图像质量的工具。对于JPG，试一下jpegtran(http://jpegclub.org/)或jpegoptim(http://freshmeat.net/projects/jpegoptim/ 只有Linux版)。对于PNG，试一下OptiPNG(http://optipng.sourceforge.net/)或PNGOUT(http://www.advsys.net/ken/util/pngout.htm)。
+
+Use image sprites
+使用图片精灵
+
+CSS spriting is a technique whereby a number of images are combined in a single ‘sprite sheet’ image. Individual images can then be used by specifying the background image for an element (the sprite sheet) plus an offset to display the correct part.
+CSS的精灵技术是一项把大量图片结合在一个单独的精灵层图片。单独图片可通过为某个元素指定背景图加上偏移量来显示正确的部分。
+
+    .sprite-sheet {
+      background-image: url(sprite-sheet.png);
+      width: 40px;
+      height: 25px;
+    }
+
+    .google-logo {
+      width: 125px;
+      height: 45px;
+      background-position: -190px -170px;
+    }
+
+    .gmail {
+      background-position: -150px -210px;
+    }
+
+    .maps {
+      height: 40px;
+      background-position: -120px -165px;
+    }
+
+Consider lazy loading
+考虑使用延迟加载
+
+Lazy loading can significantly speed up loading on long pages that include many images below the fold by loading them either as needed or once the primary content has finished loading and rendering. In addition to performance improvements, using lazy loading can create infinite scrolling experiences.
+延迟加载可以大大提高长页面加载速度，那些折叠起来的大量图片，可以需要显示的时候才加载，或者在主要内容结束加载和渲染之后再加载。
+
+Be careful when creating infinite scrolling pages, because content is loaded as it becomes visible, search engines may never see that content. In addition, users who are looking for information they expect to see in the footer will never see the footer because new content is always loaded.
+创建可以无限滚动的页面时要多加注意，因为内容要加载后才可见，搜索引擎将不会看到页面源码。此外，想在页面底部找信息的用户将看不到底因为新的内容一直在加载。
+
+Related information
+参考资料
+
+  ·Image optimization
+  https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer#image-optimization
+  ·Optimizing content efficiency
+  https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/
 
 
+=========================================
+Avoid images completely
+避免全部使用图片
+=========================================
+
+Sometimes, the best image isn't actually an image at all. Whenever possible, use the native capabilities of the browser to provide the same or similar functionality. Browsers generate visuals that would have previously required images. This means that browsers no longer need to download separate image files and prevents awkwardly scaled images. Icons can be rendered using unicode or special icon fonts.
+有时候，最好的图像实际上根本不是图片。尽可能使用浏览器本地的能力来提供相同或相尽的功能。以前需要图片的地方可由浏览器生成可视化效果。这意味着浏览器不再需要下载单独的图片文件而且避免难看的缩放图片。图标可用unicode或特殊的图标字体来渲染。
+
+In this lesson
+本节主要内容
+
+  ·Place text in markup, instead of embedded in images
+  文本放在标记里，而不是嵌入到图片中
+  ·Use CSS to replace images
+  用CSS替代图片
+
+TL;DR
+简而言之
+
+  ·Avoid images whenever possible, instead, leverage browser capabilities for shadows, gradients, rounded corners and more.
+  尽可能避免图片，取而代之多用浏览器来实现诸如阴影、渐变、圆角等等。
+
+Place text in markup, instead of embedded in images
+将文本放在标记中，而不是嵌入到图片里
+
+Wherever possible, text should be text, and not embedded into images, for example using images for headlines, or placing contact information like phone numbers or addresses directly into images. This prevents people from being able to copy and paste the information, makes it inaccessible for screen readers, and isn’t responsive. Instead, place the text in your markup and if necessary use webfonts to achieve the style you need.
+只要有可能，文本就应该是文本，而不是嵌入在图片里，例如使用图片做大标题、把联系人信息的电话号码或地址直接放在图片里。这会让人不能复制粘贴这些信息、让读屏器无法访问、而且也不是响应式。把文本放在标记里，有必要的话使用webfont来实现你要的样式。
 
 
+Use CSS to replace images
+使用CSS替代图片
 
+Modern browsers can use CSS features to create styles that would previously required images. For examples, complex gradients can be created using the background property, shadows can be created using box-shadow and rounded corners can be added with the border-radius property.
+现代浏览器能用CSS的功能来创建那些以前需要用图片来实现的样式。例如，复杂的渐变能用background属性生成，阴影可以用box-shadow而圆角可用添加border-radius属性来实现。
 
+  <style>
+    div#noImage {
+      color: white;
+      border-radius: 5px;
+      box-shadow: 5px 5px 4px 0 rgba(9,130,154,0.2);
+      background: linear-gradient(rgba(9, 130, 154, 1), rgba(9, 130, 154, 0.5));
+    }
+  </style>
 
-
-
-
-
-
-
+Keep in mind that using these techniques does require rendering cycles, which can be significant on mobile. If over-used, you’ll lose any benefit you may have gained and may hinder performance.
+切记使用这些技术是需要渲染周期的，这在移动设备上可能会带来严重的问题。如果过度使用，你将失去所有已得到的好处并影响性能。
 
 
