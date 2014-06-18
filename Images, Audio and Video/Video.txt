@@ -1,0 +1,21 @@
+Video
+视频
+
+Users like videos; they can be fun, informative. On mobile devices, videos can be an easier way to consume information. But videos take bandwidth; they don't always work the same across every platform. Users don't like waiting for videos to load, or when they press play and nothing happens. Read more to find the simplest way to add video to your site and ensure users get the best possible experience on any device.
+用户喜欢视频；它们会是有趣的、有信息量的。在移动设备上，视频是个更易于消费信息的途径。但是视频会占带宽；不能在各平台上一致运行。用户不喜欢等待视频加载，或者在他们点击播放却啥都看不到。接下来的内容将帮你找到在网站上添加视频最简单的办法，而且确保用户在任何设备上都尽可能获得最好的体验。
+
+Guides
+指南
+
+  ·Add a video — Learn about the simplest ways to add video to your site and ensure users get the best possible experience on any device.
+  添加视频 — 学习在你网站添加视频最简单的办法而且确保用户在任何设备上都尽可能获得最佳体验
+  ·Provide alternatives for legacy platforms — Not all video formats are supported on all platforms. Check which formats are supported on the major platforms and make sure your video works in each of these.
+  为非主流设备提供替代方案 — 并非所有的视频格式能被所有平台都支持。列出来那些被主流平台支持的视频格式并确保你的视频在其中。
+  ·Customize the video player — Different platforms display video differently. Mobile solutions need to consider device orientation. Use Fullscreen API to control the fullscreen view of video content.
+  自定义视频播放器 — 不同平台显示视频也是不一样的。移动解决方案需要考虑设备方向。使用Fullscreen API来控制视频的全屏视图。
+  ·Size videos correctly — When it comes to keeping your users happy, size matters.
+  合适的视频体积 — 要保持你的用户满意，体积会有影响。
+  ·Accessibility matters — Accessibility isn't a feature.
+  
+  ·Quick Reference — A quick overview of properties on the video element.
+  
