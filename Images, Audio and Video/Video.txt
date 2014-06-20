@@ -284,6 +284,94 @@ NOTE: requestFullScreen() is currently vendor prefixed and may require extra cod
 注意：requestFullScreen()目前还要加厂商前缀而且可能需要额外的代码来跨浏览器兼容。
 
 
+Size videos correctly
+正确处理视频文件体积
+
+When it comes to keeping your users happy, size matters:
+当到了要保持用户满意度的时候，视频体积就有影响了：
+
+In this guide
+本节内容
+
+  ·Check video size
+  检查视频体积
+  ·Ensure videos don’t overflow containers
+  确保视频不会溢出容器
+
+When it comes to keeping your users happy, size matters:
+当到了要保持用户满意度的时候，视频体积就有影响了：
+
+  ·Don’t serve videos with a larger frame size or higher quality than the platform can handle.
+  不要提供平台处理不了的过大的帧尺寸或过高的清晰度。
+  ·Don’t make your videos any longer than they need be.
+  不要将视频制作得超出它所需要的长度。
+  ·Long videos can cause hiccups with download and seeking; some browsers may have to wait until the video downloads before beginning playback.
+  长视频会在下载或拖动定位的时候导致卡顿；一些浏览器可能要等视频下载完才开始播放。
+
+Check video size
+检查视频体积
+
+The actual video frame size as encoded may be different from the video element dimensions (just as an image may not be displayed using its actual dimensions).
+视频编码的实际帧尺寸可能与video元素的尺寸不同（就象图片可能不是用它的实际尺寸来显示一样）。
+
+To check the encoded size of a video, use the video element videoWidth and videoHeight properties. width and height return the dimensions of the video element, which may have been sized using CSS or inline width and height attributes.
+要检查视频的编码尺寸，使用video元素的videoWidth和videoHeight属性。width和height返回video元素的定义，那可能是由CSS或行内的宽和高属性决定的大小。
+
+Ensure videos don’t overflow containers
+确保视频不会溢出容器
+
+When video elements are too big for the viewport, they may overflow their container, making it impossible for the user to see the content or use the controls.
+当video元素远超出可视屏显范围，它们可能会溢出所在容器，用户将没办法看到内容或使用控制项。
+
+You can control video dimensions using JavaScript or CSS. JavaScript libraries and plugins such as FitVids make it possible to maintain appropriate size and aspect ratio, even for Flash videos from YouTube and other sources.
+你可以用JavaScript或CSS控制视频尺寸。JavaScript库和插件例如FitVids(https://fitvidsjs.com/)使得维护合适的尺寸和宽高比成为可能，即使是来自YouTube以及其他来源的Flash视频。
+
+Use CSS media queries to specify the size of elements depending on the viewport dimensions; max-width: 100% is your friend.
+使用CSS媒体侦测按照可视屏显尺寸来指定元素的大小；max-width: 100%是个很好的选择。
+
+Remember
+切记
+
+  Don't force element sizing that results in an aspect ratio different from the original video. Squashed or stretched looks bad.
+  不要强制指定元素尺寸那会造成与源视频不同的宽高比。被压扁或拉长看上去会很糟。
+
+For media content in iframes (such as YouTube videos), try a responsive approach (like the one proposed by John Surdakowski).
+对于在iframe里的媒体内容(例如YouTube视频)，尝试用响应的方式(象John Surdakowski提议的这个https://avexdesigns.com/responsive-youtube-embed/)。
+
+CSS:
+    .video-container {
+        position: relative;
+        padding-bottom: 56.25%;
+        padding-top: 30px;
+        height: 0;
+        overflow: hidden;
+    }
+
+    .video-container iframe,
+    .video-container object,
+    .video-container embed {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+HTML:
+
+    <div class="video-container">
+      <iframe src="//www.youtube.com/embed/l-BA9Ee2XuM"
+              frameborder="0" width="560" height="315">
+      </iframe>
+    </div>
+
+Compare the responsive sample to the unresponsive version.
+比较一下响应式的示例(https://developers.google.com/web/fundamentals/resources/samples/media/video/responsive_embed.html)和不做响应处理的版本(https://developers.google.com/web/fundamentals/resources/samples/media/video/unyt.html)。
+
+
+
+
+
 
 
 
