@@ -368,6 +368,154 @@ HTML:
 Compare the responsive sample to the unresponsive version.
 比较一下响应式的示例(https://developers.google.com/web/fundamentals/resources/samples/media/video/responsive_embed.html)和不做响应处理的版本(https://developers.google.com/web/fundamentals/resources/samples/media/video/unyt.html)。
 
+=============================
+Accessibility matters
+易访问性问题
+=============================
+
+Accessibility isn't a feature. Users who can't hear or see won't be able to experience a video at all without captions or descriptions. The time it takes to add these to your video is much less than the bad experience you are delivering to users. Provide at least a base experience for all users.
+可访问性不是一项功能。没有字幕和说明，那些看不到或听不到的用户也就根本无从体验一段视频。给你的视频加上这些所用的时间相对于带给用户的糟糕体验真是不值一提。至少要为所有用户提供一项基本体验。
+
+In this guide
+本节内容
+
+  ·Include captions to improve accessibility
+  包含字幕以提升易访问性
+  ·Add track element
+  添加track元素
+  ·Define captions in track file
+  在track文件中定义字幕
+
+Include captions to improve accessibility
+包含字幕以提升易访问性
+
+To make media more accessible on mobile, include captions or descriptions using the track element.
+为了让媒体在手机上更易访问，请用track元素包含字幕或说明。
+
+Remember
+切记
+
+The track element is supported on Chrome for Android, iOS Safari, and all current browsers on desktop except Firefox (see caniuse.com/track). There are several polyfills available too. We recommend Playr or Captionator.
+支持track元素的有Android上的Chrome、iOS上的Safari以及除Firefox以外的所有市面上的桌面浏览器(参阅https://caniuse.com/track)。有好多种可用的polyfill。我们推荐Playr(https://www.delphiki.com/html5/playr/)或Captionator(https://captionatorjs.com/)。
+
+Using the track element, captions appear like this:
+使用track元素时，字幕显示成下面这样：
+
+Add track element
+添加track元素
+
+It’s very easy to add captions to your video – simply add a track element as a child of the video element:
+给你的视频添加字幕非常容易 – 只要给video元素简单地加一个track元素作为子项即可。
+
+    <video controls>
+        <source src="chrome.webm" type="video/webm" />
+        <source src="chrome.mp4" type="video/mp4" />
+      <track src="chrome-subtitles-en.vtt" label="English captions"
+             kind="captions" srclang="en" default>
+      <p>This browser does not support the video element.</p>
+    </video>
+    
+The track element src attribute gives the location of the track file.
+track元素的src属性给出了track文件的位置。
+
+Define captions in track file
+在track文件中定义字幕
+
+A track file consists of timed ‘cues’ in WebVTT format:
+track文件由WebVTT格式的时间轴构成：
+
+  WEBVTT
+  
+  00:00.000 --> 00:04.000
+  Man sitting on a tree branch, using a laptop.
+  
+  00:05.000 --> 00:08.000
+  The branch breaks, and he starts to fall.
+  
+  ...
+
+
+=============================
+Quick Reference
+简明参考
+=============================
+
+A quick overview of properties on the video element.
+对video元素属性的简明描述
+
+In this guide
+本节内容
+
+  ·Video element attributes
+  video元素属性
+  ·JavaScript
+  JavaScript属性
+
+Video element attributes
+video元素属性
+
+For the complete list of video element attributes and their definitions, see the video element spec.
+完整的video元素属性列表和相应的定义，请参阅(https://www.w3.org/TR/html5/embedded-content-0.html#the-video-element)。
+
+  src	All browsers	Address (URL) of the video.
+  范围：所有浏览器都支持
+  说明：视频的地址(URL)
+  poster	All browsers	Address (URL) of an image file that the browser can show as soon as the video element is displayed, without downloading video content.
+  范围：所有浏览器都支持
+  说明：无需下载视频内容，在视频元素显示的时候就可以展示的图片的地址
+  preload	All mobile browsers ignore preload.	Hints to the browser that preloading metadata (or some video) in advance of playback is worthwhile. Options are none, metadata, or auto (see Preload section for details).
+  范围：所有移动浏览器都会忽略预加载
+  说明：告诉浏览器在播放之前预加载元数据(或部分视频)是值得的。值选项有none、metadata或auto。
+  autoplay	Not supported on iPhone or Android; supported on all desktop browsers, iPad, Firefox and Opera for Android.	Start download and playback as soon as possible (see Autoplay section).
+  范围：iPhone和Android不支持；所有桌面浏览器、iPad、Android上的Firefox和Opera支持
+  说明：页面准备好就开始下载和播放
+  loop	All browsers	Loop the video.
+  范围：所有浏览器都支持
+  说明：循环播放视频
+  controls	All browsers	Show the default video controls (play, pause, etc.)
+  范围：所有浏览器都支持
+  说明：显示默认视频控制项(播放、暂停等等)
+
+Autoplay
+自动播放
+
+On desktop, autoplay tells the browser to immediately start downloading and playing the video as soon as it can. On iOS, and Chrome for Android, autoplay doesn’t work; users must tap the screen to play the video.
+在桌面系统，autoplay告诉浏览器只要有可能就立即开始下载和播放视频。在iOS和Android的Chrome里，autoplay无法工作；用户必须点按屏幕来播放视频。
+
+Even on platforms where autoplay is possible, you need to consider whether it’s a good idea to enable it:
+即使在支持autoplay的平台上，你也要考虑是否启用它：
+
+  ·Data usage can be expensive.
+  数据流量可能会很昂贵。
+  ·Causing media to download and playback to begin, without asking first, can unexpectedly hog bandwidth and CPU, and thereby delay page rendering.
+  导致页面在一开始就下载和播放媒体，而不先问一下，可能会消耗大量带宽和CPU，并因此延缓页面的渲染。
+  ·Users may be in a context where playing video or audio is intrusive.
+  用户所在的环境可能会被视频或音频干扰到。
+
+Autoplay behavior is configurable in the Android WebView via the WebSettings API. It defaults to true but a WebView app can choose to disable it.
+自动播放行为在Android WebView中可通过WebSettings API来配置。默认值为true但是WebView应用可以选择禁用它。
+
+Preload
+预加载
+
+The preload attribute provides a hint to the browser as to how much information or content should be preloaded.
+preload属性为浏览器给出提示会有多少信息和内容应该被预加载。
+
+  ·none	The user may not even watch the video – don't preload anything
+  用户甚至不看视频 – 不做任何预先加载
+  ·metadata	Metadata (duration, dimensions, text tracks) should be preloaded, but with minimal video.
+  元数据(时长、清晰度、文本字幕)应被预先加载，但会随着极少的视频。
+  ·auto	Downloading the entire video right away is considered desirable.
+  在经过判断觉得合适的时候下载立刻整个视频
+
+The preload attribute has different effects on different platforms. For example, Chrome buffers 25 seconds of video on desktop, none on iOS or Android. This means that on mobile, there may be playback startup delays that don’t happen on desktop. See Steve Souders’ test page for full details.
+在不同的平台上preload属性会有不同的效果。例如，Chrome在桌面会缓存25秒视频，在iOS和Android上完全不缓存。这意味着在移动设备上，会在开始的时候有延迟而在桌面上不会。更多细节参见Steve Souders的测试页(https://stevesouders.com/tests/mediaevents.php)。
+
+JavaScript
+JavaScript相关
+
+The HTML5 Rocks Video article does a great job of summarizing the JavaScript properties, methods, and events that can be used to control video playback. We’ve included that content here, updating it with mobile-specific concerns where relevant.
+HTML5 Rocks Video文章(https://www.html5rocks.com/en/tutorials/video/basics/#toc-javascript)做了一件伟大的工作，总结了JavaScript能用于控制视频播放的属性、方法和事件。我们把这些内容放在这里，由专注于移动的爱好者来做相关更新。
 
 
 
