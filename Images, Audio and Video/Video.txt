@@ -284,8 +284,10 @@ NOTE: requestFullScreen() is currently vendor prefixed and may require extra cod
 注意：requestFullScreen()目前还要加厂商前缀而且可能需要额外的代码来跨浏览器兼容。
 
 
+============================================
 Size videos correctly
 正确处理视频文件体积
+============================================
 
 When it comes to keeping your users happy, size matters:
 当到了要保持用户满意度的时候，视频体积就有影响了：
