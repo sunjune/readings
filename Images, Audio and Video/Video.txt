@@ -517,19 +517,3 @@ JavaScript相关
 The HTML5 Rocks Video article does a great job of summarizing the JavaScript properties, methods, and events that can be used to control video playback. We’ve included that content here, updating it with mobile-specific concerns where relevant.
 HTML5 Rocks Video文章(https://www.html5rocks.com/en/tutorials/video/basics/#toc-javascript)做了一件伟大的工作，总结了JavaScript能用于控制视频播放的属性、方法和事件。我们把这些内容放在这里，由专注于移动的爱好者来做相关更新。
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
