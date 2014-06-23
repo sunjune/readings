@@ -1,2 +1,120 @@
+Critical Rendering Path
+关键渲染路径
+
+Optimizing the critical rendering path is critical for improving performance of our pages: our goal is to prioritize and display the content that relates to the primary action the user wants to take on a page.
+优化关键渲染对于提升我们的页面性能是很关键的：我们的目标是按最用户最关心的顺序显示页面内容。
+
+Delivering a fast web experience requires a lot of work by the browser. Most of this work is hidden from us as web developers: we write the markup, and a nice looking page comes out on the screen. But how exactly does the browser go from consuming our HTML, CSS, and JavaScript to rendered pixels on the screen?
+为了实现快速的页面体验需要由浏览器做大量的工作。这项工作的大部分对于我们web developer来说是看不到的：我们写下这些标记，而一个漂亮的页面就出现在屏幕上。但是浏览器到底是怎么把我们的HTML、CSS和JavaScript渲染成屏幕上的像素呢。
+
+Optimizing for performance is all about understanding what happens in these intermediate steps between receiving the HTML, CSS, and JavaScript bytes and the required processing to turn them into rendered pixels - that’s the critical rendering path.
+对性能的优化就是理解这个过程中中发生的一切，从接收到HTML、CSS和JavaScript到经过必需的运算来把它们转化成渲染过的像素 — 这就是关键渲染路径。
+
+By optimizing the critical rendering path we can significantly improve the time to first render of our pages. Further, understanding the critical rendering path will also serve as a foundation for building well performing interactive applications. It turns out, the process for processing interactive updates is the same, just done in a continuous loop and ideally at 60 frames per second! However, let’s not get ahead of ourselves just yet. First, let’s take a quick, ground-up overview of how the browser goes about displaying a simple page.
+通过优化关键渲染路径我们能大大提升首次渲染页面的用时。此外，对关键渲染路径的理解也将为建立良好性能的交互应用打好基础。其实，交互运算的更新过程也是这样的，只是理想情况下以每秒60帧的速度无限循环。当然了，现在还没到谈这个的时候。首先，让我们快速介绍一下浏览器是怎么显示一个简单页面的。
+
+=======================================
+Constructing the Object Model
+构建对象模型
+=======================================
+
+Before the browser can render the page it needs to construct the DOM and CSSOM trees. As a result, we need to ensure that we deliver both the HTML and CSS to the browser as quickly as possible.
+在浏览器能够渲染页面之前，它需要构建DOM和CSSOM树。也就是说，我们需要保证尽快把HTML和CSS提供给浏览器。
+
+In this guide
+本节内容
+
+  ·Document Object Model (DOM)
+  文档对象模型(DOM)
+  ·CSS Object Model (CSSOM)
+  CSS对象模型(CSSOM)
+
+TL;DR
+简而言之
+
+  ·Bytes → characters → tokens → nodes → object model
+  字节 → 字符 → 标记 → 节点 → 对象模型
+  ·HTML markup is transformed into a Document Object Model (DOM), CSS markup is transformed into a CSS Object Model (CSSOM)
+  HTML标记被转换成文档对象模型(DOM)，CSS标记被转换成CSS对象模型(CSSOM)
+  ·DOM and CSSOM are independent data structures
+  DOM和CSSOM都是独立的数据结构
+  ·Chrome DevTools Timeline allows us to capture and inspect the construction and processing costs of DOM and CSSOM
+  Chrome开发人员工具的时间轴让我们能捕捉并检查DOM和CSSOM的结构和运算开销
+
+Document Object Model (DOM)
+文档对象模型(DOM)
+
+    <html>
+      <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link href="style.css" rel="stylesheet">
+        <title>Critical Path</title>
+      </head>
+      <body>
+        <p>Hello <span>web performance</span> students!</p>
+        <div><img src="awesome-photo.jpg"></div>
+      </body>
+    </html>
+
+Let’s start, with the simplest possible case: a plain HTML page with some text and a single image. What does the browser need to do to process this simple page?
+让我们开始吧，用一个最简单的例子：一个只有一些文字和一张图片的简单HTML页面。浏览器要做些什么来处理这个简单的页面呢。
+
+  01 Conversion: the browser reads the raw bytes of the HTML off the disk or network and translates them to individual characters based on specified encoding of the file (e.g. UTF-8).
+  转换：浏览器从磁盘或网络中读到原始的HTML内容，并按照指定的编码把它们翻译成独立的字符。
+
+  02 Tokenizing: the browser converts strings of characters into distinct tokens specified by the W3C HTML5 standard - e.g. “<html>”, “<body>” and other strings within the “angle brackets”. Each token has a special meaning and a set of rules.
+  标记化：浏览器把字符组成的字符串转换成明确的由W3C HTML5标准指定的标记 - 例如<html>、<body>以及其他的放在尖括号里的字符串。每个标记都有一个特殊的含意和一套规则。
+  03 Lexing: the emitted tokens are converted into “objects” which define their properties and rules.
+  词法分析：解析出来的标记被转换成定义他们属性和规则的对象
+  04 DOM construction: Finally, because the HTML markup defines relationships between different tags (some tags are contained within tags) the created objects are linked in a tree data structure that also captures the parent-child relationships defined in the original markup: HTML object is a parent of the body object, the body is a parent of the paragraph object, and so on.
+  DOM结构：最终，因为HTML标记定义了不同标签之间的关系(一些标签包含别的标签)创建出来的对象链结到一个由原始标记定义的父子关系的树结构上：HTML对象是body的父对象，body是段落的父对象，等等。
+
+The final output of this entire process is the Document Object Model, or the “DOM” of our simple page, which the browser uses for all further processing of the page.
+整个运算的最终输出结束就是文档对象模型，或者我们这个简单页面的DOM，浏览器用来做页面所有其他的运算。
+
+Every time the browser has to process HTML markup it has to step through all of the steps above: convert bytes to characters, identify tokens, convert tokens to nodes, and build the DOM tree. This entire process can take some time, especially if we have a large amount of HTML to process.
+每次浏览器要处理HTML标记的时候它都得按上面所有的步骤进行一遍：把字节转换成字符、识别标记、把标记转换成节点、构建DOM树。这整个过程要花一些时间，特别是我们有大量的HTML要处理的时候。
+
+Note
+注意
+
+We'll assume that you have basic familiarity with Chrome DevTools - i.e. you know how to capture a network waterfall, or record a timeline. If you need a quick refresher, check out the Chrome Developer Tools documentation, or if you're new to DevTools, I recommend taking the Codeschool Discover DevTools course.
+我们假定你对Chrome开发工具有一定的了解 - 例如，你知道怎么捕捉网络请求或者记录一条时间轴。如果你需要一个快速入门，请查阅Chrome开发人员工具文档(https://developers.google.com/chrome-developer-tools/)，或者如果你从来没用过开发工具，我推荐Codeschool Discover DevTools课程(http://discover-devtools.codeschool.com/)。
+
+If you open up Chrome DevTools and record a timeline while the page is loaded, you can see the actual time taken to perform this step — in example above, it took us ~5ms to convert a chunk of HTML bytes into a DOM tree. Of course, if the page was larger, as most pages are, this process might take significantly longer. You will see in our future sections on creating smooth animations that this can easily become your bottleneck if the browser has to process large amounts of HTML. That said, let’s not get ahead of ourselves…
+如果你在页面加载的时候打开Chrome开发工具并记录一个时间轴，你会看到执行某一步的确切时间点 — 在上面的示例中，要花5ms把一块HTML字节转换成DOM树。当然了，如果页面非常大，就象大部分页面那样，这个过程可能会花长得多的时间。你会在将来的课程里看到创建平滑动画，那很容易成为你的瓶颈，如果浏览器得去处理大量的HTML的话。
+
+With the DOM tree ready, do we have enough information to render the page to the screen? Not yet! The DOM tree captures the properties and relationships of the document markup, but it does not tell us anything about how the element should look when rendered. That’s the responsibility of the CSSOM, which we turn to next!
+当DOM树准备好以后，我们有足够的信息来把页面渲染到屏幕了吗？还没呢！DOM树拿到了文档标记的属性和关系，但是它没有告诉我们要把那些元素渲染成什么样。这是CSSOM要干的事，接下来我们就要讲到了。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Udacity course
+Udacity课程
+
+Interested in taking a deep dive into the Critical Rendering Path? Check out or companion course and learn how the browser converts HTML, CSS, and JavaScript to pixels on the screen, how to use DevTools to measure performance, and how to optimize the Critical Rendering Path of your pages.
+对关键渲染路径有兴趣再深入一些？请查阅合作课程理解浏览器是如何把HTML、CSS和JavaScript转换成屏幕上的像素，如何使用开发工具来测量性能，以及如果优化你页面的关键渲染路径。
+
+
+
+
+
+
+
 
 
