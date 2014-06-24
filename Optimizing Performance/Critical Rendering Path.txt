@@ -130,9 +130,46 @@ Render-tree construction, Layout, and Paint
 ===============================================
 
 The CSSOM and DOM trees are combined into a render tree, which is then used to compute the layout of each visible element and serves as an input to the paint process which renders the pixels to screen. Optimizing each of these steps is critical to achieve optimal rendering performance.
+CSSOM和DOM树被绑定成渲染树，然后被用来计算每个可视元素的布局并为绘制进程提供输入项，由它来向屏幕上渲染像素点。优化这里的每一步对于达成最佳渲染性能是很关键的。
+
 In the previous section on constructing the object model, we built the DOM and the CSSOM trees based on the HTML and CSS input. However, both of these are independent objects which capture different aspects of the document: one describes the content and the other the style rules that need to be applied to the document. How do we merge the two and get the browser to render pixels on the screen?
+在前面构建对象模型的章节，我们基于HTML和CSS构建了DOM和CSSOM树输入项。然而，所有这些都是反映document不同角度的独立对象：一个是对内容的描述另一个是需要应用于document的样式规则。我们要如何合并这两者并让浏览器在屏幕上渲染像素点呢？
+
+TL;DR
+简而言之
+
+  ·The DOM and CSSOM trees are combined to form the render tree
+  DOM和CSSOM被结合来构成渲染树
+  ·Render tree contains only the nodes required to render the page
+  渲染树只包含需要用于渲染页面的节点
+  ·Layout computes the exact position and size of each object
+  布局计算每个对象最急需的位置和大小
+  ·Paint is the last step that takes in the final render tree and renders the pixels to the screen
+  绘制是最后一步，得到最终的渲染树并在屏幕上渲染像素点
+
+The first step is for the browser to combine the DOM and CSSOM into a “render tree” that captures all the visible DOM content on the page, plus all the CSSOM style information for each node.
+浏览器把DOM和CSSOM结合成渲染树的第一步，就是拿到页面上所有可视的DOM内容，给每个节点加总CSSOM样式信息。
+
+To construct the render tree, the browser roughly does the following:
+为了构建渲染树，浏览器大致要做以下事项：
+
+  01 Starting at the root of the DOM tree, traverse each visible node.
+  从DOM树的根开始，遍历所有可视节点
+    ·Some nodes are not visible at all (e.g. script tags, meta tags, and so on), and are omitted since they are not reflected in the rendered output.
+    有些节点根据不可见(例如，script标签、meta标签等等)，且因为它们不在渲染输入项中而被略去
+    ·Some nodes are hidden via CSS and are also omitted from the render tree - e.g. the span node in example above is missing from the render tree because we have an explicit rule that sets “display: none” property on it.
+    有些节点被CSS隐藏并且也从渲染树中略去 — 例如，上面示例中的span节点也在渲染树中被忽略因为我们给它加了“display: none”属性。
+  02 For each visible node find the appropriate matching CSSOM rules and apply them.
+  对于每个可视节点，找到合适匹配CSSOM规则并应用给它们
+  03 Emit visible nodes with content and their computed styles.
+  放出可带内容的可视节点以及它们计算过的样式
 
 
+Remember
+切记
+
+  ·As a brief aside, note that 'visibility: hidden' is different from 'display: none'. The former makes the element invisible, but the element is still occupies space in the layout (i.e. it's rendered as an empty box), whereas the latter (display: none) removes the element entirely from the render tree such that the element is invisible and is not part of layout.
+  简单插一句，请注意'visibility: hidden'和'display: none'是不同的。前者使得元素不可见，但是元素依然占用着布局的空间(换句话说，它是当成一个空的容器来渲染的)，但是后者(display: none)从渲染树中整个移除了元素所以元素不可见且不是布局中的一部分。
 
 
 
