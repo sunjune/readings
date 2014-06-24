@@ -87,8 +87,36 @@ If you open up Chrome DevTools and record a timeline while the page is loaded, y
 With the DOM tree ready, do we have enough information to render the page to the screen? Not yet! The DOM tree captures the properties and relationships of the document markup, but it does not tell us anything about how the element should look when rendered. That’s the responsibility of the CSSOM, which we turn to next!
 当DOM树准备好以后，我们有足够的信息来把页面渲染到屏幕了吗？还没呢！DOM树拿到了文档标记的属性和关系，但是它没有告诉我们要把那些元素渲染成什么样。这是CSSOM要干的事，接下来我们就要讲到了。
 
+CSS Object Model (CSSOM)
+CSS对象模型(CSSOM)
 
+While the browser was constructing the DOM of our simple page, it encountered a link tag in the head section of the document referencing an external CSS stylesheet: style.css. Anticipating that it will need this resource to render the page, it immediately dispatches a request for this resource, which comes back with the following content:
+在浏览器构造我们那个简单页面的DOM的时候，它在文档头部遇到一个link标签引用了一个外部的CSS样式：style.css。它预感会需要这个资源来渲染页面，所以就立即发起一个请求加载这个资源，下面就是返回的内容：
 
+    body { font-size: 16px }
+    p { font-weight: bold }
+    span { color: red }
+    p span { display: none }
+    img { float: right }
+
+Of course, we could have declared our styles directly within the HTML markup (inline), but keeping our CSS independent of HTML allows us to treat content and design as separate concerns: the designers can work on CSS, developers can focus on HTML, and so on.
+当然，我们可以直接把HTML标记里(行内)声明样式，但是保持CSS独立于HTML之外有助于我们将内容与设计分别处理：设计师来做CSS，开发人员专注于HTML等等。
+
+Just as with HTML, we need to convert the received CSS rules into something that the browser can understand and work with. Hence, once again, we repeat a very similar process as we did with HTML:
+只针对HTML来说，我们需要把接收到的CSS规则转换成浏览器可以理解并工作的东西。因此，又一次，我们象处理HTML那样重复了一个非常简单的过程：
+
+  字节 → 字符 → 标记 → 节点 → CSSOM
+
+The CSS bytes are converted into characters, then to tokens and nodes, and finally are linked into a tree structure known as the “CSS Object Model”, or CSSOM for short:
+CSS字节被转换成字符，然后是标记和节点，最终被链接到被称为“CSS 对象模型”的树结构上，或者简称为CSSOM：
+
+Why does the CSSOM have a tree structure? When computing the final set of styles for any object on the page, the browser starts with the most general rule applicable to that node (e.g. if it is a child of body element, then all body styles apply) and then recursively refines the computed styles by applying more specific rules - i.e. the rules “cascade down”.
+To make it more concrete, consider the CSSOM tree above. Any text contained within the span tag that is placed within the body element will have a font size of 16 pixels and have red text - the font-size directive cascades down from body to the span. However, if a span tag is child of a paragraph (p) tag, then its contents are not displayed.
+为什么CSSOM会有树结构呢？在为页面上所有对象计算最终的样式时，浏览器启动该节点最常用的规则(例如，如果它是body的子元素，那么所有body的样式都会应用于它)然后通过应用更多特定规则来递归完善计算过的样式 — 例如，"cascade down"规则。
+
+Also, note that the above tree is not the complete CSSOM tree and only shows the styles we decided to override in our stylesheet. Every browser provides a default set of styles also known as “user agent styles” – that’s what we see when we don’t provide any of our own – and our styles simply override these defaults (e.g. default IE styles). If you have ever inspected your “computed styles” in Chrome DevTools and wondered where all the styles are coming from, now you know!
+
+Curious to know how long the CSS processing took? Record a timeline in DevTools and look for “Recalculate Style” event: unlike DOM parsing, the timeline doesn’t show a separate “Parse CSS” entry, and instead captures parsing and CSSOM tree construction, plus the recursive calculation of computed styles under this one event.
 
 
 
