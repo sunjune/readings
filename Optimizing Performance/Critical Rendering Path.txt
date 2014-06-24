@@ -112,13 +112,25 @@ CSS字节被转换成字符，然后是标记和节点，最终被链接到被�
 
 Why does the CSSOM have a tree structure? When computing the final set of styles for any object on the page, the browser starts with the most general rule applicable to that node (e.g. if it is a child of body element, then all body styles apply) and then recursively refines the computed styles by applying more specific rules - i.e. the rules “cascade down”.
 To make it more concrete, consider the CSSOM tree above. Any text contained within the span tag that is placed within the body element will have a font size of 16 pixels and have red text - the font-size directive cascades down from body to the span. However, if a span tag is child of a paragraph (p) tag, then its contents are not displayed.
-为什么CSSOM会有树结构呢？在为页面上所有对象计算最终的样式时，浏览器启动该节点最常用的规则(例如，如果它是body的子元素，那么所有body的样式都会应用于它)然后通过应用更多特定规则来递归完善计算过的样式 — 例如，"cascade down"规则。
+为什么CSSOM会有树结构呢？在为页面上所有对象计算最终的样式时，浏览器启动该节点最常用的规则(例如，如果它是body的子元素，那么所有body的样式都会应用于它)然后通过应用更多特定规则来递归完善计算过的样式 — 例如，"cascade down"规则。再具体一点讲，考虑到上面的CSSOM树。包含在body元素中span标签里的任何文本都会是16像素的字体大小颜色是红色 — 字体大小的设置从body继承给span。然而，如果span标签是段落(p)的子元素，那么它的内容就不显示。
 
 Also, note that the above tree is not the complete CSSOM tree and only shows the styles we decided to override in our stylesheet. Every browser provides a default set of styles also known as “user agent styles” – that’s what we see when we don’t provide any of our own – and our styles simply override these defaults (e.g. default IE styles). If you have ever inspected your “computed styles” in Chrome DevTools and wondered where all the styles are coming from, now you know!
+要注意到上面的树不是完整的CSSOM树，而且只列出了我们决定重置样式表的那些样式。每个浏览器都提供了一套默认样式也被称为“用户代理样式” — 在没有任何自定义样式的时候我们所看到的 — 而我们的样式只是简单地覆盖了这些默认值(例如默认的IE样式)。如果你曾在Chrome的开发工具中检查过“计算过的样式”并且奇怪这些样式都是从哪来的，现在你就知道了。
 
 Curious to know how long the CSS processing took? Record a timeline in DevTools and look for “Recalculate Style” event: unlike DOM parsing, the timeline doesn’t show a separate “Parse CSS” entry, and instead captures parsing and CSSOM tree construction, plus the recursive calculation of computed styles under this one event.
+想知道CSS计算需要多长时间吗？在开发工具中记录一个时间线并查找“重算样式”事件：与DOM的解析不同，时间线上不会显示一个独立的“解析CSS”分支，而且不捕获解析和CSSOM构造，加上这个事件中的计算过的样式的递归运算。
+
+Our trivial stylesheet takes ~0.6ms to process and affects 8 elements on the page – not much, but once again, not free. However, where did the 8 elements come from? The CSSOM and DOM and are independent data structures! Turns out, the browser is hiding an important step. Next, lets talk about the render tree that links the DOM and CSSOM together.
+我们那点无关紧要的样式表用了大约0.6ms来计算并影响了8个元素 – 不是很多，但是再说一次，这是要花时间的。然而，这8个元素是哪来的？CSSOM和DOM和独立数据结构！这说明，浏览器隐藏了一个重要步骤。接下来，让我们谈谈把DOM和CSSOM联结起来的渲染树。
 
 
+===============================================
+Render-tree construction, Layout, and Paint
+渲染树结构、布局和绘制
+===============================================
+
+The CSSOM and DOM trees are combined into a render tree, which is then used to compute the layout of each visible element and serves as an input to the paint process which renders the pixels to screen. Optimizing each of these steps is critical to achieve optimal rendering performance.
+In the previous section on constructing the object model, we built the DOM and the CSSOM trees based on the HTML and CSS input. However, both of these are independent objects which capture different aspects of the document: one describes the content and the other the style rules that need to be applied to the document. How do we merge the two and get the browser to render pixels on the screen?
 
 
 
