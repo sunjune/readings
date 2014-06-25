@@ -237,6 +237,42 @@ Optimizing the critical rendering path is the process of minimizing the total am
 优化关键渲染路径就是将按上述顺序把步骤1到步骤5所要花费的时间最小化。这样做能让我们尽可能快的把内容渲染到屏幕上，而且减少在初始渲染后屏幕更新要花的时间 — 也就是说为交互内容实现更高的刷新率。
 
 
+=======================================
+Render Blocking CSS
+阻止渲染的CSS
+=======================================
+
+By default CSS is treated as a render blocking resource, which means that the browser will hold rendering of any processed content until the CSSOM is constructed. Make sure to keep your CSS lean, deliver it as quickly as possible, and use media types and queries to unblock rendering.
+默认状态下CSS被当成阻止渲染资源，这意味着浏览器将停止渲染任何处理过的内容直到CSSOM被建成。确保你的CSS简洁，尽可能快地分发出去，并且使用媒体类型和侦测来解锁渲染。
+
+In the previous section we saw that the critical rendering path requires that we have both the DOM and the CSSOM to construct the render tree, which creates an important performance implication: both HTML and CSS are render blocking resources. The HTML is obvious, since without the DOM we would not have anything to render, but the CSS requirement may be less obvious. What would happen if we try to render a typical page without blocking rendering on CSS?
+在前面的章节我们看到了关键渲染路径需要我们将DOM和CSSOM构建成渲染树，而这对性能产生重大影响：HTML和CSS都是渲染阻止资源。HTML很明显，因为没有DOM我们都不知道要渲染什么，但是CSS的需求就没那么明显。如果我们试图去渲染一个典型的没有CSS阻止渲染的页面会发生什么呢？
+
+TL;DR
+简而言之
+
+  ·By default CSS is treated as a render blocking resource
+  默认情况下CSS被当成阻止渲染资源
+  ·Media types and media queries allow us to mark some CSS resources as non render blocking
+  媒体类型和媒体侦测允许我们将一部分CSS资源标记成不阻止渲染
+  ·All CSS resources, regardless of blocking or non-blocking behavior are downloaded by the browser
+  所有CSS资源、不管是阻止或不阻止行为都会被浏览器下载
+
+The above example, showing the NYTimes website with and without CSS, demonstrates why rendering is blocked until CSS is available - without CSS the page is effectively unusable. In fact, the experience on the right is often referred to as a “Flash of Unstyled Content” (FOUC). As a result, the browser will block rendering until it has both the DOM and the CSSOM.
+上面示例，展示了NYTimes网站带或不带CSS的样子，表明了为何直到CSS可用之前渲染都是被阻止的 — 没有CSS页面事实上是没用的。
+
+CSS is a render blocking resource, get it down to the client as soon and as quickly as possible to optimize the time to first render!
+CSS是会阻止渲染的资源，要尽可能快地把它下载到客户端以优化首次渲染的时间。
+
+However, what if we have some CSS styles that are only used under certain conditions, for example, when the page is being printed, or being projected onto a large monitor? It would be nice if we didn’t have to block rendering on these resources!
+然而，假如我们有一些只用于某些条件的CSS样式呢，例如，当页面正在被绘制或正在规划放在大屏幕上？如果我们不用阻止渲染这些资源那会很好啊。
+
+CSS “media types” and “media queries” allow us to address these use-cases:
+CSS中的“媒体类型”和“媒体侦测”允许我们定位这些用例：
+
+<link href="style.css" rel="stylesheet">
+<link href="print.css" rel="stylesheet" media="print">
+<link href="other.css" rel="stylesheet" media="(min-width: 40em)">
 
 
 
