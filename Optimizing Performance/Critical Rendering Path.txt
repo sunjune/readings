@@ -172,6 +172,85 @@ Remember
   简单插一句，请注意'visibility: hidden'和'display: none'是不同的。前者使得元素不可见，但是元素依然占用着布局的空间(换句话说，它是当成一个空的容器来渲染的)，但是后者(display: none)从渲染树中整个移除了元素所以元素不可见且不是布局中的一部分。
 
 
+The final output is a render that contains both the content and the style information of all the visible content on the screen - we’re getting close! With the render tree in place, we can proceed to the “layout” stage.
+最终输出的是包含了屏幕上所有可见内容和样式信息的渲染 — 我们就要完成了。有了在适当位置的渲染树，我们就能前进到“布局”的阶段了。
+
+Up to this point we’ve calculated which nodes should be visible and their computed styles, but we have not calculated their exact position and size within the viewport of the device - that’s the “layout” stage, also sometimes known as “reflow.”
+直到这时我们已经计算了那些可见的节点以及它们计算过的样式，但是我们还没计算在设备的可视屏显中它们确切的位置和大小 — 这就是“布局”阶段，有时候也被称为“流回”。
+
+To figure out the exact size and position of each object the browser begins at the root of the render tree and traverses it to compute the geometry of each object on the page. Let’s consider a simple hands-on example:
+要算出每个对象确切的大小和位置，浏览器从渲染树的根开始来遍历并计算页面中每个对象的几何形状。我们来动手写一个简单示例：
+
+    <html>
+      <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>Critial Path: Hello world!</title>
+      </head>
+      <body>
+        <div style="width: 50%">
+          <div style="width: 50%">Hello world!</div>
+        </div>
+      </body>
+    </html>
+
+The body of the above page contains two nested div’s: the first (parent) div sets the display size of the node to 50% of the viewport width, and the second div contained by the parent sets its width to be 50% of its parent - i.e. 25% of the viewport width!
+上述页面的body中包含了两个嵌套的div：第一个(父)div设置了节点显示大小为可视屏显宽度的50%，被父节点包含的第二个div设置宽度为父节点宽度的50% — 也就是可视屏显宽度的25%。
+
+The output of the layout process is a “box model” which precisely captures the exact position and size of each element within the viewport: all of the relative measures are converted to absolute pixels positions on the screen, and so on.
+布局运算的输出结果是“盒模型”，它得到了可视屏显中每个元素的确切位置和大小：所有的相对尺寸都被转换成了屏幕上绝对坐标像素点，等等。
+
+Finally, now that we know which nodes are visible, their computed styles, and geometry, we can finally pass this information to our final stage which will convert each node in the render tree to actual pixels on the screen - this step is often referred to as “painting” or “rasterizing.”
+最后，现在我们知道有哪些可见的节点、它们计算过的样式、几何形状，我们最终能够将该信息传给最后的阶段，把渲染树里的每个节点转换成实际屏幕上的像素点 — 这个步骤经常显示成“绘制”或者“光栅化”。
+
+Did you follow all of that? Each of these steps requires a non-trivial amount of work by the browser, which also means that it can often take quite a bit of time. Thankfully, Chrome DevTools can help us get some insight into all three of the stages we’ve described above. Let’s examine the layout stage for our original “hello world” example:
+你曾跟踪过所有这些步骤吗？这里的每一步都要由浏览器完成一定量的工作，也就意味着通常要花一点时间。幸好，Chrome的开发工具能够帮助我们对上述三个阶段获得一些直观视图。让我们来检查一下我们那个“hello world”示例的布局阶段：
+
+  ·The render tree construction and position and size calculation are captured with the “Layout” event in the Timeline.
+  时间线中，渲染树结构和以及位置和大小的运算被集合在“布局”事件中。
+  ·Once layout is complete, the browser issues a “Paint Setup” and “Paint” events which convert the render tree to actual pixels on the screen.
+  一旦布局结束，浏览器就会放出“绘制开始”和“绘制”事件，那就是把渲染树转换成屏幕上实际的像素点。
+
+The time required to perform render tree construction, layout and paint will vary based on the size of the document, the applied styles, and of course, the device it is running on: the larger the document the more work the browser will have to do; the more complicated the styles are the more time will be consumed for painting also (e.g. a solid color is “cheap” to paint, and a drop shadow is much more “expensive” to compute and render).
+用来处理渲染树结构、布局和绘制所需的时间，会因文档大小、应用的样式、当然还有运行在什么设备上而有所不同：文档越大浏览器要干的就越多、样式越复杂也就要花越多的时间来绘制(例如：纯色绘制起来很“便宜”，而阴影在运算和渲染的时候就“贵”得多了)。
+
+Once all is said and done, our page is finally visible in the viewport - woohoo!
+所说的这些都完成的时候，我们的页面就最终呈现在可视屏显中了。
+
+Let’s do a quick recap of all the steps the browser went through:
+让我们对浏览器做过的所有步骤做一个总结：
+
+  01 Process HTML markup and build the DOM tree
+  处理HTML标记并且建立DOM树
+  02 Process CSS markup and build the CSSOM tree
+  处理CSS标记并且建立CSSOM树
+  03 Combine the DOM and CSSOM into a render tree
+  将DOM和CSSOM结合成渲染树
+  04 Run layout on the render tree to compute geometry of each node
+  在渲染树的基础上生成布局,计算每个节点的形状
+  05 Paint the individual nodes to the screen
+  将单独的节点绘制到屏幕上
+
+Our demo page may look very simple, but it requires quite a bit of work! Care to guess what would happen if the DOM, or CSSOM is modified? We would have to repeat the same process over again to figure out which pixels need to be re-rendered on the screen.
+我们的示例页看起来非常简单，但是它也要做不少事。小心猜一下如果DOM或CSSOM被修改了会发生什么？我们得把同样的过程再做一遍来找到要在屏幕上重新渲染哪些像素点。
+
+Optimizing the critical rendering path is the process of minimizing the total amount of time spent in steps 1 through 5 in the above sequence. Doing so enables us to render content to the screen as soon as possible and also to reduces the amount of time between screen updates after the initial render - i.e. achieve higher refresh rate for interactive content.
+优化关键渲染路径就是将按上述顺序把步骤1到步骤5所要花费的时间最小化。这样做能让我们尽可能快的把内容渲染到屏幕上，而且减少在初始渲染后屏幕更新要花的时间 — 也就是说为交互内容实现更高的刷新率。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
