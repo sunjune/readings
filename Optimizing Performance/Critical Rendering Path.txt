@@ -265,7 +265,7 @@ CSS is a render blocking resource, get it down to the client as soon and as quic
 CSS是会阻止渲染的资源，要尽可能快地把它下载到客户端以优化首次渲染的时间。
 
 However, what if we have some CSS styles that are only used under certain conditions, for example, when the page is being printed, or being projected onto a large monitor? It would be nice if we didn’t have to block rendering on these resources!
-然而，假如我们有一些只用于某些条件的CSS样式呢，例如，当页面正在被绘制或正在规划放在大屏幕上？如果我们不用阻止渲染这些资源那会很好啊。
+然而，假如我们有一些只用于某些条件的CSS样式呢，例如，当页面正在被打印或正要放在大屏幕上？如果我们不用阻止渲染这些资源那会很好啊。
 
 CSS “media types” and “media queries” allow us to address these use-cases:
 CSS中的“媒体类型”和“媒体侦测”允许我们定位这些用例：
@@ -274,6 +274,31 @@ CSS中的“媒体类型”和“媒体侦测”允许我们定位这些用例�
 <link href="print.css" rel="stylesheet" media="print">
 <link href="other.css" rel="stylesheet" media="(min-width: 40em)">
 
+A media query consists of a media type and zero or more expressions that check for the conditions of particular media features. For example, our first stylesheet declaration does not provide any media type or query, hence it will apply in all cases - that is to say, it is always render blocking. On the other hand, the second stylesheet will only apply when the content is being printed - perhaps you want to rearrange the layout, change the fonts, etc - and hence this stylesheet does not need to block the rendering of the page when it is first loaded. Finally, the last stylesheet declaration provides a “media query” which is executed by the browser: if the conditions match, the browser will block rendering until the stylesheet is downloaded and processed.
+媒体侦测由媒体类型及检查特定媒体功能状态的表达式组成。例如，我们的第一个样式声明没有提供任何媒体类型或查询，因此它将应用到所有的情况 — 那就是说，它总是会阻止渲染。另一方面，第二个样式只应用于内容被打印的时候 — 或许你想重排布局、改变字体等等 — 因此这个样式在页面首次加载的时候不需要阻止渲染。至此，最后一个样式表明提供了一个由浏览器运行的“媒体侦测”：如果条件匹配，浏览器将阻止渲染直到样式被下载并处理。
+
+By using media queries, our presentation can be tailored to specific use cases such as display vs. print, and also to dynamic conditions such as changes in screen orientation, resize events, and more. When declaring your stylesheet assets, pay close attention to the media type and queries, as they will have big performance impact on the critical rendering path!
+通过使用媒体侦测，我们的演示能够为特殊使用情况做调整，例如显示或打印，也能适应动态情况比如改变屏幕方向、调整大小事件等。当声明你的样式时，一定要特别注意媒体类型和侦测，它们会对关键渲染路径带来很大的性能影响。
+
+Let’s consider some hands-on examples:
+我们来看几个实用的示例：
+
+  <link href="style.css"    rel="stylesheet">
+  <link href="style.css"    rel="stylesheet" media="screen">
+  <link href="portrait.css" rel="stylesheet" media="orientation:portrait">
+  <link href="print.css"    rel="stylesheet" media="print">
+
+  ·The first declaration is render blocking and matches in all conditions.
+  第一个会阻止渲染并且匹配所有条件。
+  ·The second declaration is also render blocking: “screen” is the default type and if you don’t specify any type, it’s implicitly set to “screen”. Hence, the first and second declarations are actually equivalent.
+  第二个也会阻止渲染：“screen”是默认类型，如果你不指定任何类型它就毫无疑问设置为“sreen”。因此，第一和第二个声明实际上是一样的。
+  ·The third declaration has a dynamic media query which will be evaluated when the page is being loaded. Depending on the orientation of the device when the page is being loaded, portrait.css may or may not be render blocking.
+  第三个声明有动态媒体侦测，在页面加载的时候会被参考。在页面加载的时候根据页面的方向，portrait.css可能不会阻止渲染。
+  ·The last declaration is only applied when the page is being printed, hence it is not render blocking when the page is first loaded in the browser.
+  最后一个声明只应用于页面被打印的时候，因此在浏览器首页加载的时候不会阻止渲染。
+
+Finally, note that “render blocking” only refers to whether the browser will have to hold the initial rendering of the page on that resource. In either case, the CSS asset is still downloaded by the browser, albeit with a lower priority for non-blocking resources.
+最后，请注意“渲染阻止”仅指浏览器是否在该资源上停止页面的初始化渲染。不管是不是阻止，CSS文件还是要被浏览器下载的，即使非阻止资源有一些优先级。
 
 
 
