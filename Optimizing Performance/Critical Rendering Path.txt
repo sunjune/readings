@@ -300,6 +300,188 @@ Let’s consider some hands-on examples:
 Finally, note that “render blocking” only refers to whether the browser will have to hold the initial rendering of the page on that resource. In either case, the CSS asset is still downloaded by the browser, albeit with a lower priority for non-blocking resources.
 最后，请注意“渲染阻止”仅指浏览器是否在该资源上停止页面的初始化渲染。不管是不是阻止，CSS文件还是要被浏览器下载的，即使非阻止资源有一些优先级。
 
+============================================
+Adding Interactivity with JavaScript
+用JavaScript加入交互功能
+============================================
+
+JavaScript allows us to modify just about every aspect of the page: content, styling, and its behavior to user interactions. However, JavaScript can also block DOM construction and delay when the page is rendered. Make your JavaScript async and eliminate any unnecessary JavaScript from the critical rendering path to deliver optimal performance.
+JavaScript能让我们修改页面里的所有东西：内容、样式以及与用户交互的行为。然而，JavaScript也同样会阻止DOM的构造并在页面渲染时候卡住。使你的JavaScript异步运行并从关键渲染路径中减少所有不必要的脚本以提供最佳性能。
+
+In this guide
+本节主要内容
+
+  ·Parser Blocking vs. Asynchronous JavaScript
+  解析器的阻止与异步脚本
+
+TL;DR
+简而言之
+
+  ·JavaScript can query and modify DOM and CSSOM
+  JavaScript能查询并修改DOM和CSSOM
+  ·JavaScript execution blocks on CSSOM
+  JavaScript的执行会阻止CSSOM
+  ·JavaScript blocks DOM construction unless explicitly declared as async
+  JavaScript会阻止DOM的构建除非被显式声明为异步
+
+JavaScript is a dynamic language that runs in the browser and allows us to alter just about every aspect of how the page behaves: we can modify content on the page by adding or removing elements from the DOM tree, we can modify the CSSOM properties of each element, we can handle user input, and much more. To illustrate this in action, let’s augment our previous “Hello World” example with a simple inline script:
+JavaScript是一种运行在浏览器中的动态语言，能让我们修改页面所能做的一切：我们能通过在DOM树中添加或删除元素来修改页面的内容、我们能修改每个元素的CSSOM属性、我们能处理用户输入，很多很多。为了用行动说明这一点，让我们用一段简单的行内脚本改进一下前面的“Hello Word”示例。
+
+    <html>
+      <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link href="style.css" rel="stylesheet">
+        <title>Critical Path: Script</title>
+      </head>
+      <body>
+        <p>Hello <span>web performance</span> students!</p>
+        <div><img src="awesome-photo.jpg"></div>
+        <script>
+          var span = document.getElementsByTagName('span')[0];
+          span.textContent = 'interactive'; // change DOM text content
+          span.style.display = 'inline';  // change CSSOM property
+          // create a new element, style it, and append it to the DOM
+          var loadTime = document.createElement('div');
+          loadTime.textContent = 'You loaded this page on: ' + new Date();
+          loadTime.style.color = 'blue';
+          document.body.appendChild(loadTime);
+        </script>
+      </body>
+    </html>
+
+  ·JavaScript allows us to reach into the DOM and pull out the reference to the hidden span node - the node may not be visible in the render tree, but it’s still there in the DOM! Then, once we have the reference, we can change its text (via .textContent), and even override its calculated display style property from ‘none’ to ‘inline’. Once all is said and done, our page will now display “Hello interactive students!”.
+  JavaScript能让我们伸入到DOM内部并且得到隐藏的span节点的引用 - 节点可能在渲染树中是不可见的，但它依然在DOM里。然后，一旦我们有了这个引用，我们就能改变它的文本(通过.textContent)，甚至将它计算过的显示样式属性从“none”改为“inline”。当所有这些都做完了，我们的页面现在将会显示“Hello interactive students!”。
+
+  ·JavaScript also allows us to create, style, and append and remove new elements to the DOM. In fact, technically our entire page could be just one big JavaScript file which creates and styles the elements one by one - that would work, but working with HTML and CSS is much easier in practice. In the second part of our JavaScript function we create a new div element, set its text content, style it, and append it to the body.
+  JavaScript也能让我们在DOM中创建、加样式以及添加和移除新的元素。实际上，从技术上来说我们整个页面都可以只是一个大的JavaScript文件，它创建元素并给它们一个一个加样式 - 那是可行的，但是在实际工作中用HTML和CSS就简单多了。在我们的JavaScript函数的第二部分我们创建了一个新的div元素，设置了它的文本内容、给它加了样式并添加到body中。
+
+With that, we’ve modified the content and the CSS style of an existing DOM node, and added an entirely new node to the document. Our page won’t win any design awards, but it illustrates the power and flexibility that JavaScript affords us.
+However, there is a big performance caveat lurking underneath. JavaScript affords us a lot of power, but it also creates a lot of additional limitations on how and when the page is rendered.
+通过这些，我们修改了一个已有的DOM节点的内容和CSS样式，并且添加了一全新的节点到document。我们的页面不会获得任何设计奖项，但是它展示了JavaScript的强大和灵活性。然面，这里面有很大的性能隐患。JavaScript给了我们强大的力量，但是也带来了许多其他的限制，在页面渲染的时机和方式上。
+
+First, notice that in the above example our inline script is near the bottom of the page. Why? Well, you should try it yourself, but if we move the script above the span element, you’ll notice that the script will fail and complain that it cannot find a reference to any span elements in the document - i.e. getElementsByTagName(‘span’) will return null. This demonstrates an important property: our script is executed at the exact point where it is inserted in the document. When the HTML parser encounters a script tag, it pauses its process of constructing the DOM and yields control over to the JavaScript engine; once the JavaScript engine has finished running, the browser then picks up from where it left off and resumes the DOM construction.
+首先，请注意在上面的示例中我们的行内Script是靠近页面底部的。为什么？你应该自己去试一下，但是如果我们把脚本移到span元素上面，你将发现脚本执行失败并且给出的错误提示是它在document中找不到任何span的引用 - 也就是说getElementByTagName('span')返回null。这表明一个重要的属性：我们的脚本是在它所在的文档中的位置处执行的。当HTML解析器遇到script标签，它就暂停它构造DOM的进程并将控制权交给JavaScript引擎；到JavaScript引擎结束运行，浏览器再从它停下的地方继续运行并恢复构建DOM。
+
+In other words, our script block can’t find any elements later in the page because they haven’t been processed yet! Or, put slightly differently: executing our inline script blocks DOM construction, which will also delay the initial render.
+Another subtle property of introducing scripts into our page is that they can read and modify not just the DOM, but also the CSSOM properties. In fact, that’s exactly what we’re doing in our example when we change the display property of the span element from none to inline. The end result? We now have a race condition.
+换句话说，我们的脚本块不能找到在它后面出现的任何元素，因为它们还没被处理呢。或者再说得不一样一点：执行我们的行内脚本阻止了DOM的构建，这也会推迟初始渲染。另一个将脚本引入页面和细微属性是，它们能读写的不只是DOM，也可以是CSSOM属性。实际上，那就是我们在示例中所做的，当我们改变span的display属性由none改为inline的时候。结果是啥，我们现在有个比赛条件(?)。
+
+What if the browser hasn’t finished downloading and building the CSSOM when we want to run our script? The answer is simple and not very good for performance: the browser will delay script execution until it has finished downloading and constructing the CSSOM, and while we’re waiting, the DOM construction is also blocked!
+当我们想要运行脚本的时候浏览器没有结束下载和构造CSSOM时会怎么样？答案很简单而且对性能不太好：浏览器会延后脚本的运行直到CSSOM下载和构造完成，在我们等待的时候，DOM构建依然被阻止着。
+
+In short, JavaScript introduces a lot of new dependencies between the DOM, CSSOM, and JavaScript execution and can lead to significant delays in how quickly the browser can process and render our page on the screen:
+总之，JavaScript在DOM和CSSOM以及JavaScript的运行之间引入了大量新的依赖性，这会对浏览器将页面渲染到屏幕上能有多快产生很大的延迟。
+
+  ·The location of the script in the document is significant
+  脚本在document中的位置是很重要的
+  ·DOM construction is paused when a script tag is encountered and until the script has finished executing
+  当遇到script标签后直到脚本结束运行DOM构建都是被暂停的
+  ·JavaScript can query and modify the DOM and CSSOM
+  JavaScript能查询和修改DOM和CSSOM
+  ·JavaScript execution is delayed until the CSSOM is ready
+  JavaScript的运行会被延迟直到CSSOM准备好
+
+When we talk about “optimizing the critical rendering path,” to a large degree we’re talking about understanding and optimizing the dependency graph between HTML, CSS, and JavaScript.
+当我们讨论“优化关键渲染路径”的时候，很大程度上我们是在讨论理解和优化HTML、CSS以及JavaScript之间的依赖。
+
+Parser Blocking vs. Asynchronous JavaScript
+解析器阻止和异步JavaScript
+
+By default, JavaScript execution is “parser blocking”: when the browser encounters a script in the document it must pause DOM construction, hand over the control to the JavaScript runtime and let the script execute before proceeding with DOM construction. We already saw this in action with an inline script in our earlier example. In fact, inline scripts are always parser blocking unless you take special care and write additional code to defer their execution.
+默认状态下，JavaScript运行是“解析器阻止”：当浏览器在document中遇到脚本它必须暂停DOM构建，将控制权交给JavaScript运行时并让脚本运行先于DOM构建的进程。我们已经前面示例的行内脚本看到了在运行。实际上，行内脚本总是解析器阻止的，除非你特别注意并写一些其他的代码来推迟其运行。
+
+What about scripts included via a script tag? Let’s take our previous example and extract our code into a separate file:
+把脚本包含在script标签里面怎么样？让我们把前面例子中代码放到一个单独的文件中：
+
+<html>
+      <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link href="style.css" rel="stylesheet">
+        <title>Critical Path: Script External</title>
+      </head>
+      <body>
+        <p>Hello <span>web performance</span> students!</p>
+        <div><img src="awesome-photo.jpg"></div>
+        <script src="app.js"></script>
+      </body>
+    </html>
+
+app.js
+    var span = document.getElementsByTagName('span')[0];
+    span.textContent = 'interactive'; // change DOM text content
+    span.style.display = 'inline';  // change CSSOM property
+    // create a new element, style it, and append it to the DOM
+    var loadTime = document.createElement('div');
+    loadTime.textContent = 'You loaded this page on: ' + new Date();
+    loadTime.style.color = 'blue';
+    document.body.appendChild(loadTime);
+
+Would you expect the execution order to be any different when we use a <script> tag instead of using an inline JavaScript snippet? Of course, the answer is “no” as they are identical and should behave in the same way. In both cases the browser will have to pause and execute the script before it can process the remainder of the document. However, in the case of an external JavaScript file the browser will also have to pause and wait for the script to be fetched from disk, cache, or a remote server, which can add tens to thousands of milliseconds of delay to the critical rendering path.
+当我们使用<script>而不是用行内JavaScript代码段后你会期望执行顺序有一些不同吗？当然，答案是“不会”因为它们是一样的并会有相同的行为。这两种情况下浏览器都得剩下的文档处理停下来先运行脚本。然而，在有一个外部JavaScript文件的情况下浏览器还停下等着脚本从磁盘、缓存以及远端服务器上拿到，这会给关键渲染路径增加数十到数千毫秒。
+
+That said, good news, we do have an escape hatch! By default all JavaScript is parser blocking and the browser doesn’t know what the script is planning to do on the page, hence it has to assume the worst case scenario and block the parser. However, what if we could signal to the browser and tell it that the script does not need to be executed at the exact point where it is referenced in the document? Doing so would allow the browser to continue to construct the DOM and let the script execute once it’s ready - e.g. once the file has been fetched from cache or a remote server.
+那是说，好消息，我们有一个逃生出口。默认情况下JavaScript是解析器阻止的而且浏览器不知道脚本要在页面上做什么，因此它只得假设最坏的方案并阻止解析器。然而，如果我们能给浏览器个信号告诉它脚本不需要在它所在的位置立即运行会怎样？这样做的话就能让浏览器继续构建DOM并在它准备好的时候让脚本运行 - 例如，当文件从缓存远端服务器上拿到的时候。
+
+So, how do we achieve this trick? It’s pretty simple, we can mark our script as async:
+那么，我们怎么来实现呢？很简单，我们可以把脚本标记为异步的：
+
+  <html>
+      <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link href="style.css" rel="stylesheet">
+        <title>Critical Path: Script Async</title>
+      </head>
+      <body>
+        <p>Hello <span>web performance</span> students!</p>
+        <div><img src="awesome-photo.jpg"></div>
+        <script src="app.js" async></script>
+      </body>
+    </html>
+
+Adding the async keyword to the script tag tells the browser that it should not block the DOM construction while it waits for the script to become available - this is a huge performance win!
+给script标签加上async关键词告诉浏览器不用在等着脚本可用的时候阻止DOM构建 - 这会带来很大的性能提升！
+
+===================================================================
+Measuring the Critical Rendering Path with Navigation Timing
+用Navigation Timing来测量关键渲染路径
+===================================================================
+
+You can't optimize what you can't measure. Thankfully, the Navigation Timing API gives us all the necessary tools to measure each step of the critical rendering path!
+没法测量的东西就没办法优化。幸亏，Navigation Timing API给了我们所有必须的工具来测试关键渲染路径的每一个步骤！
+
+TL;DR
+简而言之
+
+  ·Navigation Timing provides high resolution timestamps for measuring CRP
+  Navigation Timing对于测量CRP给了高精度的时间戳
+  ·Browser emits series of consumable events which capture various stages of the CRP
+  浏览器会给出一系列可用的事件来捕获CRP的各种阶段
+
+The foundation of every solid performance strategy is good measurement and instrumentation. Turns out, that is exactly what the Navigation Timing API provides.
+可靠的性能策略的基础是好的测量和仪表。原来，这正是Navigation Timing API所能提供的。
+
+Each of the labels in the above diagram corresponds to a high resolution timestamp that the browser tracks for each and every page it loads. In fact, in this specific case we’re only showing a fraction of all the different timestamps — for now we’re skipping all network related timestamps, but we’ll come back to them in a future lesson.
+上图中每个标签都相当于一个高精度的时间戳，那是浏览器加载每个页面时的轨迹。实际上，在这个特定的情况下我们只能展示一小部分时间戳 — 我们会略过所有网络相关的时间戳，不过在将来的课程里我们会讲到它们。
+
+So, what do these timestamps mean?
+那么，这些时间戳都是啥意思？
+
+  ·domLoading: this is the starting timestamp of the entire process, the browser is about to start parsing the first received bytes of the HTML document.
+  这是整个进程的起始时间戳，浏览器要准备开始解析HTML文档的最先收到的字节了。
+  ·domInteractive: marks the point when the browser has finished parsing all of the HTML and DOM construction is complete.
+  这个点是标记着浏览器已经结束解析所有的HTML而DOM构建已经结束。
+  ·domContentLoaded: marks the point when both the DOM is ready and there are no stylesheets that are blocking JavaScript execution - meaning we can now (potentially) construct the render tree.
+  这个点是标记着DOM已经准备好而且没有样式表阻止着JavaScript运行 - 意味着我们现在可能构建渲染树了。
+    ·Many JavaScript frameworks wait for this event before they start executing their own logic. For this reason the browser captures the EventStart and EventEnd timestamps to allow us to track how long this execution took.
+    许多JavaScript框架等着这个事件，之后它们才开始运行它们自己的逻辑。由于这个原因浏览器捕获EventStart和EventEnd时间戳让我们能跟踪这次运行要花多长时间。
+  ·domComplete: as the name implies, all of the processing is complete and all of the resources on the page (images, etc.) have finished downloading - i.e. the loading spinner has stopped spinning.
+  就象名字提示的那样，所有的运算都结束了而且页面里所有的资源(图片等)都完成下载 - 也就是说加载完成了。
+  ·loadEvent: as a final step in every page load the browser fires an “onload” event which can trigger additional application logic.
+  作为每个页面加载的最后一步浏览器放出一个“onload”事件来触发其他应用的逻辑。
+
+
+
+
 
 
 
