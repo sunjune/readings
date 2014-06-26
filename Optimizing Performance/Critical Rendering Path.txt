@@ -479,8 +479,35 @@ So, what do these timestamps mean?
   ·loadEvent: as a final step in every page load the browser fires an “onload” event which can trigger additional application logic.
   作为每个页面加载的最后一步浏览器放出一个“onload”事件来触发其他应用的逻辑。
 
+    <html>
+      <head>
+        <title>Critical Path: Measure</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link href="style.css" rel="stylesheet">
+        <script>
+          function measureCRP() {
+            var t = window.performance.timing,
+              interactive = t.domInteractive - t.domLoading,
+              dcl = t.domContentLoadedEventStart - t.domLoading,
+              complete = t.domComplete - t.domLoading;
+            var stats = document.createElement('p');
+            stats.textContent = 'interactive: ' + interactive + 'ms, ' +
+                'dcl: ' + dcl + 'ms, complete: ' + complete + 'ms';
+            document.body.appendChild(stats);
+          }
+        </script>
+      </head>
+      <body onload="measureCRP()">
+        <p>Hello <span>web performance</span> students!</p>
+        <div><img src="awesome-photo.jpg"></div>
+      </body>
+    </html>
 
+The above example may seem a little daunting on first sight, but in reality it is actually pretty simple. The Navigation Timing API captures all the relevant timestamps and our code simply waits for the “onload” event to fire — recall that onload event fires after domInteractive, domContentLoaded and domComplete — and computes the difference between the various timestamps.
+上述示例可能第一眼看起来有点吓人，但实际上它真的很简单。Navigation Timing API捕获了所有相关的时间戳而我们的代码简单地等着“onload”事件发生 — onload事件发生在domInteractive、domContentLoaded以及domComplete之后 — 并计算各时间戳之间的差值。
 
+All said and done, we now have some specific milestones to track and a simple function to output these measurements. Note that instead of printing these metrics on the page you can also modify the code to send these metrics to an analytics server (Google Analytics does this automatically), which is a great way to keep tabs on performance of your pages and identify candidate pages that can benefit from some optimization work.
+该说的说了，该做的做了，我们现在有一些明确的里程碑去跟踪，并且有一个简单的函数来输出这些测量结果。注意除了把这些测量结果打印到页面上，你也可以修改一下代码把结果发送给分析服务器(Google Analytics会自动处理这个)，那是一个很棒的方式来保存你页面的性能标签，并且标出有优化余地的页面。
 
 
 
