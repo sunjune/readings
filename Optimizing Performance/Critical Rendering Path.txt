@@ -717,11 +717,79 @@ We need both the HTML and CSS to construct the render tree, as a result both HTM
 Ok, now let’s add an extra JavaScript file into the mix!
 现在让我们往里面再加一个外部JavaScript文件！
 
+    <html>
+      <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link href="style.css" rel="stylesheet">
+      </head>
+      <body>
+        <p>Hello <span>web performance</span> students!</p>
+        <div><img src="awesome-photo.jpg"></div>
+        <script src="app.js"></script>
+      </body>
+    </html>
 
+We added app.js, which is an external JavaScript asset on the page, and as we know by now, it is a parser blocking (i.e. critical) resource. Worse, in order to execute the JavaScript file we will also have to block and wait for CSSOM - recall that JavaScript can query the CSSOM and hence the browser will pause until “style.css” is downloaded and CSSOM is constructed.
+我们加入了app.js，这是在页面里的外部JavaScript内容，就像我们现在已经知道的，它是解析器阻止的(也就是说，是关键的)资源。更糟的是，为了运行JavaScript文件我们还得停下来等着CSSOM - 记得JavaScript可以查询CSSOM因此浏览器将暂停直到“style.css”下载完并且CSSOM被构建好。
 
+That said, in practice if we look at the “network waterfall” of this page you’ll notice that both the CSS and JavaScript requests will be initiated at about the same time: the browser gets the HTML, discovers both resources and initiates both requests. As a result, the above page has the following critical path characteristics:
+就是说，事实上如果我们去看页面的“网络瀑布流”你会注意到CSS和JavaScript请求差不多是在同一时间发起的：浏览器得到HTML，发现这些资源并发起请求。作为结果，上述页面的关键路径规格如下图：
 
+  ·3 critical resources
+  3个关键资源
+  ·2 or more roundtrips for the minimum critical path length
+  关键路径长度最少需要2个或更多网络往返
+  ·11 KB of critical bytes
+  关键字节11KB
 
+We now have three critical resources that add up to 11KB of critical bytes, but our critical path length is still two roundtrips because we can transfer the CSS and JavaScript in parallel! Figuring out the characteristics of your critical rendering path means being able to identify which are the critical resources, and also understanding how the browser will schedule their fetches. Let’s continue with our example…
+我们现在有三个关键资源将关键字节增加到11KB，但是我们的关键路径长度还是2个往返因为我们可以并行传输CSS和JavaScript！为了弄清楚你的关键渲染路径的规格意味着要能识别哪些是关键资源，而且也要理解浏览器会如何安排顺序拿到它们。让我们继续我们的示例：
 
+After chatting with our site developers we realized that the JavaScript we included on our page doesn’t need to be blocking: we have some analytics and other code in there that doesn’t need to block the rendering of our page. Knowing that, we can add the “async” attribute to the script tag to unblock the parser:
+经过与我们网站开发人员的交谈我们意识到包含在我们页面中的JavaScript并不需要被阻止：我们有一些分析和其他的代码不需要阻止页面渲染。知道了这些，我们就可以给script标签加上“async”属性以防止解析器被阻止：
+
+    <html>
+      <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link href="style.css" rel="stylesheet">
+      </head>
+      <body>
+        <p>Hello <span>web performance</span> students!</p>
+        <div><img src="awesome-photo.jpg"></div>
+        <script src="app.js" async></script>
+      </body>
+    </html>
+
+Making the script asynchronous has several advantages:
+将脚本设置为异步有很多好处：
+
+  ·The script is no longer parser blocking and is not part of the critical rendering path
+  脚本不再是解析器阻止而且不再是关键渲染路径的一部分
+  ·Because there are no other critical scripts, the CSS also does not need to block the domContentLoaded event
+  因为没有其他的关键脚本，CSS也不需要阻止domContentLoaded事件
+  ·The sooner the domContentLoaded event fires, the sooner other application logic can begin executing
+  domContentLoaded事件发生的越早，其他应用逻辑也就能越早开始运行
+
+As a result, our optimized page is now back to two critical resources (HTML and CSS), with a minimum critical path length of two roundtrips, and a total of 9KB of critical bytes.
+作为结果，我们优化过的页面现在又回到2个关键资源(HTML和CSS)，关键路径长度最少只要两个往返，而且总的关键字节只有9KB。
+
+Finally, let’s say the CSS stylesheet was only needed for print? How would that look?
+最后，我们说说只为打印需要的CSS样式表，看上去是什么样？
+
+    <html>
+      <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link href="style.css" rel="stylesheet" media="print">
+      </head>
+      <body>
+        <p>Hello <span>web performance</span> students!</p>
+        <div><img src="awesome-photo.jpg"></div>
+        <script src="app.js" async></script>
+      </body>
+    </html>
+
+Because the style.css resource is only used for print, the browser does not need to block on it to render the page. Hence, as soon as DOM construction is complete, the browser has enough information to render the page! As a result, this page has only a single critical resource (the HTML document), and the minimum critical rendering path length is one roundtrip.
+因为style.css资源只是用于打印，浏览器渲染页面的时候无需在这阻止。因此，只要DOM构建结束，浏览器就有足够信息来渲染页面！作为结果，页面只有一个关键资源(HTML文档)，而且最少关键渲染路径长度只有一个往返。
 
 
 
