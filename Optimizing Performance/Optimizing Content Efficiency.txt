@@ -1,2 +1,47 @@
+Optimizing Content Efficiency
+优化内容效率
+
+Our web applications continue to grow in their scope, ambition, and functionality - that's a good thing. However, the relentless march towards a richer web is driving another trend: the amount of data downloaded by each application continues to increase at a steady pace. To deliver great performance we need to optimize delivery of each and every byte of data!
+我们的网站持续增长着它们的应用范围、雄心和功能 - 这是件好事。然而，这种无情的向富web迈进带来了另一个趋势：每个应用要下载的数据总量稳定持续增长。要提供更好的性能我们需要对每个字节的数据进行优化。
+
+What does a modern web application look like? HTTP Archive can help us answer this question. The project tracks how the web is built by periodically crawling the most popular sites (300,000+ from the Alexa Top 1M list) and recording and aggregating analytics on the number resources, content types, and other metadata for each individual destination.
+一个现代浏览器看上去是什么样的？HTTP Archive(http://httparchive.org/)能帮我们回答这个疑问。这个项目通过周期性地爬虫收集最流行的网站(Alexa前1百万名单中的30万以上)并对每个单独的目标记录和汇总分析资源数量、内容类型以及其他的元数据。
+
+The above data captures the trend in growth of number of downloaded bytes for popular destinations on the web between January 2013 and January 2014. Of course, not every site grows at the same rate or requires the same amount of data, hence the reason why we are highlighting the different quantiles within the distribution: 50th (median), 75th, and 90th.
+上面的数据获取的是2013年1月到2014年1月之间流行网站被下载的总字节数的增长趋势。当然了，不是每个网站都以这种速率增长或请求同样的数据量，这就是为什么我们高亮显示不同的百分比：第50(中值)、第75和第90。
+
+A median site at the beginning of 2014 is composed of 75 requests that add up to 1054 KB of total transferred bytes, and the total number of bytes (and requests) has grown at a steady pace throughout the previous year. This by itself should not be all that surprising, but it does carry important performance implications: yes, internet speeds are getting faster, but they are getting faster at different rates in different countries, and many users are still subject to data caps and expensive metered plans - especially on mobile.
+2014年初的中值站点有75次合计达到1054KB的传输字节，而且过去一年字节总数(以及请求数)稳步增长。就它本身来说这没什么好吃惊的，但它带着重要的性能影响：是的，网速越来越快，但在不同的国家变快的速率不同，而且很多用户仍然受制于数据上限和昂贵的流量计划 - 特别是在移动端。
+
+Unlike their desktop counterparts, web applications do not require a separate installation process: enter the URL and we are up and running – that’s a key feature of the web. However, to make this happen we often have to fetch dozens, and sometime hundreds, of various resources, all of which can add up to megabytes of data and must come together in hundreds of milliseconds to facilitate the instant web experience we are aiming for.
+与桌面应用不同的是，web应用不用单独安装：进入URL我们就启动运行了 - 这是网站的主要特色。然而，要实现这个我们通常要取得数十甚至数百的各种资源，合计达到数M字节的数据，而且必须在几百毫秒内把它们汇集到一起来让我们目标中的迅捷网站体验成为现实。
+
+Achieving an instant web experience in light of these requirements is no small feat, which is why optimizing content efficiency is critical: eliminating unnecessary downloads, optimizing transfer encoding of each resource through various compression techniques, and leveraging caching whenever possible to eliminate redundant downloads.
+在这么多的请求下要达到迅捷网站体验可是个不小的壮举，这就是为什么优化内容效率是很关键的：去掉不必须的下载、通过多种压缩技术对每种资源进行优化传输编码、只要有可能就借助缓存来减少多余的下载。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
