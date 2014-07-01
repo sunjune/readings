@@ -791,21 +791,107 @@ Finally, let’s say the CSS stylesheet was only needed for print? How would tha
 Because the style.css resource is only used for print, the browser does not need to block on it to render the page. Hence, as soon as DOM construction is complete, the browser has enough information to render the page! As a result, this page has only a single critical resource (the HTML document), and the minimum critical rendering path length is one roundtrip.
 因为style.css资源只是用于打印，浏览器渲染页面的时候无需在这阻止。因此，只要DOM构建结束，浏览器就有足够信息来渲染页面！作为结果，页面只有一个关键资源(HTML文档)，而且最少关键渲染路径长度只有一个往返。
 
+=============================================
+Optimizing the Critical Rendering Path
+优化关键渲染路径
+=============================================
+
+In order to deliver the fastest possible time to first render, we need to optimize three variables:
+为实现尽可能快的首次渲染，我们要从三方面入手优化：
+
+  ·Minimize the number of critical resources.
+  最小化关键资源数量
+  ·Minimize the number of critical bytes.
+  最小化关键字节数
+  ·Minimize the critical path length.
+  最小化关键路径长度
+
+A critical resource is any resource that may block initial rendering of the page. The fewer of these resources there are on the page, the less work the browser has to do to get content on the screen, and the less contention there is for CPU and other resources.
+关键资源就是那些会阻止页面初始渲染的资源。页面上这些资源越少，浏览器把内容渲染到屏幕上要做的工作就越少，而且对CPU以及其他资源的占用也就越少。
+
+Similarly, the fewer critical bytes the browser has to download, the faster it can get to processing the content and get it visible on the screen. To reduce the number of bytes we can reduce the number of resources (eliminate them or make them non-critical), and also ensure that we minimize the transfer size by compressing and optimizing each resource.
+同样的，浏览器要下载的关键字节数越少，它处理内容并将其可视化到屏幕上也就越快。为减少这些字节数我们可以减少资源数量(去掉它们或者变成非关键资源)，同时确认通过压缩和优化每个资源来最小化传输量。
+
+Finally, the critical path length is a function of the dependency graph between all the critical resources required by the page and their bytesize: some resource downloads can only be initiated once a previous resource has been processed, and the larger the resource the more roundtrips it will take us to download it.
+最终，关键路径长度是页面所需的关键资源之间的依赖关系图的功能以及它们的字节大小：有些资源只能在前一个资源处理完成后初始化一次下载，而资源越大下载它用的往返也就越多。
+
+In other words, the number of resources, their bytesize, and the critical path length are related to each other, but they are not exactly the same. For example, you may not be able to reduce the number of critical resources, or shorten the critical path length, but reducing the number of critical bytes is still an important optimization — and vice versa.
+换句话说，资源的数量，它们的字节数，以及关键路径长度是彼此相关联的，但它们并不是完全等同的。举例来说，你或许不能减少关键资源的数量，或者缩短关键路径长度，但是减少关键字节数依然是一项重要的优化 — 相反效果也越差。
+
+The general sequence of steps to optimize the critical rendering path is:
+优化关键渲染路径的一般步骤是：
+
+  ·Analyze and characterize your critical path: number of resources, bytes, length.
+  分析你的关键路径规格：资源数量、字节数、长度。
+  ·Minimize number of critical resources: eliminate them, defer their download, mark them as async, etc.
+  最小化关键资源数量：删减、延迟加载、标记为异步等等。
+  ·Optimize the order in which the remaining critical resources are loaded: you want to download all critical assets as early as possible to shorten the critical path length.
+  优化其余的关键资源加载顺序：你想尽可能早的下载完所有的关键部分以缩短关键路径长度。
+  ·Optimize the number of critical bytes to reduce the download time (number of roundtrips).
+  优化关键字节数来减少下载时间(往返次数)
 
 
+================================================
+PageSpeed Rules and Recommendations
+PageSpeed 规则和建议
+================================================
 
+PageSpeed Insights rules in context: what to pay attention to when optimizing the Critical Rendering Path and why.
+PageSpeed Insights 环境规则：当优化关键渲染路径时要注意些什么及原因
 
+Eliminate render-blocking JavaScript and CSS
+去掉阻止渲染的JavaScript和CSS
 
+To deliver the fastest time to first render, you want to minimize and (where possible) eliminate the number of critical resources on the page, minimize the number of downloaded critical bytes, and optimize the critical path length.
+为实现最快的首次渲染，你会想最小化(如果可能的话)并且删减页面关键资源的数量，最小化关键字节的下载数量，以及优化关键路径长度。
 
+Optimize JavaScript Use
+优化JavaScript使用
 
+JavaScript resources are parser blocking by default unless marked as async or added via a special JavaScript snippet. Parser blocking JavaScript forces the browser to wait for the CSSOM and pauses construction of the DOM, which in turn can significantly delay the time to first render.
+JavaScript资源默认是解析器阻止的除非标记为异步或添加一些专门的JavaScript代码。解析器阻止的JavaScript会迫使浏览器等CSSOM并暂停DOM的构建，这些会严重拖慢首次渲染的时间。
 
+Prefer async JavaScript resources
+将JavaScript资源异步处理
 
+Async resources unblock the document parser and allow the browser to avoid blocking on CSSOM prior to executing the script. Often, if the script can be made async, it also means it is not essential for the first render - consider loading async scripts after the initial render.
+异步资源不会阻止文档解析器而且能让浏览器避免在执行脚本之前卡在CSSOM。通常，如果脚本能设成异步，那也意味着它对于首次渲染不是那么必要 - 考虑在初始渲染之后加载异步脚本。
 
+Defer parsing JavaScript
+延迟解析JavaScript
 
+Any non-essential scripts that are not critical to constructing the visible content for the initial render should be deferred to minimize the amount of work the browser has to perform to render the page.
+任何非必要的脚本，对于初始渲染构造可视内容非关键的都应该被延迟以最小化浏览器渲染页面而执行的任务。
 
+Avoid long running JavaScript
+避免长时间运行JavaScript
 
+Long running JavaScript blocks the browser from constructing the DOM, CSSOM, and rendering the page. As a result, any initialization logic and functionality that is non-essential for the first render should be deferred until later. If a long initialization sequence needs to be run, consider splitting it into several stages to allow the browser to process other events in between.
+长时间运行JavaScript阻止了浏览器构造DOM、CSSOM以渲染页面。为了这个结果，任何对于首次渲染非必要的初始化逻辑和功能，都应该延迟处理。如果长时间的初始化顺序需要运行，考虑把它分割成多阶段，以便让浏览器在其中处理其他事件。
 
+Optimize CSS Use
+优化CSS使用
 
+CSS is required to construct the render tree and JavaScript will often block on CSS during initial construction of the page. You should ensure that any non-essential CSS is marked as non-critical (e.g. print and other media queries), and that the amount of critical CSS and the time to deliver it is as small as possible.
+CSS被用于构造渲染树而JavaScript通常会在初始构造页面的时候在CSS上阻止。你要确保所有非必要的CSS都被标记成非关键的(例如，打印和其他媒体侦测)，而且关键CSS的总数和获取它的时间应该尽可能少。
+
+Put CSS in the document head
+将CSS放在文档头部
+
+All CSS resources should be specified as early as possible within the HTML document such that the browser can discover the <link> tags and dispatch the request for the CSS as soon as possible.
+所有的CSS资源都应该在HTML文档尽可能靠前的地方，这样浏览器就尽可能快地能发现<link>标签并发出CSS请求。
+
+Avoid CSS imports
+避免CSS导入
+
+CSS import (@import) directive enables one stylesheet to import rules from another stylesheet file. However, these directives should be avoided because they introduce additional roundtrips into the critical path: the imported CSS resources are discovered only after the CSS stylesheet with the @import rule itself has been received and parsed.
+CSS导入(@import)指令允许一个样式表从另一个样式表文档导入规则。然而，这些指令应该被避免，因为它们向关键路径引进了额外的往返：导入的CSS资源只有在被@import的样式表接收并解析之后才能被发现。
+
+Inline render-blocking CSS
+将渲染阻止的CSS内联
+
+For best performance, you may want to consider inlining the critical CSS directly into the HTML document. This eliminates additional roundtrips in the critical path and if done correctly can be used to deliver a “one roundtrip” critical path length where only the HTML is a blocking resource.
+为了获得最佳性能，你应会考虑把关键CSS直接内联到HTML文档中。这在关键路径中消除了额外的往返而且如果做得好的话可以只有一个往返，只有HTML是个阻止资源。
 
 
 
