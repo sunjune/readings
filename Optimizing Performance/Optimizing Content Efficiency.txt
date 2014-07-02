@@ -90,6 +90,176 @@ Once we’ve eliminated any unnecessary resources, the next step is to minimize 
 Delivering the best performance requires the combination of all of these techniques.
 一旦我们去除了不必要的资源，下一步就是最小化浏览器要下载的其余资源总大小了 - 也就是，压缩它们。根据资源类型 - 文本、图片、字体等等 - 我们有大量不同的技术供支配：一般的可以在服务器端启用的工具、对指定内容类型的预压缩优化以及需要由开发者输入的资源特定优化。为达到最佳性能要对所有这些技术综合利用。
 
+TL;DR
+简而言之
+
+  ·Compression is the process of encoding information using fewer bits
+  压缩就是用更少的数据把信息编码的过程
+  ·Eliminating unnecessary data always yields the best results
+  去掉不必要的数据总是能达成最好的结果
+  ·There are many different compression techniques and algorithms
+  有很多种不同的压缩技术和算法
+  ·You will need a variety of techniques to achieve the best compression
+  你将需要不同的技术来实现最佳压缩率
+
+The process of reducing the size of data is known as “data compression,” and it is a deep field of study on its own: many people have spent their entire careers working on algorithms, techniques, and optimizations to improve compression ratios, speed, and memory requirements of various compressors. Needless to say, a full discussion on this topic is out of our scope, but it is still important to understand, at a high level, how compression works and the techniques we have at our disposal to reduce the size of various assets required by our pages.
+减少数据大小的处理过程被称为“数据压缩”，而且是一个很深的自行研究领域：很多人终其全部的职业生涯致力于研究各种压缩算法、技术以及优化并提升压缩比、速度和内存占用。就不展开说了，关于这个话题的讨论超出了我们的范围，但是对压缩如何进行以及我们减少页面所需的各项内容的大小所用到的技术的有高一点的理解是很重要的。
+
+To illustrate the core principles of these techniques in action, let’s consider how we can go about optimizing a simple text message format that we’ll invent just for this example:
+为了用实例说明这些技术的核心原理，让我们想一下如何优化一段简单的文本消息格式，只是为这个示例而发明的：
+
+# Below is a secret message, which consists of a set of headers in
+# key-value format followed by a newline and the encrypted message.
+下面是一段秘密消息，由key-value格式的报头跟随着新起的一行以及加密的消息组成。
+format: secret-cipher
+date: 04/04/14
+AAAZZBBBBEEEMMM EEETTTAAA
+
+  01 Messages may contain arbitrary annotations, which are indicated by the “#” prefix. Annotations do not affect the meaning or any other behavior of the message.
+  消息可能包含一些以“#”前缀标识的注释。注释不会影响消息的含意或其他行为。
+  02 Messages may contain “headers” which are key-value pairs (separated by “:”) and have to appear at the beginning at the message.
+  消息可能会包含“报头”，由key-value对(以“:”分隔)而且一定要出现在消息最开始的地方。
+  03 Messages carry text payloads.
+  消息携带文本内容。
+
+What could we do reduce the size of the above message, which is currently 200 characters long?
+我们能做点什么来减少上面有200个字符的消息体积呢？
+
+  01 Well, the comment is interesting, but we know that it doesn’t actually affect the meaning of the message, so we eliminate it when we’re transmitting the message.
+  注释挺有意思的，但是我们知道实际上它并不影响消息的含意，那么我们在传送消息的时候就把它去掉了。
+  02 There are probably some clever techniques we could use to encode headers in an efficient manner – e.g. we don’t know if all messages always have “format” and “date”, but if they did, we could convert those to short integer IDs and just send those! That said, we’re not sure if that’s the case, so we’ll leave it alone for now.
+  可能有一些聪明的技术手段让我们能以一种高效的方式来给报头编码 - 例如，我们不知道是否所有的消息总是带有“format”和“date”，但是如果有，我们就能把它些转换成短的整数ID而且只要发送它们就行了！就是说，我们不确定是否是这样，所以就先把它放在一边吧。
+  03 The payload is text only, and while we don’t know what the contents of it really are (apparently, it’s using a “secret-message”), just looking at the text seems to show that there is a lot of redundancy in it. Perhaps, instead of sending repeated letters, we can just count the number of repeated letters and encode them more efficiently?
+  内容只是文本，而且我们不知道内容到底是什么(很明显，它使用的是“密文”)，只是看字面好像有很多重复。或许，不用发送重复的字符，我们只要数一下重复字符的个数并且编码会更有效？
+
+E.g. “AAA” becomes “3A” - or, sequence of three A’s.
+例如：“AAA”改成“3A” - 或者顺序的三个A。
+
+Combining our techniques, we arrive at the following result:
+联合我们的技术，我们得到如下结果：
+
+format: secret-cipher
+date: 04/04/14
+3A2Z4B3E3M 3E3T3A
+
+The new message is 56 characters long, which means we managed to compress our original message by an impressive 72% - not bad, all things considered, and we’re only getting started!
+新的消息长度是56个字符，这意味着我们设法将原始消息压缩了72% - 不错，所有事情都考虑到了，而我们才刚刚开始！
+
+Of course, you may be wondering, this is all great, but how does this help us optimize our web pages? Surely we’re not going to try to invent our compression algorithms, are we? The answer is no, we won’t, but as you will see, we will use the exact same techniques and way of thinking when optimizing various resources on our pages: preprocessing, context-specific optimizations, and different algorithms for different content.
+当然，你可能会吃惊这太棒了，但是这怎么帮助我们优化我们的页面呢？我们确实没有想发明压缩算法，是吗？答案是否，我们不会那样做，但是你将会看到，我们在优化页面上的各种资源时将使用同样的技术和思路：预处理、上下文特征优化以及为不同的内容使用不同的算法。
+
+Minification: preprocessing & context-specific optimizations
+缩小倍数：预处理和上下文特征优化
+
+TL;DR
+简而言之
+
+  ·Content-specific optimizations can significantly reduce the size of delivered resources.
+  内容特征优化可以显著地减少交付资源的大小。
+  ·Content-specific optimizations are best applied as part of your build/release cycle.
+  内容特征优化最好应用于你的生产/发布循环。
+
+The best way to compress redundant or unnecessary data is to eliminate it altogether. Of course, we can’t just delete arbitrary data, but in some contexts where we may have content-specific knowledge of the data format and its properties, it is often possible to significantly reduce the size of the payload without affecting its actual meaning.
+压缩多余或不必要的数据最好的办法是完全去掉它们。当然了，我们不能仅仅随意删除数据，但是在一些环境中我们可能对数据格式与其属性的内容特征有所了解，通常可能会大大减少负载而不会影响其真实含意。
+
+    <html>
+      <head>
+      <style>
+         /* awesome-container is only used on the landing page */
+         .awesome-container { font-size: 120% }
+         .awesome-container { width: 50% }
+      </style>
+     </head>
+    
+     <body>
+       <!-- awesome container content: START -->
+        <div>…</div>
+       <!-- awesome container content: END -->
+       <script>
+         awesomeAnalytics(); // beacon conversion metrics
+       </script>
+     </body>
+    </html>
+
+Consider the simple HTML page above and the three different content types that it contains: HTML markup, CSS styles, and JavaScript. Each of these content types has different rules for what constitutes valid HTML markup, CSS rules, or JavaScript content, different rules for indicating comments, and so on. How could we reduce the size of this page?
+看一下上面这个简单的HTML页面，里面有三种不同的内容类型：HTML标记、CSS样式以及JavaScript。这每种内容类型都有不同的规则构成了有效的HTML标记、CSS规则或JavaScript内容，标识注释的不同规则，等等。
+
+  ·Code comments are a developer’s best friend, but the browser does not need to see them! Simply stripping the CSS (/* … */), HTML (<!-- … -->), and JavaScript (// …) comments can significantly reduce the total size of the page.
+  代码注释是开发人员最好的朋友，但是浏览器不用看它们！简单地剔除CSS(/*…*/)，HTML(<!-- … -->)以及JavaScript(// …)的注释能有效减少页面总大小。
+  ·A “smart” CSS compressor could notice that we’re using an inefficient way of defining rules for ‘.awesome-container’ and collapse the two declarations into one without affecting any other styles, saving yet more bytes.
+  聪明的CSS压缩器能注意到我们在‘.awesome-container’使用了效率差的定义规则的方式而将两个声明合并到一个里面而不会对样式有任何影响，同时也节省了更多字节。
+  ·Whitespace (spaces and tabs) is a developer convenience in HTML, CSS, and JavaScript. An additional compressor could strip out all the tabs and spaces.
+  空白(space和tab)是开发者在HTML、CSS和JavaScript中很有用的。有压缩工具可以剔除所有的tab和空白。
+
+   <html><head><style>.awesome-container{font-size:120%;width: 50%}
+    </style></head><body><div>…</div><script>awesomeAnalytics();
+    </script></body></html>
+
+After applying the above steps our page goes from 406 to 150 characters - 63% compression savings! Granted, it’s not very readable, but it also doesn’t have to be: we can keep the original page as our “development version” and then apply the steps above whenever we are ready to release the page on our website.
+经过上述步骤我们的页面从406减少到150字符 - 压缩了63%！不过，它变得非常不易读，但也不是一定要这样：我们可以保存原始页面作为我们的“开发版”然后当准备发布页面到网站的时候再应用上述步骤。
+
+Taking a step back, the above example illustrates an important point: a general purpose compressor - say one designed to compress arbitrary text - could probably also do a pretty good job of compressing the page above, but it would never know to strip the comments, collapse the CSS rules, or dozens of other content-specific optimizations. This is why preprocessing / minification / context-aware optimization can be such a powerful tool.
+回头再看，上述示例说明了重要的一点：通常用途的压缩器 - 是说设计用于压缩随便哪种文本的 - 可能也能很好地用于压缩上述页面，但它永远也不知道去除注释、合并CSS规则或更多其他的内容特征优化。这就是为什么预处理/缩小率/上下文相关优化是如此强大的工具。
+
+Remember
+切记
+
+Case in point, the uncompressed development version of the JQuery library is now approaching ~300KB. The same library, but minified (removed comments, etc.) is about 3x smaller: ~100KB.
+注意一点，未压缩的JQuery库的开发版现在将近300KB。经过缩小同样的库(去除了注释等)大约小了3倍：100KB左右。
+
+Similarly, above techniques can be extended beyond just text-based assets. Images, video, and other content types all contain their own forms of metadata and various payloads. For example, whenever you take a picture with a camera, the photo also typically embeds a lot of extra information: camera settings, location, and so on. Depending on your application, this data may be critical (e.g. a photo sharing site), or completely useless and you should consider whether it is worth removing. In practice, this metadata can add up to tens of kilobytes for every image!
+同样的，上述技术也可扩展到文本内容以外。图片、视频以及其他内容类型都包含它们自己的元数据形式以及各种负载。比如，在你用相机拍了一张照片，照片也基本上会嵌入大量的附加信息：相机设定、地点等等。对你的应用来说，这些数据可能是关键的(例如照片分享网站)，或者根本没用而且你要考虑是否值得删除。实际上，每张图片中这些元数据总计能达到数十KB！
+
+In short, as a first step in optimizing the efficiency of your assets, build an inventory of the different content types and consider what kinds of content-specific optimizations you can apply to reduce their size - doing so can yield significant savings! Then, once you’ve figured out what they are, automate these optimizations by adding them to your build and release processes - that’s the only way you can guarantee that the optimizations will stay in place.
+总之，作为优化你的资产效能的第一步，对不同内容类型列一个清单并且考虑你能用哪种内容特征优化来减少它们的大小 - 做这些可以有显著的节省。接下来，一旦你已经找出它们，把这些优化做成自动化的并加入到你开发和发布流程中 - 这是保证优化能保持下来的惟一方法。
+
+Text compression with GZIP
+用GZIP压缩文本
+
+TL;DR
+简而言之
+
+  ·GZIP performs best on text-based assets: CSS, JavaScript, HTML
+  GZIP在文本资产上执行得最好：CSS、JavaScript和HTML。
+  ·All modern browsers support GZIP compression and will automatically request it
+  所有现代浏览器都支持GZIP压缩而且会自动请求它。
+  ·Your server needs to configured to enable GZIP compression
+  你的服务器需要配置以启用GZIP压缩。
+  ·Some CDNs require special care to ensure that GZIP is enabled
+  一些CDN要特别注意确保GZIP是启用的。
+
+GZIP is a generic compressor that can be applied to any stream of bytes: under the hood it remembers some of the previously seen content and attempts to find and replace duplicate data fragments in an efficient way - for the curious, great low-level explanation of GZIP. However, in practice, GZIP performs best on text-based content, often achieving compression rates of as high as 70-90% for larger files, whereas running GZIP on assets that are already compressed via alternative algorithms (e.g. most image formats) yields little to no improvement.
+GZIP是一种通用压缩器可以用于任何字节流：它会记住前面看过的内容并以高效的方式尝试查找重复数据碎片 - 如果有兴趣，请参阅(https://www.youtube.com/watch?v=whGwm0Lky2s&feature=youtu.be&t=14m11s)。然而，实际上GZIP在文本内容上运行得最好，对于大文件通常压缩比高达70-90%，但是对于已经用其他算法压缩过的内容资产(例如大部分图片格式)运行GZIP提高就很小甚至没有。
+
+All modern browsers support and automatically negotiate GZIP compression for all HTTP requests: our job is to ensure that the server is properly configured to serve the compressed resource when requested by the client.
+所有现代浏览器都支持并自动对所有的HTTP请求协商GZIP压缩：我们的工作就是确保服务器经过正确配置，被客户端请求的时候能提供压缩过的资源。
+
+The above table illustrates the savings provided by GZIP compression for a few of the most popular JavaScript libraries and CSS frameworks. The savings range from 60 to 88%, and note that the combination of minified files (identified by “.min” in their filenames), plus GZIP, offers an even larger win.
+上表说明了GZIP对一些最流行的JavaScript库和CSS框架压缩后能的缩减量。节省范围从60到88%，注意结合了缩小的文件(文件名中以“.min”标识的)，经过GZIP，甚至能有更大的节省。
+
+  ·Apply content-specific optimizations first: CSS, JS, and HTML minifiers.
+  首先使用内容特征优化：CSS、JS以及HTML瘦身器。
+  ·Apply GZIP to compress the minified output.
+  再用GZIP压缩瘦过身的。
+
+The best part is that enabling GZIP is one of the simplest and highest payoff optimizations to implement - sadly, many people still forget to implement it. Most web servers will compress content on your behalf, and you just need to verify that the server is correctly configured to compress all the content types that would benefit from GZIP compression.
+最好的部分就是启用GZIP是执行一种最简单而且最高回报的优化 - 不幸的是，很多人还是忘记去执行它。大部分Web服务器会为你的利益而压缩内容，而你只需验证服务器被正确配置来压缩所有能从GZIP压缩获益的内容类型。
+
+What’s the best config for your server? The HTML5 Boilerplate project contains sample configuration files for all the most popular servers with detailed comments for each configuration flag and setting: find your favorite server in the list, look for the GZIP section, and confirm that your server is configured with recommended settings.
+对你服务器最好的配置是什么？HTML5 Boilerplate项目(https://github.com/h5bp/server-configs)包含了大部分流行服务器的配置示例文件，而且对每种配置标记和设置都有详细注释：在列表中找到你喜欢的服务器，查找GZIP章节，确认你的服务器使用了推荐的设置。
+
+A quick and simple way to see GZIP in action is to open Chrome Developer Tools and inspect the “Size / Content” column in the Network panel: “Size” indicates the transfer size of the asset, and “Content” the uncompressed size of the asset. For the HTML asset in above example, GZIP saved 24.8 KB during transfer!
+在实际中快速简易地查看GZIP的方法就是打开Chrome开发人员工具，在Network面板检查“Size / Content”一列：“Size”指出资产的传输大小，而“Content”是未压缩的资产大小。对于上述示例中的HTML资产，GZIP在传输中节省了24.8KB。
+
+Remember
+切记
+
+Believe it or not, there are cases where GZIP can increase the size of the asset. Typically, this happens when the asset is very small and the overhead of the GZIP dictionary is higher than the compression savings, or if the resource is already well compressed. Some servers allow you to specify a “minimum filesize threshold” to avoid this problem.
+不管信不信，有时GZIP会增加资产大小。这典型地发生在资产特别小而GZIP字典大过了压缩所能节省的，或者资源已被深度压缩过。有些服务器允许你指定“最小文件大小阀值”来避免这个问题。
+
+Finally, a word of warning: while most servers will automatically compress the assets for you when serving them to the user, some CDNs require extra care and manual effort to ensure that the GZIP asset is served. Audit your site and ensure that your assets are, in fact, being compressed!
+最后，一句话提醒：虽然大部分服务器会在为用户提供服务的时候为你自动压缩资产，但一些CDN需要额外关注并动手查看确保GZIP服务。审计你的网站，确保你的资产，确实，被压缩了！
+
 
 
 
