@@ -260,10 +260,112 @@ Believe it or not, there are cases where GZIP can increase the size of the asset
 Finally, a word of warning: while most servers will automatically compress the assets for you when serving them to the user, some CDNs require extra care and manual effort to ensure that the GZIP asset is served. Audit your site and ensure that your assets are, in fact, being compressed!
 最后，一句话提醒：虽然大部分服务器会在为用户提供服务的时候为你自动压缩资产，但一些CDN需要额外关注并动手查看确保GZIP服务。审计你的网站，确保你的资产，确实，被压缩了！
 
+=====================================
+OPTIMIZING CONTENT EFFICIENCY
+优化内容效率
+=====================================
 
+Image optimization
+图片优化
 
+Images often account for most of the downloaded bytes on a web page and also often occupy a significant amount of visual space. As a result, optimizing images can often yield some of the largest byte savings and performance improvements for your website: the fewer bytes the browser has to download, the less competition there is for the client's bandwidth and the faster the browser can download and render useful content on the screen.
+图片通常被认为是一个页面占最大的下载字节数并且通常占据可观的可视空间。那么，优化图片通常能对你的网站产生最大的字节减省和性能提升：浏览器要下载的字节越少，对客户端的带宽争夺也就越少，而且浏览器也能更快地下载并在屏幕上渲染有用的内容。
 
+In this guide
+本节主要内容
 
+  ·Eliminating and replacing images
+  去除和替换图片
+  ·Vector vs. Raster images
+  矢量和光栅图片
+  ·Implications of high-resolution screens
+  高分辨率屏幕的影响
+  ·Optimizing vector images
+  优化矢量图片
+  ·Optimizing raster images
+  优化光栅图片
+  ·Lossless vs lossy image compression
+  无损和有损图片压缩
+  ·Selecting the right image format
+  选择正确的图片格式
+  ·Tools and parameter tuning
+  工具和参考调整
+  ·Delivering scaled image assets
+  传送缩放过的图片资产
+  ·Image optimization checklist
+  图片优化检查清单
+
+Image optimization is both an art and science: an art because there is no one definitive answer for how best to compress an individual image, and a science because there are many well developed techniques and algorithms that can significantly reduce the size of an image. Finding the optimal settings for your image requires careful analysis along many dimensions: format capabilities, content of encoded data, quality, pixel dimensions, and more.
+图片优化既是艺术也是科学：说艺术是因为对于如何压缩一个单独的图片是最好的没有权威的答案，说科学因是因为有很多发展良好的技术和算法能够大大减少图片体积。为你的图片寻找最佳设置需要仔细分析很多规格：格式能力、编码数据内容、质量、像素度等等。
+
+Eliminating and replacing images
+去除和替换图片
+
+TL;DR
+简而言之
+
+  ·Eliminate unnecessary image resources
+  去除不必要的图片资源
+  ·Leverage CSS3 effects where possible
+  可能的话尽量使用CSS3特效
+  ·Use web fonts instead of encoding text in images
+  使用web字体而不是在图片里编码文本
+
+The very first question you should ask yourself is whether an image is, in fact, required to achieve the effect you are after. Good design is simple and will also always yield the best performance. If you can eliminate an image resource, which often requires a large number of bytes relative to HTML, CSS, JavaScript and other assets on the page, then that is always the best optimization strategy. That said, a well-placed image can also communicate more information than a thousand words, so it is up to you to find that balance.
+最先要问自己的问题就是，一个图片是否要用来实现那个效果。好的设计很简单而且也通常会有最佳性能。如果你能去除一个图片资源，通常它会请求与HTML、CSS、JavaScript以及页面上其他的资产有联系的大量的字节，那几乎就是最佳的优化策略。人家总说放一个合适的图片抵得过千言万语，所以这要由你来找到平衡。
+
+Next, you should consider if there is an alternative technology that could deliver the desired results, but in a more efficient manner:
+接下来，你要考虑是否有其他技术可以提供渴望的结果，而且用更有效的方式。
+
+  ·CSS effects (gradients, shadows, etc.) and CSS animations can be used to produce resolution-independent assets that always look sharp at every resolution and zoom level, often at a fraction of the bytes required by an image file.
+  CSS特效(渐变、阴影等等)以及CSS动画能用来生产与分辨率无关的资产在各种分辨率和缩放级别下看起来总是很清晰，通常占用的字节数只是图片文件的一小部分。
+  ·Web fonts enable use of beautiful typefaces while preserving the ability to select, search, and resize text - a significant improvement in usability.
+  Web字体能用上漂亮上的字型同时保留选择、搜索和缩放文本的能力 - 可用性方面的巨大进步。
+
+If you ever find yourself encoding text in an image asset, stop and reconsider. Great typography is critical to good design, branding, and readability, but text-in-images delivers a poor user experience: the text is not selectable, not searchable, not zoomable, not accessible, and not friendly for high-DPI devices. The use of web fonts requires its own set of optimizations, but it addresses all of these concerns and is always a better choice for displaying text.
+若曾发现自己在图片资产中编码了文本，停止并重新考虑一下。好的排版对好的设计、品牌和可读性是很关键的，但是图片里的文本传达了一个差的用户体验：文本不能被复制、不能被搜索、不能被缩放、不易访问而且对于高DPI设备不友好。使用Web字体需要它自己的一套优化办法，但是它能解决这些问题而且对显示文本是个更好的选择。
+
+Vector vs. Raster images
+矢量和光栅图片
+
+TL;DR
+简而言之
+
+  ·Vector images are ideal for images that consist of geometric shapes
+  矢量图对于由几何图形组成的图片是很理想的
+  ·Vector images are zoom and resolution-independent
+  矢量图可以缩放并且是分辨率无关的
+  ·Raster images should be used for complex scenes with lots of irregular shapes and details
+  光栅图适用于包含大量不规则形状和细节的复杂场景
+
+Once you’ve determined that an image is, in fact, the optimal format to achieve the desired effect, the next critical choice is to select the appropriate format:
+一旦你确定下来图片就是最好的能提供想要的效果的格式，下一个关键决定就是选择合适的格式：
+
+  ·Vector graphics use lines, points, and polygons to represent an image.
+  矢量图使用线条、点、多边形来描绘一个图片。
+  ·Raster graphics represent an image by encoding the individual values of each pixel within a rectangular grid.
+  光栅图在一个矩形格子里通过将每个独立的像素值编码来描绘一个图片
+
+Each format has its own set of pros and cons. Vector formats are ideally suited for images that consist of simple geometric shapes (e.g. logos, text, icons, and so on), and deliver sharp results at every resolution and zoom setting, which makes them an ideal format for high-resolution screens and assets that need to be displayed at varying sizes.
+每种格式都有自己的一些赞成与反对的理由。矢量格式对于由简单几何图形构成的图片(例如，logo、文本、图标等等)是很理想的，而且在每种分辨率和缩放设置下都能很清晰，这使得它们对于高分辨率屏幕和需要以多种尺寸显示的资产是一种很理想的格式。
+
+However, vector formats fall short when the scene is complicated (e.g. a photo): the amount of SVG markup to describe all the shapes can be prohibitively high and the output may still not look “photorealistic”. When that’s the case, that’s when you should be using a raster image format such as GIF, PNG, JPEG, or one of the newer formats such as JPEG-XR and WebP.
+然而，矢量格式在场景变得复杂时(例如，一张照片)就不再适用了：为描述所有形状的SVG标记总量已经高到无法接受的程度，而且输出结果依然看上去不够真实。如果是这种情况，那就是你应该使用光栅图片格式的时候，比如GIF、PNG或者一种新的格式比如JPEP-XR和WebP。
+
+Raster images do not have the same nice properties of being resolution or zoom independent - when you scale up a raster image you’ll see jagged and blurry graphics. As a result, you may need to save multiple versions of a raster image at various resolutions to deliver the optimal experience to your users.
+光栅图片在分辨率和缩放无关性方面就没这么好 - 当你放大一个光栅图你会看到锯齿和模糊的图像。那么，你可能需要为不同的分辨率保存多个版本的光栅图片来为你的用户提供最佳体验。
+
+Implications of high-resolution screens
+高分辨率屏幕的影响
+
+TL;DR
+简而言之
+
+  ·High resolution screens have multiple device pixels per CSS pixel
+  ·High resolution images require significantly higher number of pixels and bytes
+  ·Image optimization techniques are the same regardless of resolution
+
+When we talk about image pixels, we need to distinguish between different kinds of pixels: CSS pixels and device pixels. A single CSS pixel may contain multiple device pixels - e.g. a single CSS pixel may correspond directly to a single device pixel, or may be backed by multiple device pixels. What’s the point? Well, the more device pixels there are, the finer the detail of the displayed content on the screen.
 
 
 
