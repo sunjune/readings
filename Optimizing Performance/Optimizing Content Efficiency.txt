@@ -517,13 +517,102 @@ TL;DR
 简而言之
 
   ·Start by selecting the right universal format: GIF, PNG, JPEG
-  
+  从选择正确的常用格式开始：GIF、PNG、JPEG
   ·Experiment and select the best settings for each format: quality, palette size, etc.
-  
+  体验并选定每种格式最佳设置：质量、色板大小等等
   ·Consider adding WebP and JPEG XR assets for modern clients
-  
-  ·In addition to different lossy and lossless compression algorithms, different image formats support different features such as animation and transparency (alpha) channels. As a result, the choice of the “right format” for a particular image is a combination of desired visual results and functional requirements.
-  
+  考虑给现代浏览器添加WebP和JPEG XR资产
+
+In addition to different lossy and lossless compression algorithms, different image formats support different features such as animation and transparency (alpha) channels. As a result, the choice of the “right format” for a particular image is a combination of desired visual results and functional requirements.
+除了不同的有损和无损压缩算法，不同的图像格式还支持不同的功能比如动画和透明(alpha)通道。因此，对特定图片“正确格式”的选择是对渴望的显示效果和功能需求的综合考量。
+
+There are three universally supported image formats: GIF, PNG, and JPEG. In addition to these formats, some browsers also support newer formats such as WebP and JPEG XR, which offer better overall compression and more features. So, which format should you use?
+有三种被普遍支持的图片格式：GIF、PNG和JPEG。除了这些格式，一些浏览器还支持更新的格式比如WebP和JPEG XR，它们能提供更好的压缩和更多功能。那么，你应该用哪种格式呢？
+
+  01 Do you need animation? If so, GIF is the only universal choice.
+  需要动画吗？GIF是惟一的通用选择。
+
+    ·GIF limits the color palette to at most 256 colors, which makes it a poor choice for most images. Further, PNG-8 delivers better compression for images with a small palette. As a result, GIF is the right answer only when animation is required.
+    GIF限制色板为最多256色，这使得它对于大多数图像来说是个不好的选择。而且，PNG-8为色板小的图片提供更好的压缩。那么，GIF只在需要动画的时候才是正确选择。
+
+  02 Do you need to preserve fine detail with highest resolution? Use PNG.
+  你需要在高分辨率下保持良好细节吗？使用PNG。
+    ·PNG does not apply any lossy compression algorithms beyond the choice of the size of the color palette. As a result, it will produce the highest quality image, but at a cost of significantly higher filesize than other formats. Use judiciously.
+    PNG在对色板大小的选择上不应用任何有损压缩算法。结果就是，它将产生最高的图像质量，但是相比其他格式来说文件大小也高得多。要谨慎使用。
+    ·If the image asset contains imagery composed of geometric shapes, consider converting it to a vector (SVG) format!
+    如果图片资产包含几何图形构成的形象，考虑把它转换成矢量(SVG)格式！
+    ·If the image asset contains text, stop and reconsider. Text in images is not selectable, searchable, or “zoomable”. If you need to convey a custom look (for branding or other reasons), use a web font instead.
+    如果图片资产包含文本，停下并重新考虑。图片里的文本无法被复制、不能搜索也不能缩放。如果你需要表达一个定制的视觉形象(为了品牌或其他原因)，请使用web字体作为替代。
+
+  03 Are you optimizing a photo, screenshot, or a similar image asset? Use JPEG.
+  你在优化照片、截屏或类似的图片资产吗？使用JPEG。
+    ·JPEG uses a combination of lossy and lossless optimization to reduce filesize of the image asset. Try several JPEG quality levels to find the best quality vs. filesize tradeoff for your asset.
+    JPEG综合使用了有损和无损优化来减少图片文件大小。尝试几种JPEG质量等级来找出最佳的质量和大小的权衡。
+
+Finally, once you’ve determined the optimal image format and its settings for each of your assets, consider adding an additional variant encoded in WebP and JPEG XR. Both of of these formats are new, and unfortunately are not (yet) universally supported by all browsers, but they can nonetheless provide significant savings for newer clients - e.g. on average, WebP delivers a 30% filesize decrease over a comparable JPEG image.
+最终，一旦你已经确定了每项资产的最佳图片格式和设置，考虑增加其他的不同编码WebP和JPEG XR。这些格式都是新的，而不幸的是还不能被所有浏览器普遍支持，但尽管如此它们能为新的客户端提供相当大的节省 - 例如，平均来看，WebP能比同等的JPEG图片减少30%(https://developers.google.com/speed/webp/docs/webp_study)的文件大小。
+
+Since neither WebP and JPEG XR are universally supported, you will need to add additional logic to your application or servers to serve the appropriate resource:
+因为WebP和JPEG XR不被普遍支持，你将需要在你的应用或服务器中添加额外的逻辑来提供适当的资源：
+
+  ·Some CDNs provide image optimization as a service, including JPEG XR and WebP delivery.
+  有些CDN支持将图片优化作为一项服务，包括JPEG XR和WebP交付。
+  ·Some open-source tools (e.g. PageSpeed for Apache or Nginx) automate the optimization, conversion, and serving of appropriate assets.
+  有些开源工具(例如，PageSpeed For Apache或Nginx)能把优化、转换和服务自动化进行。
+  ·You can add additional application logic to detect the client, check which formats they support, and serve the best available image format.
+  你可以添加附加应用逻辑来探测客户端，查看它们支持何种格式，并提供最佳可用格式。
+
+Finally, note that if you are using a Webview to render content in your native application, then you have full control of the client and can use WebP exclusively! Facebook, Google+ and many others use WebP to deliver all of their images within their applications - the savings are definitely worth it. To learn more about WebP, checkout the WebP: Deploying Faster, Smaller, and More Beautiful Images presentation from Google I/O 2013.
+最终，注意如果你在使用Webview在你的原生应用中渲染内容，那么你就拥有完整的客户端控制并能专门使用WebP！Facebook，Google+以及很多其他公司都在他们的应用中用WebP传送所有图片 - 节省量是非常值得的。更进一步学习WebP，请参阅Google I/O 2013发布的WebP: Deploying Faster, Smaller, and More Beautiful Images(https://www.youtube.com/watch?v=pS8udLMOOaE)。
+
+Tools and parameter tuning
+工具和参数调整
+
+There is no one perfect image format, tool, or a set of optimization parameters that apply to all images. For best results you will have to pick the format and its settings depending on the contents of the image, and its visual and other technical requirements.
+没有完美的图片格式、工具或一套优化参数可以应用于所有图片。为了最好的效果你得根据图片内容、挑选格式与其参数，以及视觉还有其他技术需求。
+
+gifsicle	create and optimize GIF images
+gifsicle(http://www.lcdf.org/gifsicle/) 生成并优化GIF图片
+
+jpegtran	optimize JPEG images
+jpegtran(http://jpegclub.org/jpegtran/) 优化JPEG图片
+
+optipng	lossless PNG optimization
+optipng(http://optipng.sourceforge.net/) 无损PNG优化
+
+pngquant	lossy PNG optimization
+pngquant(http://pngquant.org/) 有损PNG优化
+
+Don’t be afraid to experiment with parameters of each compressor. Dial down the quality, see how it looks, then rinse, lather and repeat. Once you’ve found a good set of settings, you can apply them to other similar images on your site, but don’t assume that all images must be compressed with the same settings.
+不要害怕去体验每种压缩器的参数。下调质量，看它看上去如何，然后清除，重复尝试。一旦你找到好的设置，你可以应用到网站上其他类似的图片上，但是不要假设所有的图片都必须用同样的设置压缩。
+
+Delivering scaled image assets
+交付缩略图资产
+
+TL;DR
+简而言之
+
+  ·Delivering scaled assets is one of the simplest and most effective optimizations
+  交付缩略资产是最简单最有效的优化之一
+  ·Pay close attention to large assets as they result in high overhead
+  对大资产要多加注意因为它们产生大报头
+  ·Reduce the number of unnecessary pixels by scaling your images to their display size
+  通过缩小图片到它们的显示大小来减少不必要的像素数量
+
+Image optimization boils down to two criteria: optimizing the number of bytes used to encode each image pixel, and optimizing the total number of pixels: the filesize of the image is simply the total number of pixels times the number of bytes used to encode each pixel. Nothing more, nothing less.
+图片优化归结为两个标准：优化用于给每个图片像素编码的字节数，和优化总像素数：图片文件大小就是简单地把总像素数乘以为每个像素编码的字节数。不多也不少。
+
+As a result, one of the simplest and most effective image optimization techniques is to ensure that we are not shipping any more pixels than needed to display the asset at its intended size in the browser. Sounds simple, right? Unfortunately, most pages fail this test for many of their image assets: typically, they ship larger assets and rely on the browser to rescale them - which also consumes extra CPU resources - and display them at a lower resolution.
+结果就是，最简单有效地图片优化技术之一就是确保我们不用运送比在浏览器中显示的大小更多的像素。听起来挺简单的吧？不幸的是，大部分页面上的很多图片都没能通过这项测试：常见于它们传送了更大的资产并依赖浏览器去缩放它们 - 而这也消耗额外的CPU资源 - 并用低一些的分辨率来显示它们。
+
+Note
+注意
+
+Hovering over the image element in Chrome DevTools reveals both the "natural" and "display" sizes of the image asset. In above example the 300x260 pixel image is downloaded but is then downscaled (245x212) on the client when it is displayed.
+在Chrome开发人员工具中悬停在图片元素上，会在图片上同时显示“原始”和“显示”大小。在上面示例中下载的是300x260像素图片但是显示的时候被缩小了(245x212)。
+
+The overhead of shipping unnecessary pixels, only to have the browser rescale the image on our behalf, is a big missed opportunity to reduce and optimize the total number of bytes required to render the page. Further, note that resizing is not simply a function of the number of pixels by which the image is reduced by, but also of its natural size.
+运送不必要像素的消耗，只在浏览器出于需要重新缩放图片,错失很大的机会来减少并优化用来渲染页面需要的总像素数。因此，注意重置大小不简单是个减少图片像素数的功能，同时也是它的原始大小。
 
 
 
