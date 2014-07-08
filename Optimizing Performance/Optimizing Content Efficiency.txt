@@ -701,26 +701,139 @@ In above example the client automatically provides the ETag token within the “
 As a web developer, how do you take advantage of efficient revalidation? The browser does all the work on our behalf: it will automatically detect if a validation token has been previously specified, it will append it to an outgoing request, and it will update the cache timestamps as necessary based on received response from the server. The only thing that’s left for us to do is to ensure that the server is, in fact, providing the necessary ETag tokens: check your server documentation for necessary configuration flags.
 作为一名Web开发人员，你如何利用高效重检验呢？浏览器为我们做好了一切：它将自动检测之前是否指定过一个检验码，把它应用到发出的请求中，将且根据从服务器接收到的响应必要时更新缓存时间戳。我们要做的只是确保服务器确定提供了必要的ETag标记：检查你的服务器文档中那些必要的配置标志。
 
+Remember
+切记
 
+Tip: HTML5 Boilerplate project contains sample configuration files for all the most popular servers with detailed comments for each configuration flag and setting: find your favorite server in the list, look for appropriate settings, and copy / confirm that your server is configured with recommended settings.
+提示：HTML5 Boilerplate项目包含了绝大多数流行服务器的示例配置文件并为每个配置标记和设置配有详细的注释：在列表中找到你喜欢的服务器，看看那些适合的设置，复制/确认你的服务器是以推荐设置进行了配置。
 
+Cache-Control
+缓存控制
 
+TL;DR
+简而言之
 
+  ·Each resource can define its caching policy via Cache-Control HTTP header
+  每个资源都可通过Cache-Control HTTP头来定义它的缓存策略
+  ·Cache-Control directives control who can cache the response, under which conditions, and for how long
+  Cache-Control指令控制谁能缓存响应，在何种条件下，以及多长时间
+  ·The best request is a request that does not need to communicate with the server: a local copy of the response allows us to eliminate all network latency and avoid data charges for the data transfer. To achieve this, the HTTP specification allows the server to return a number of different Cache-Control directives that control how, and for how long, the individual response can be cached by the browser and other intermediate caches.
+  最好的请求就是不需要与服务器通信的请求：一份本地的响应拷贝让我们消除了所有的网络延迟而且避免了数据传输的流量费用。为了实现这一点，HTTP说明书允许服务器返回许多不同的Cache-Control指令来控制单独的响应可以被浏览器和其他的中间缓存如何缓存以及缓存多长时间。
 
+Remember
+切记
 
+Cache-Control header was defined as part of the HTTP/1.1 specification and supersedes previous headers (e.g. Expires) used to define response caching policies. All modern browsers support Cache-Control, hence that is all we will need.
+Cache-Control头被下定义为HTTP/1.1说明书的一部分，并且取代了之前用于定义响应缓存政策的返回头(例如，Expires)。所有现代浏览器都支持Cahce-Control，因此这就是我们所要的。
 
+“no-cache” and “no-store”
+“no-cache”和“no-store”
 
+“no-cache” indicates that the returned response cannot be used to satisfy a subsequent request to the same URL without first checking with the server if the response has changed. As a result, if a proper validation token (ETag) is present, no-cache will incur a roundtrip to validate the cached response, but can eliminate the download if the resource has not changed.
+“no-cache”指示返回的响应不能用于在响应被改变时不与服务器做首次检查的后续相同URL请求。那么，如果提供了一个适当的校验码，no-cache将引发一个校验被缓存响应的往返，但是资源没有改变的时候可以不下载它。
 
+By contrast, “no-store” is much simpler, as it simply disallows the browser and all intermediate caches to store any version of the returned response - e.g. one containing private personal or banking data. Everytime the user requests this asset, a request is sent to the server and a full response is downloaded each and every time.
+相比之下，“no-store”就简单多了，它只是简单地禁止浏览器以及其他所有中间缓存去保存任何版本的返回响应 - 例如，包含私人或银行信息的数据。每次用户请求这种资产，都要向服务器发送一个请求而且每次都下载完整的响应。
 
+“public” vs. “private”
+“public” 与 “private”
 
+If the response is marked as “public” then it can be cached, even if it has HTTP authentication associated with it, and even when the response status code isn’t normally cacheable. Most of the time, “public” isn’t necessary, because explicit caching information (like “max-age”) indicates that the response is cacheable anyway.
+如果响应被标为“Public”那么它就能被缓存，即使它绑定了HTTP认证，甚至响应状态码不是通常的可缓存。大部分时候，“public”不是必要的，因为明确的缓存信息(像“max-age”)指出了响应至少是可缓存的。
 
+By contrast, “private” responses can be cached by the browser but are typically intended for a single user and hence are not allowed to be cached by any intermediate cache - e.g. an HTML page with private user information can be cached by that user’s browser, but not by a CDN.
+相比之下，“private”响应能被浏览器缓存但典型是为单个用户准备的因而不允许被任何中间层缓存去保存它 - 例如，带有私人用户信息的HTML页面能被用户浏览器缓存，但是不能被CDN缓存。
 
+“max-age”
+“max-age”
 
+This directive specifies the maximum time in seconds that the fetched response is allowed to be reused for from the time of the request - e.g. “max-age=60” indicates that the response can be cached and reused for the next 60 seconds.
+这个命令以秒为单位指定了获得的响应从发起请求的时间开始可以重复使用的最长时间 - 例如，“max-age=60”指出响应可以被缓存而且在接下来的60秒内重复使用。
 
+Defining optimal Cache-Control policy
+定义最佳缓存控制政策
 
+是可重用响应吗？
+  1.1 否 no-store
+  1.2 是 每次都要校验吗？
+    2.1 是 no-cache
+    2.2 否 可以被中间层缓存保存吗？
+      3.1 是 public
+      3.2 否 private
+  4 有最大剩余缓存时间吗？ 设置 max-age=
+  5 加上ETag头
 
+Follow the decision tree above to determine the optimal caching policy for a particular resource, or a set of resources used by your application. Ideally, you should aim to cache as many responses as possible on the client for the longest possible period, and provide validation tokens for each response to enable efficient revalidation.
+沿着上述判断树来为特定资源确定最佳缓存政策，或者一系列你的应用使用的资源。理想状态下，你应该旨在缓存尽可能多的响应并尽可能时间长一些，并为每个响应提供校验码使得再校验更高效。
 
+According to HTTP Archive, amongst the top 300,000 sites (by Alexa rank), nearly half of all the downloaded responses can be cached by the browser, which is a huge savings for repeat pageviews and visits! Of course, that doesn’t mean that your particular application will have 50% of resources that can be cached: some sites can cache 90%+ of their resources, while others may have a lot of private or time-sensitive data that can’t be cached at all.
+根据HTTP Archive的统计，在前300,000名网站中(Alexa排名)，将近半数的所有下载的响应都能被浏览器缓存，这对那些反复访问和页面浏览来说是一笔巨大的节省！当然，这并不意味着你特定的应用将有50%的资源能被缓存：有些网站能把它们的资源缓存90%以上，而另一些可能有大量的私人的或时效性的数据根本不能被缓存。
 
+Audit your pages to identify which resources can be cached and ensure that they are returning appropriate Cache-Control and ETag headers.
+审计你的页面标出那些可以被缓存的资源并确保它们能返回适当的Cache-Control和ETag头。
 
+Invalidating and updating cached responses
+失效和更新已缓存的响应
 
+TL;DR
+简而言之
+
+  ·Locally cached responses are used until the resource 'expires'
+  本地被缓存的响应会被用到直至资源“过期”
+  ·Embedding a file content fingerprint in the URL enables us to force the client to update to a new version of the response
+  在URL中嵌入文件内容指纹能强制客户端更新一个新版的响应
+  ·Each application needs to define its own cache hierarchy for optimal performance
+  每个应用都需要为最佳性能而定义它自己的缓存层级
+
+All HTTP requests made by the browser are first routed to the browser cache to check if there is a valid cached response that can be used to fulfill the request. If there is a match, the response is read from the cache and we eliminate both the network latency and the data costs incurred by the transfer. However, what if we want to update or invalidate a cached response?
+所有浏览器产生的HTTP请求首先被路由到浏览器缓存以检查是否有可用的缓存响应可用于满足请求。如果能匹配，响应就被从缓存中读出而且没有了网络延迟和由传输引发的数据花费。然而，如果我们要把被缓存的响应更新或失效会怎么样？
+
+For example, let’s say we’ve told our visitors to cache a CSS stylesheet for up to 24 hours (max-age=86400), but our designer has just committed an update that we would like to make available to all users. How do we notify all the visitors with what is now a “stale” cached copy of our CSS to update their caches? It’s a trick question - we can’t, at least not without changing the URL of the resource.
+举例来说，我们告诉访问者将CSS样式缓存到24小时(max-age=86400)，但是我们的设计师刚刚提交了想要对所有用户生效的更新。我们怎么通知所有的访问者现在有一个“过期”的CSS缓存拷贝要更新它们的缓存？这问题真难回答 - 我们不能，至少不用改变资源的URL。
+
+Once the response is cached by the browser, the cached version will be used until it is no longer fresh, as determined by max-age or expires, or until it is evicted from cache for some other reason - e.g. the user clearing their browser cache. As a result, different users might end up using different versions of the file when the page is constructed; users who just fetched the resource will use the new version, while users who cached an earlier (but still valid) copy will use an older version of its response.
+一旦响应被浏览器缓存住，被缓存的版本会被使用直到由max-age或expires决定它不再有效为止，或直到由于某些其他原因被从缓存中清理掉 - 例如，用户清除浏览器缓存。那么，最终在页面被构建的时候不同的用户可能使用着不同版本的文件；刚获得资源的用户将使用新版本，而之前缓存了早期拷贝的用户(仍然有效)将使用旧版本的响应。
+
+So, how do we get the best of both worlds: client-side caching and quick updates? Simple, we can change the URL of the resource and force the user to download the new response whenever its content changes. Typically, this is done by embedding a fingerprint of the file, or a version number, in its filename - e.g. style.x234dff.css.
+那么，我们如何达成共赢的局面：客户端缓存和快速更新？简单，我们可以改变资源的URL并在它的内容改变的时候强制用户下载新的响应。典型的作法是，通过在它的文件名中嵌入文件指纹或版本号 - 例如，style.x234dff.css。
+
+The ability to define per-resource caching policies allows us to define “cache hierarchies” that allow us to control not only how long each is cached for, but also how quickly new versions are seen by visitor. For example, let’s analyze the above example:
+为每个资源定义缓存政策的能力使得我们能定义“缓存层级”，从而不仅能控制每个缓存多久，而且新版本多快能被访问者看到。举例来说，让我们分析上面的示例：
+
+The HTML is marked with “no-cache”, which means that the browser will always revalidate the document on each request and fetch the latest version if the contents change. Also, within the HTML markup we embed fingerprints in the URLs for CSS and JavaScript assets: if the contents of those files change, than the HTML of the page will change as well and new copy of the HTML response will be downloaded.
+HTML被标记为“no-cache”，这意味着浏览器将总是在每次请求的时候重新校验文档并在内容改变的时候获取最近的版本。同样的，在HTML标记内的CSS和JavaScriptURL中嵌入指纹：如果这些文件的内容发生变化，页面的HTML也将改变，新的HTML响应拷贝将被下载。
+
+The CSS is allowed to be cached by browsers and intermediate caches (e.g. a CDN), and is set to expire in 1 year. Note that we can use the “far future expires” of 1 year safely because we embed the file fingerprint its filename: if the CSS is updated, the URL will change as well.
+CSS是允许被缓存在浏览器或中间缓存(例如，CDN)上的，而且被设成1年过期。注意我们能安全地使用一年的“长久未来过期时间”因为我们在文件名中嵌入了文件指纹：如果CSS被更新了，URL也会改变。
+
+The JavaScript is also set to expire in 1 year, but is marked as private, perhaps because it contains some private user data that the CDN shouldn’t cache.
+JavaScript也被设置成1年过期，但是被标记成私人的，也许因为它包含了一些CDN不能缓存的私人用户数据。
+
+The image is cached without a version or unique fingerprint and is set to expire in 1 day.
+图片被缓存成不带版本号和独立指纹而且设置成1天过期。
+
+The combination of ETag, Cache-Control, and unique URLs allows us to deliver the best of all worlds: long-lived expiry times, control over where the response can be cached, and on-demand updates.
+ETag、Cache-Control以及独立URL的结合使得我们能实现各方面都最好：长期存活的逾期时间、对于能被缓存的响应的控制以及按需更新。
+Caching checklist
+缓存清单
+
+There is no one best cache policy. Depending on your traffic patterns, type of data served, and application-specific requirements for data freshness, you will have to define and configure the appropriate per-resource settings, as well as the overall “caching hierarchy”.
+没有最好的缓存政策。根据你的传输模式，提供的数据类型，以及应用对数据刷新率的特定需求，你得去为每个资源定义和配置合适的设置，还有总体的“缓存层级”。
+
+Some tips and techniques to keep in mind as you work on caching strategy:
+在你着手制定缓存策略的时候要牢记一些窍门和技术：
+
+  01 Use consistent URLs: if you serve the same content on different URLs, then that content will be fetched and stored multiple times. Tip: note that URLs are case sensitive!
+  使用一致的URL：如果你用不同的URL提供相同的内容，那么内容会被多次获取并保存。提示：注意URL是对场景敏感的。
+  02 Ensure the server provides a validation token (ETag): validation tokens eliminate the need to transfer the same bytes when a resource has not changed on the server.
+  确保服务器提供校验码：当资源在服务器上没有变化的时候校验码可以消除对相同字节的传输需求。
+  03 Identify which resources can be cached by intermediaries: those with responses that are identical for all users are great candidates to be cached by a CDN and other intermediaries.
+  标出能被中间层缓存的资源：那些对所有用户有着同一的响应非常适合用CDN或其他中间层来缓存。
+  04 Determine the optimal cache lifetime for each resource: different resources may have different freshness requirements. Audit and determine the appropriate max-age for each one.
+  确定每个资源最佳缓存生命期：不同的资源可能有不同的刷新需求。审计并确定每个适合的max-age。
+  05 Determine the best cache hierarchy for your site: the combination of resource URLs with content fingerprints, and short or no-cache lifetimes for HTML documents allows you to control how quickly updates are picked up by the client.
+  为你的网站确定最佳缓存层级：给资源URL绑定内容指纹，并且缩短或no-cacheHTML文档的生命期，使得你能控制由客户端得到多快速的更新。
+  06 Minimize churn: some resources are updated more frequently than others. If there is a particular part of resource (e.g. JavaScript function, or set of CSS styles) that are often updated, consider delivering that code as a separate file. Doing so allows the remainder of the content (e.g. library code that does not change very often), to be fetched from cache and minimizes the amount of downloaded content whenever an update is fetched.
+  最小化翻腾：一些资源比其他的更新频繁得多。如果资源的某一部分(例如，JavaScript函数，或者CSS样式的设置)经常被更新，考虑把这些代码作为一个单独的文件传送。这样做让其余的内容(例如，不经常变化的库代码)，从缓存中获取并且在获取更新的时候最小化下载总量。
 
 
