@@ -14,7 +14,7 @@ There are a lot of things that you need to be aware of when using using the Geol
 
 ======================================
 Obtain the user's current location
-
+获得用户当前位置
 ======================================
 
 The Geolocation API lets you find out where the user is, always with the user's consent. This functionality could be used as part of user queries, e.g. to guide someone to a destination point. It could also be used for 'geo- tagging' some content the user has created, e.g. to mark where a photo was taken.
@@ -83,13 +83,185 @@ else {
   console.log('Geolocation is not supported for this Browser/OS version yet.');
 }
 
+Determine the User’s Current Location
+确定用户当前位置
 
+The geolocation API offers a simple ‘one-shot’ method to obtain the user’s location getCurrentPosition(). A call to this method will asynchronously report on the user’s current location.
+地理位置API提供一个简单的一次性的方法getCurrentPosition()来获得用户位置。对这个方法的调用将异步报告用户的当前位置。
 
+window.onload = function() {
+  var startPos;
+  var geoSuccess = function(position) {
+    startPos = position;
+    document.getElementById('startLat').innerHTML = startPos.coords.latitude;
+    document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+  };
+  navigator.geolocation.getCurrentPosition(geoSuccess);
+};
 
+If this is the first time an application on this domain has requested permissions, the browser will typically check for user consent. Depending on the browser, there may also be preferences to always allow - or disallow - permission lookups, in which case the confirmation process will be bypassed.
+如果这是这个域名下的应用第一次请求权限，浏览器典型的会检查用户同意。根据浏览器的不同，可能会偏好设置为总是允许 - 或禁止 - 权限查找，在这种情况下确认过程将被跳过。
 
+Depending on the location device your browser is using, the position object might actually contain a lot more than just latitude and longitude, e.g. it could include an altitude or a direction. You can’t tell what extra information that location system will use until it actually returns the data.
+根据你浏览器所使用的定位设备的不同，位置对象可能实际上包含不只有经纬度坐标，例如，它可能会含有海拔和方向。直到它实际上返回数据才能知道定位系统会用到哪些额外信息。
 
+Testing Geolocation with your site
+在你的网站上测试地理位置
 
+When working with HTML5 geolocation support in an application, it can be useful to debug the output received when using different values for longitude and latitude.
+当运行在带有HTML5地理位置支持的应用中，在使用不同的经纬度值时debug输出收到的值是很有用的。
 
+The DevTools support both overriding position values for navigator.geolocation and simulating geolocation not being available via the overrides menu.
+开发工具同时支持中断navigator.geolocation的位置值和中断菜单中模拟的geolocation不可用时。
+
+  ·Open up the overrides menu in the DevTools
+  在开发工具中打开中断菜单
+  ·Check “Override Geolocation” then enter in Lat = 41.4949819 and Lat = -0.1461206
+  查看“中断地理位置”然后输入Lat = 41.4949819 and Lat = -0.1461206
+  ·Refresh the page and it will now use your overridden positions for geolocation
+  刷新页面这时geolocation会使用你强制写入的位置
+
+Always Handle Errors
+总是要处理错误
+
+Unfortunately, not all location lookups are successful. Perhaps a GPS could not be located or the user has suddenly disabled location lookups. A second, optional, argument to getCurrentPosition() will be called in the event of an error, so you can notify the user inside the callback:
+不幸的是，不是所有的定位都能成功。也许GPS无法定位或用户突然禁用了定位。一秒钟后，可选的，getCurrentPosition()的参数将被一个错误事件调用，这样你就能注意到回调里的用户。
+
+window.onload = function() {
+  var startPos;
+  var geoSuccess = function(position) {
+    startPos = position;
+    document.getElementById('startLat').innerHTML = startPos.coords.latitude;
+    document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+  };
+  var geoError = function(position) {
+    console.log('Error occurred. Error code: ' + error.code);
+    // error.code can be:
+    //   0: unknown error
+    //   1: permission denied
+    //   2: position unavailable (error response from location provider)
+    //   3: timed out
+  };
+  navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
+};
+
+Reduce the need to start-up geo location hardware.
+减少启动定位硬件的需要
+
+For many use-cases you don’t need to use the most up to date location of the user, you just need a rough estimate.
+很多情况下你不需要最新的用户位置数据，你只要大致估计就行。
+
+Use the maximumAge optional property to tell the browser to use a recently obtained geolocation result. This not only returns quicker if the user has requested the data before it also stops the browser from having to start up its geolocation hardware interfaces such as Wifi triangulation or the GPS.
+使用可选的maximumAge属性告诉浏览器去使用最近获得的geolocation结果。这不仅能更快地返回用户之前请求的数据也能阻止浏览器启用定位硬件界面比如Wifi三角测量或是GPS。
+
+window.onload = function() {
+  var startPos;
+  var geoOptions = {
+  	maximumAge: 5 * 60 * 1000,
+  }
+
+  var geoSuccess = function(position) {
+    startPos = position;
+    document.getElementById('startLat').innerHTML = startPos.coords.latitude;
+    document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+  };
+  var geoError = function(position) {
+    console.log('Error occurred. Error code: ' + error.code);
+    // error.code can be:
+    //   0: unknown error
+    //   1: permission denied
+    //   2: position unavailable (error response from location provider)
+    //   3: timed out
+  };
+
+  navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
+};
+
+Don’t keep the user waiting, set a timeout
+不要让用户傻等着，设置超时
+
+Unless you set a timeout, your request to get the current position might never return.
+除非你设置了超时，不然你获取当前位置的请求可能永远也不返回。
+
+window.onload = function() {
+  var startPos;
+  var geoOptions = {
+     timeout: 10 * 1000
+  }
+
+  var geoSuccess = function(position) {
+    startPos = position;
+    document.getElementById('startLat').innerHTML = startPos.coords.latitude;
+    document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+  };
+  var geoError = function(error) {
+    console.log('Error occurred. Error code: ' + error.code);
+    // error.code can be:
+    //   0: unknown error
+    //   1: permission denied
+    //   2: position unavailable (error response from location provider)
+    //   3: timed out
+  };
+
+  navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
+};
+
+Prefer a coarse location over a fine grained location
+大致的位置好过精确的位置
+
+If you want to find the nearest store to a user it is unlikely that you need 1 meter precision to work that out. The API is designed to give a coarse location that returns as quickly as possible.
+如果你想给用户找到最近的商店，好像也用不着精确到1米才能做到。API设计为尽可能快地返回一个大致的位置。
+
+If you do need high-precision it is possible to override the default setting with the enableHighAccuracy option. Use this sparingly: it will be slower to resolve and use more battery.
+如果你确实需要高精度可能要以enableHighAccuracy选项来中断默认的设置。要谨慎使用：解析起来会很慢而且会使用更多的电量。
+
+window.onload = function() {
+  var startPos;
+  var geoOptions = {
+    enableHighAccuracy: true
+  }
+
+  var geoSuccess = function(position) {
+    startPos = position;
+    document.getElementById('startLat').innerHTML = startPos.coords.latitude;
+    document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+  };
+  var geoError = function(error) {
+    console.log('Error occurred. Error code: ' + error.code);
+    // error.code can be:
+    //   0: unknown error
+    //   1: permission denied
+    //   2: position unavailable (error response from location provider)
+    //   3: timed out
+  };
+
+  navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
+};
+
+Getting the user to consent to location sharing
+让用户同意分享位置
+
+As a web developer, having access to the user's location opens up a huge number of possibilities such as advanced filtering, pinpointing the user on a map, and offering them pro-active suggestions on things they can do based on their current position.
+作为web开发者，对用户位置的访问展开了大量的可能性比如高级过滤、在地图上对用户精准定位、以及基于他们的当前位置为他们一些可做的事情的建议。
+
+As a user, your physical location is a piece of information you want to guard and only give out to people that you trust. This is why the browser shows a prompt when a site asks for their location.
+作为用户，你想要保护你的物理位置并仅开放给你信任的人。这就是为什么一个网站想要他们的位置时浏览器要显示一个提示的原因。
+
+In this guide
+本节主要内容
+
+  ·Assume the user will not give you their location
+  假设用户不会把他们的位置给你
+  ·Use a fallback if geolocation is required
+  如果geolocation被请求的时候要有退路
+  ·Always request access to location on a user gesture
+  请求访问位置时一定要有用户确认
+  ·Give clear indication that an action will request their location
+  清晰地指示某项操作会请求他们的位置
+  ·Gently nudge the user to grant permission to their location
+  温和地提示用户准许他们的位置权限
+  ·Recent user studies have shown that users are distrustful of sites that simply prompt the user to give away their position on page load. So what are the best practice?
+  最近的用户研究表明，用户对于页面加载就简单提示他们给出位置信息的网站很不信任。什么才是最佳实践呢？
 
 
 
