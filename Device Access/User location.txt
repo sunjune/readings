@@ -1,3 +1,109 @@
+=================
+User location
+用户位置
+=================
+
+The Geolocation API lets you find out where the user is, always with the user's consent. This functionality could be used as part of user queries, e.g. to guide someone to a destination point. It could also be used for 'geo- tagging' some content the user has created, e.g. to mark where a photo was taken.
+经过用户同意，地理位置API让你找到用户在哪。这项功能可被用于用户查询的部分，例如，指引某人到目标地点。它也能被用来做'地理-标签'一些用户创建的内容，例如，标注照片是在哪拍的。
+
+The Geolocation API also lets you watch where the user is and keep tabs on them as they move around, always with the user’s consent (and only whilst the page is open), this opens up a lot of interesting usecases - such as integrating with backend systems to prepare an order for collection if the user is close by.
+经过用户同意(而且只在页面开着的同时)，地理位置API也能让你观察用户在哪并在他们四处移动的时候保持关注，这展现了大量有趣的用户行为 - 比如结合后端系统，当用户在附近的时候准备一个募集订单。
+
+There are a lot of things that you need to be aware of when using using the Geolocation API and this guide will walk you through the common use-cases and solutions.
+在使用地理位置API的时候有很多要了解的地方，本教程将简单讲讲常见的用户行为和解决方案。
+
+======================================
+Obtain the user's current location
+
+======================================
+
+The Geolocation API lets you find out where the user is, always with the user's consent. This functionality could be used as part of user queries, e.g. to guide someone to a destination point. It could also be used for 'geo- tagging' some content the user has created, e.g. to mark where a photo was taken.
+经过用户同意，地理位置API让你找到用户在哪。这项功能可被用于用户查询的部分，例如，指引某人到目标地点。它也能被用来做'地理-标签'一些用户创建的内容，例如，标注照片是在哪拍的。
+
+In this guide
+本节主要内容
+
+  ·When to use Geolocation
+  何时使用地理位置
+  ·Check for Compatibility
+  检查兼容性
+  ·Determine the User’s Current Location
+  确定用户当前位置
+  ·Testing Geolocation with your site
+  测试你网站的地理位置
+  ·Always Handle Errors
+  总是处理错误
+  ·Reduce the need to start-up geo location hardware.
+  减少启用地理位置硬件的需要
+  ·Don’t keep the user waiting, set a timeout
+  不要保持用户等待，设置超时
+  ·Prefer a coarse location over a fine grained location
+  大致位置好过精确的位置
+
+TL;DR
+简而言之
+
+  ·Check for Compatibility before you use the API
+  在使用API前检查兼容性
+  ·Prefer a coarse location, over a fine location
+  大致位置就可以，不必精确
+  ·Always handle errors
+  总是要处理错误
+  ·Don't poll for the data too frequently to save the user's battery
+  不要过于频繁地投递数据以节省用户电量
+
+The API is device-agnostic; it doesn’t care how the browser determines location, so long as clients can request and receive location data in a standard way. The underlying mechanism might be via GPS, wifi, or simply asking the user to enter their location manually. Since any of these lookups is going to take some time, the API is asynchronous; you pass it a callback method whenever you request a location.
+这个API是与设备无关的；它不关心浏览器如何测定位置，只要客户端能以标准方式请求并收到位置数据。底层机制可能是通过GPS、wifi或简单地请用户手动输入他们的位置。因为所有这些查询都会花一些时间，所以API是异步的；当你请求一个位置的时候给它加个回调方法。
+When to use Geolocation
+何时使用地理位置
+
+  ·Find where the user is closest to a physical location of yours to tailor the user experience
+  查看距离你的用户最近的物理位置以定制用户体验
+  ·Tailor information (such as news) to the user’s location
+  为用户所在位置定制信息(比如新闻)
+  ·Show the position of a user on a map
+  将用户位置显示在地图上
+  ·Tag data created inside your application with the user’s location (i.e, geo-tagging a picture)
+  为在你的应用里创建的数据加上用户位置标签(给图片加位置标记)
+
+Check for Compatibility
+检查兼容性
+
+The geolocation API is now supported in the majority of browsers, but it is good practice to always check for support before you do anything.
+地理位置API现在被主流浏览器所支持，但是在做任何事情之前检查是否支持是个好的作法 。
+
+You can easily check for compatibility by testing for the presence of the geolocation object:
+你可以通过检测geolocation对象的存在轻易地检查兼容性。
+
+// check for Geolocation support
+if (navigator.geolocation) {
+  console.log('Geolocation is supported!');
+}
+else {
+  console.log('Geolocation is not supported for this Browser/OS version yet.');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
