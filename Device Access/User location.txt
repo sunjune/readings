@@ -263,6 +263,42 @@ In this guide
   ·Recent user studies have shown that users are distrustful of sites that simply prompt the user to give away their position on page load. So what are the best practice?
   最近的用户研究表明，用户对于页面加载就简单提示他们给出位置信息的网站很不信任。什么才是最佳实践呢？
 
+TL;DR
+简而言之
+
+  ·Assume the user will not give you their location
+  假设用户不会把他们的位置给你
+  ·Make it clear why you need access to the user's location
+  讲清楚你为啥要访问用户位置
+  ·Don't immediately prompt for access on page load.
+  不要在页面加载就马上提示
+
+Assume the user will not give you their location
+假设用户不会给你他们的位置
+
+It might be a pain, but many of your users will not want to give you their location so you need to adopt a defensive development style.
+这可能挺痛苦，但是你的很多用户都不想把位置暴露给你，所以你得采取保守的开发样式。
+
+  ·Handle all errors out of the geolocation API so that you can adapt your site to this condition
+  处理好geolocation API的错误，就能让你的网站适应这些条件
+  ·Be clear and explicit about your need for the location
+  使你对位置的需要清晰又明确
+  ·Use a fallback solution if needed.
+  如果需要准备撤退方案
+
+Use a fallback if geolocation is required
+在geolocation被请求时要有退路
+
+Our recommendation is to not tie your site or application in to requiring access to the user’s current location, but if your application or site absolutely requires it there are 3rd party solutions that allow you to obtain a best guess of where the person currently is.
+我们的推荐是不要把网站或应用与对用户当前位置的访问需求绑定，但如果你的应用或网站绝对需要的话有一些第三方解决方案可以让你获得对当前用户位置最好的推测。
+
+These solutions often work by looking at the user’s IP address and mapping that to the physical addresses registered with the RIPE database. These locations are often not very accurate normally giving you a position of the nearest telecommunications hub to the user, or the nearest cell phone tower. In many cases they might not even be that accurate, especially if the user is on VPN or some other proxy service.
+这些方案通常是通过查找用户的IP地址映射到在RIPE数据库中注册的物理地址上。这些位置通常不是很精准一般会给你一个离用户最近的电信出口，或者最近的通信基站。很多情况下连精准都算不上，特别是当用户使用VPN或其他的代理服务时。
+
+
+
+
+
 
 
 
