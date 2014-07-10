@@ -295,12 +295,32 @@ Our recommendation is to not tie your site or application in to requiring access
 These solutions often work by looking at the user’s IP address and mapping that to the physical addresses registered with the RIPE database. These locations are often not very accurate normally giving you a position of the nearest telecommunications hub to the user, or the nearest cell phone tower. In many cases they might not even be that accurate, especially if the user is on VPN or some other proxy service.
 这些方案通常是通过查找用户的IP地址映射到在RIPE数据库中注册的物理地址上。这些位置通常不是很精准一般会给你一个离用户最近的电信出口，或者最近的通信基站。很多情况下连精准都算不上，特别是当用户使用VPN或其他的代理服务时。
 
+Always request access to location on a user gesture
+请求访问位置信息一定要取得用户同意
 
+Never try to request access to the user’s current location on page load (like in the following picture). There is no context for the reason why the site is requesting the user’s current location.
+千万不要试图在页面加载的时候请求访问用户当前位置(像下图中那样)。没有上下文说明为什么网站要请求用户的当前位置。
 
+The user hasn’t had time to read the page and understand the context of the request. Instead wait for a user gesture on an action that the user would expect to trigger a request.
+用户没有时间查看页面并理解请求的上下文。不必在一项行为上等待用户同意，他们会想触发一个请求。
 
+Instead you should give the user a clear call-to-action or an indication that an operation will require access to their location. The user will then be able to more easily associate the system prompt for access with the action they just initiated.
+你应该给用户一个清晰的号召或指引表明一个操作将请求访问他们的位置。用户就会更容易把他们刚发起的行为与系统的访问提示结合起来。
 
+Give clear indication that an action will request their location
+给出清晰的指示表明该行为会请求他们的位置
 
+In a study by the Google Ads team, when users were asked to book a hotel room in Boston for an upcoming conference on one particular hotels site, they were prompted to share their GPS location immediately after tapping the ‘Find and Book’ call-to-action on the homepage.
+在Google Ads团队的研究中，当用户为了近期的会议而在某个酒店网站上预订Boston的酒店房间时，在按下“查找并预订”后马上他们会被提示分享他们的GPS位置。
 
+In some cases users became frustrated because they struggled to understand why she was being shown hotels in San Francisco when she wanted to book a room in Boston.
+某些情况下用户变得很沮丧因为他们困惑于为什么当她想订Boston的房间却显示San Francisco的酒店。
+
+A better experience is to make sure the user understands why you’re asking them for location. Add in a well known signifier that is common across devices, such as range finder.
+更好的体验是让用户明确理解为什么你要问他们的位置。加上一个广为人知的各设备通用的符号，比如一个测距仪。
+
+Or consider a very explicit call to action such as “Find Near Me.”
+或者考虑用明显的操作比如“在我附近查找”。
 
 
 
