@@ -1,4 +1,90 @@
+Click to call
+点击拨号
 
+On devices with phone capabilities, make it easy for users to directly connect with you by simply tapping a phone number, more commonly known as click to call.
+在有电话功能的设备上，让用户在电话号码上点击就可以直接与你联系，通常被称为点击拨号。
 
+In this guide
+本节主要内容
 
+  ·Link telephone numbers for click to call
+  给电话号码加上链接以实现点击拨号
+  ·Use the international dialing format
+  使用国际拨号格式
+  ·Disable auto-detection when necessary
+  必要的话禁用自动探测
+  ·Other click to call features
+  其他点击拨号特色
 
+TL;DR
+简而言之
+
+  ·Wrap all phone numbers in hyperlinks with the tel: schema
+  将所有电话号码用tel:模式超链接包起来
+  ·Always use the international dialing format
+  总是使用国际拨号格式
+
+Link telephone numbers for click to call
+给电话号码加上链接以实现点击拨号
+
+While many modern mobile browsers will automatically detect phone numbers and convert them to links, it’s a good idea to do this directly in your code. By manually tagging each phone number, you can ensure phone numbers are always enabled for click to call and that they will be styled to match your site.
+很多现代移动浏览器都会自动探测电话号码并把它们转化成链接，直接在你的代码里做到这些是个好主意。通过给每个电话号码加标签，你可以确保电话号码都能点击拨号而且它们也会样式化以匹配你的网站。
+
+To mark a phone number as a link, use the tel: scheme. The syntax is simple:
+为将电话号码标记为链接，使用tel:模式。语法很简单：
+
+NIST Telephone Time-of-Day Service <a href="tel:+1-303-499-7111">+1 (303) 499-7111</a>
+
+On most devices with telephone capabilities, the user will receive a confirmation before the number is dialed, to ensure users are not being tricked into calling expensive long distance or premium phone numbers. When the device doesn’t support phone calls, users may be presented with a menu allowing them to choose how the browser should handle the number.
+在大多数有电话功能的设备上，在拨号之前用户会看到确认信息，以确保用户不会被欺骗来拨打昂贵的长途或增值服务电话号码。在设备不支持拨打电话的时候，可能会给用户呈现一个菜单让他们选择浏览器应该如何处理这个号码。
+
+Desktop browsers that don’t support voice calls will open the default telephony app on the computer, for example Google Voice or Microsoft Communicator.
+不支持语音通话的桌面浏览器会打开电话上的默认电话应用，比如Google Voice或Microsoft Communicator。
+
+Use the international dialing format
+使用国际拨号格式
+
+Always supply the phone number using the international dialing format: the plus sign (+), country code, area code and number. While not absolutely necessary, it’s a good idea to separate each segment of the number with a hyphen (-) for easier reading and better auto-detection.
+总是用国际拨号格式提供电话号码：加号(+)、国家码、区号和号码。不是绝对必要，但把每段号码用减号(-)分隔是个好主意，提高易读性并能更好的自动探测。
+
+Using a hyphenated international dialing format ensures that no matter where the user is calling from, whether a few hundred meters away or thousands of kilometers, their call will be connected.
+使用连字符连接的国际拨号格式能确保不管用户从哪拨打，几百米或几千公里，他们的拨号都能连接。
+
+Disable auto-detection when necessary
+必要的话禁用自动拨号
+
+Modern mobile browsers will automatically detect phone numbers and enable click to call. Mobile Safari automatically converts phone numbers to links with the associated hyperlink styles. Chrome for Android will automatically detect phone numbers and will allow users to click to call, but does not wrap them in hyperlinks or apply any special styles.
+现代移动浏览器将自动探测电话号码而且允许点击拨号。移动版Safari把电话号码自动转换成有超级链接样式的链接。Android版的Chrome将自动探测电话号码而且允许用户点击拨号，但是不会用超链接包住也不应用任何特殊样式。
+
+To prevent Mobile Safari from automatically detecting phone numbers, add the following meta tag to the top of the page:
+为阻止移动版Safari自动探测电话号码，在页面顶部加入下面的meta标签：
+
+<meta name="format-detection" content="telephone=no">
+
+Other click to call features
+其他点击拨号特色
+
+In addition to the tel: schema, some modern browsers also support the sms: and mms: schemas, though support is not as consistent, and some features like setting the message body don’t always work.
+除了tel:模式，一些现代浏览器也支持sms:和mms:模式，不过支持不是一致的，而且一些特色像设置消息体经常不能运行。
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
