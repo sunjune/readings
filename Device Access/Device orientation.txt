@@ -65,21 +65,174 @@ gamma: The rotation around the y axis and is 0° when the left and right of the 
 gamma：围绕y轴的旋转当设备的左右两边与地面距离相等时为0°。当设备的右侧向地面倾斜时gamma值增加。
 
 
+========================
+Device orientation
+设备方向
+========================
 
+The device orientation event returns rotation data, which includes how much the device is leaning front-to-back, side-to-side and if the phone or laptop has a compass, the direction the device is facing.
+设备方向事件返回旋转值，包括设备前后左右的倾斜程度，如果手机和平板有指南针的话还有设备面向的方向。
 
+In this guide
+本节主要内容
 
+  ·When to use device orientation events
+  何时使用设备方向事件
+  ·Check for support and listen for events
+  检查是否支持并监听事件
+  ·Handle the device orientation events
+  处理设备方向事件
 
+TL;DR
+简而言之
 
+  ·Use sparingly
+  谨慎使用
+  ·Test for support
+  测试是否支持
+  ·Don't update the UI on every orientation event, instead sync to requestAnimationFrame
+  不要在每个方向事件中更新UI，而是同步给requestAnimationFrame
 
+When to use device orientation events
+何时使用设备方向事件
 
+There are several uses for device orientation events. For example:
+设备方向事件有很多用途。比如：
 
+  ·Update a map as the user moves.
+  在用户移动时更新地图。
+  ·Subtle UI tweaks, for example adding paralax effects.
+  细微优化UI，例如加入视差效果。
+  ·Combined with GeoLocation, can be used for turn by turn navigation.
+  与地理位置结合，可用于逐步导航。
 
+Check for support and listen for events
+检查支持程度并监听事件
 
+To listen for DeviceOrientationEvent, first, check to see if the events are supported in the browser. Then, attach an event listener to the window object listening for deviceorientation events.
+为了监听DeviceOrientationEvent，首先检查浏览器是否支持该事件。然后，给window对象绑定deviceorientation事件监听器。
 
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', deviceOrientationHandler, false);
+      document.getElementById("doeSupported").innerText = "";
+    }
+    
+Handle the device orientation events
+处理设备方向事件
 
+The device orientation event fires when the device moves, or changes orientation. It returns data about the difference between the device in it’s current position in relation to the Earth coordinate frame.
+当设备移动或改变方向时发起设备方向事件。它返回设备当前位置与地球坐标系(https://developers.google.com/web/fundamentals/device-access/device-orientation/index.html#earth-coordinate-frame)之间的差值数据。
 
+The event typically returns three properties, alpha, beta, and gamma. On Mobile Safari, and additional parameter webkitCompassHeading is returned with the compass heading.
+事件典型的返回三个属性，alpha、beta以及gamma。在移动版Safari上，还返回一个额外的参数webkitCompassHeading(https://developer.apple.com/library/safari/documentation/SafariDOMAdditions/Reference/DeviceOrientationEventClassRef/DeviceOrientationEvent/DeviceOrientationEvent.html)。
 
+=====================
+Device motion
+设备运动
+=====================
 
+Device motion provides information about force of acceleration being applied to the device at a given moment, and the rate of rotation.
+设备运行提供指定时刻作用在设备上的加速度，以及旋转速度。
 
+In this guide
+本节主要内容
 
+  ·When to use device motion events
+  何时使用设备运动事件
+  ·Check for support and listen for events
+  检查是否支持并监听事件
+  ·Handle the device motion events
+  处理设备运动事件
+
+TL;DR
+简而言之
+
+  ·Use device motion for when the current motion of the device is needed.
+  在需要设备当前运动状态情况时使用设备运动事件
+  ·rotationRate is provided in °/sec.
+  rotationRate的单位是 度/秒。
+  ·acceleration and accelerationWithGravity is provided in m/sec2.
+  加速度和重力加速度单位是 米/平方秒。
+  ·Be aware of differences between browser implementations.
+  要意识到浏览器之间执行的不同
+
+When to use device motion events
+何时使用设备运动事件
+
+There are several uses for device motion events. For example:
+有很多种设备运动事件。例如：
+
+  ·Shake gesture to refresh data.
+  摇动更新数据
+  ·In games to cause characters to jump or move.
+  在游戏里使得角色跳起或移动
+  ·For health and fitness apps
+  健康和健身应用
+
+Check for support and listen for events
+检查是否支持并监听事件
+
+To listen for DeviceMotionEvents, first, check to see if the events are supported in the browser. Then, attach an event listener to the window object listening for devicemotion events.
+为了监听DeviceMotionEvents，首先，查看事件是否被浏览器支持。然后，给window对象绑定devicemotion事件监听器。
+
+    if (window.DeviceMotionEvent) {
+      window.addEventListener("devicemotion", deviceMotionHandler);
+      setTimeout(stopJump, 3*1000);
+    }
+
+Handle the device motion events
+处理设备运动事件
+
+The device motion event fires on a regular interval and returns data about the rotation (in ° per second) and acceleration (in m per second2) of the device, at that moment in time. Some devices do not have the hardware to exclude the effect of gravity.
+设备运动事件以规律的间隔发起，并返回那一时刻设备的旋转数据(以每秒多少度)和加速度数据(以每平方秒多少米)。有些设备没有排除重力影响的硬件。
+
+The event returns four properties, accelerationIncludingGravity, acceleration, which excludes the effects of gravity, rotationRate and interval.
+事件返回4个属性，accelerationIncludingGravity、acceleration(它排除了重力的影响)、rotationRate以及interval。
+
+For example, let’s take a look at a phone, lying on a flat table, with it’s screen facing up.
+举例来看，让我们来看看一个手机，放在水平的桌面上，屏幕向上。
+
+State	Rotation	Acceleration (m/s2)	Acceleration with gravity (m/s2)
+  
+  Not moving	[0, 0, 0]	[0, 0, 0]	[0, 0, 9.8]
+  放着不动
+  Moving up towards the sky	[0, 0, 0]	[0, 0, 5]	[0, 0, 14.81]
+  向上拿起
+  Moving only to the right	[0, 0, 0]	[3, 0, 0]	[3, 0, 9.81]
+  只向右移动
+  Moving up & to the right	[0, 0, 0]	[5, 0, 5]	[5, 0, 14.81]
+  向上向右移动
+
+Conversely, if the phone were held so the screen was perpendicular to the ground, and was directly visible to the viewer:
+相反的，如果手机被拿起于是屏幕垂直于地面，而且直接对着观察者：
+
+State	Rotation	Acceleration (m/s2)	Acceleration with gravity (m/s2)
+
+  Not moving	[0, 0, 0]	[0, 0, 0]	[0, 9.81, 0]
+  放着不动
+  Moving up towards the sky	[0, 0, 0]	[0, 5, 0]	[0, 14.81, 0]
+  向上拿起
+  Moving only to the right	[0, 0, 0]	[3, 0, 0]	[3, 9.81, 0]
+  只向右移动
+  Moving up & to the right	[0, 0, 0]	[5, 5, 0]	[5, 14.81, 0]
+  向上向右移动
+
+Sample: Calculating the maximum acceleration of an object
+示例：计算一个对象的最大加速度
+
+One way to use device motion events is to calculate the maximum acceleration of an object. For example, what’s the maximum acceleration of a person jumping.
+使用设备运动事件的一个方式是计算一个对象的最大加速度。例如，一个人起跳的最大加速度是多少。
+
+    if (evt.acceleration.x > jumpMax.x) {
+      jumpMax.x = evt.acceleration.x;
+    }
+    if (evt.acceleration.y > jumpMax.y) {
+      jumpMax.y = evt.acceleration.y;
+    }
+    if (evt.acceleration.z > jumpMax.z) {
+      jumpMax.z = evt.acceleration.z;
+    }
+
+After tapping the Go! button, the user is told to jump! During that time, the page stores the maximum (and minimum) acceleration values, and after the jump, tells the user their maximum acceleration.
+在按下Go!按钮后，用户拿着手机起跳！在这段时间里，页面保存了最大(和最小)加速度值，跳完以后，告诉用户他们最大的加速度。
 
