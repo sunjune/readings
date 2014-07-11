@@ -279,11 +279,11 @@ Assume the user will not give you their location
 It might be a pain, but many of your users will not want to give you their location so you need to adopt a defensive development style.
 这可能挺痛苦，但是你的很多用户都不想把位置暴露给你，所以你得采取保守的开发样式。
 
-  ·Handle all errors out of the geolocation API so that you can adapt your site to this condition
+  01 Handle all errors out of the geolocation API so that you can adapt your site to this condition
   处理好geolocation API的错误，就能让你的网站适应这些条件
-  ·Be clear and explicit about your need for the location
+  02 Be clear and explicit about your need for the location
   使你对位置的需要清晰又明确
-  ·Use a fallback solution if needed.
+  03 Use a fallback solution if needed.
   如果需要准备撤退方案
 
 Use a fallback if geolocation is required
@@ -323,15 +323,60 @@ Or consider a very explicit call to action such as “Find Near Me.”
 或者考虑用明显的操作比如“在我附近查找”。
 
 
+Gently nudge the user to grant permission to their location
+温和地劝说用户来获得他们位置的权限
 
+You don’t have access to any of the steps of what the user is doing. You know exactly when the user disallows access to their location, but you don’t know when they grant you access, you only know you obtained access when results appear.
+It is good practice to “tickle” the user into action if you need them to complete the action.
+你对用户所做的任何步骤都没有访问到。用户不允许访问他们的位置时你会明确地知道，但是你不知道什么时候他们准许你访问，在结果出现时你只知道被获准访问了。如果你需要用户来完成某项行为那么好的做法是去“取悦”用户。
 
+We recommend:
+我们推荐：
 
+  01 Setup a timer that will trigger after a short period - 5 seconds is a good value
+  设置一个在短时期内触发的计时器 - 5秒是个不错的值
+  02 If you get an error message show a message to the user
+  如果你得到一个错误消息，给用户显示一个消息
+  03 If you get a positive response, disable the timer and process the results
+  如果你得到一个明确的响应，禁用计时器并处理结果
+  04 If after the timeout you haven’t got a positive response show a notification to the user
+  如果在超时之后你还没得到明确的响应，给用户显示一个提示信息
+  05 If the response comes in later and the notification is still present remove it from the screen
+  如果响应来得很晚而且提示还在，将它从屏幕上移除
 
+button.onclick = function() {
+  var startPos;
+  var element = document.getElementById("nudge");
 
+  var showNudgeBanner = function() {
+    nudge.style.display = "block";
+  };
 
+  var hideNudgeBanner = function() {
+    nudge.style.display = "none";
+  };
 
+  var nudgeTimeoutId = setTimeout(showNudgeBanner, 5000);
 
+  var geoSuccess = function(position) {
+    hideNudeBanner();
+    // We have the location, don't display banner
+    clearTimeout(nudgeTimeoutId); 
 
+    // Do magic with location
+    startPos = position;
+    document.getElementById('startLat').innerHTML = startPos.coords.latitude;
+    document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+  };
+  var geoError = function(error) {
+    switch(error.code) {
+      case error.TIMEOUT:
+        // The user didn't accept the callout
+        showNudgeBanner();
+        break;
+    }
+  };
 
-
+  navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
+};
 
