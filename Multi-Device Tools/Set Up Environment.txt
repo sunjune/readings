@@ -1,3 +1,22 @@
+Set Up Environment
+搭建环境
+
+Set up your environment to include a good editor, debugging tools, and build tools for the multi-device web. The Web Starter Kit provides tools for building responsive and performant sites.
+搭建你的环境，包括好的编辑器、debug工具以及为跨设置网页准备的构造工具。Web Starter Kit提供了构造响应式和高效网站的工具。
+
+A good development environment sets you up for success.
+一个好的开发环境能帮你走向成功。
+
+A great editor lets you code efficiently and helps you identify issues quickly; Developers tools that integrate into the browser let you quickly check that the code you create produces the correct output across all browsers; and a bootstrapper lets you start your project that follows all the best practices in seconds.
+一个好的编辑器让你高效地写代码并能快速定位问题；内置的开发人员工具让你能快速检查你写的代码为所有浏览器产生正确的输出；引导程序能让你在瞬间以最佳实践来开始你的项目。
+
+==========================
+Choose a Good Editor
+选择好的编辑器
+==========================
+
+Your code editor is your main development tool; you use it to write and save lines of code. Write better code faster by learning your editor's shortcuts and installing key plugins.
+你的代码编辑器是你的主要开发工具；你用它编写并保存代码。通过学习编辑的快捷方式并安装关键插件来写得又好又快。
 
 
 
