@@ -1,3 +1,19 @@
+Device orientation
+设备方向
+
+Device motion and orientation events provide access to the built in accelerometer, gyroscope and compass in mobile devices.
+设备运动和方向事件支持访问移动设备内置的加速计、陀螺仪和指南针。
+
+These events can be used in for many purposes; for example in gaming to control the direction of character, or to determine how high a character should jump. When used with GeoLocation, it can create a more accurate turn-by-turn navigation system or provide information about where a store is.
+这些事件可用于很多目的；例如在游戏中控制角色的方向，或测定一个角色应该跳多高。在配合地理位置使用的时候，它能创建更精确的逐步导航系统或提供关于一个商店在哪里的信息。
+
+Warning
+警告
+
+  ·Use extreme caution when deciding to use device motion or device orientation events. Unfortunately not all browsers use the same coordinate system, and may report different values under identical situations.
+  在决定使用设备运动和方向事件的时候一定要格外小心。不幸的是不是所有的浏览器都使用相同的坐标系统，而且可能在同一条件下同的值。
+
+
 
 
 
