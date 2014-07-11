@@ -125,7 +125,7 @@ Always Handle Errors
 总是要处理错误
 
 Unfortunately, not all location lookups are successful. Perhaps a GPS could not be located or the user has suddenly disabled location lookups. A second, optional, argument to getCurrentPosition() will be called in the event of an error, so you can notify the user inside the callback:
-不幸的是，不是所有的定位都能成功。也许GPS无法定位或用户突然禁用了定位。一秒钟后，可选的，getCurrentPosition()的参数将被一个错误事件调用，这样你就能注意到回调里的用户。
+不幸的是，不是所有的定位都能成功。也许GPS无法定位或用户突然禁用了定位。一秒钟后，可选的，getCurrentPosition()的参数将被一个错误事件调用，这样你就能在回调里提示用户。
 
 window.onload = function() {
   var startPos;
@@ -238,8 +238,10 @@ window.onload = function() {
   navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
 };
 
+=====================================================
 Getting the user to consent to location sharing
 让用户同意分享位置
+=====================================================
 
 As a web developer, having access to the user's location opens up a huge number of possibilities such as advanced filtering, pinpointing the user on a map, and offering them pro-active suggestions on things they can do based on their current position.
 作为web开发者，对用户位置的访问展开了大量的可能性比如高级过滤、在地图上对用户精准定位、以及基于他们的当前位置为他们一些可做的事情的建议。
@@ -378,5 +380,101 @@ button.onclick = function() {
   };
 
   navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
+};
+
+
+==============================
+Monitor the user's location
+监控用户位置
+==============================
+
+The Geolocation API lets you watch where the user is and keep tabs on them as they move around, always with the user's consent.
+Geolocation API能让你观察用户在哪并在他们四处移动的时候保持给他们的标签，总是要取得用户的同意。
+
+In this guide
+本节主要内容
+
+  ·When to use Geolocation to watch the user’s location
+  何时使用Geolocation来观察用户位置
+  ·Watching the users location
+  持续观察用户位置
+  ·Always clear up and conserve battery
+  总是消除并节省电量
+  ·Always Handle Errors
+  总是处理错误
+
+The API is device-agnostic; it doesn’t care how the browser determines location, so long as clients can request and receive location data in a standard way. The underlying mechanism might be via GPS, wifi. Since any of these lookups is going to take some time, the API is asynchronous; you pass it a callback method whenever you request a location.
+API是设备无关的；它不关心浏览器如何确定位置，只要客户端能请求并以标准方法接收到位置数据。底层的机制或许是通过GPS、wifi等。因为所有这些查询都是要花上一些时间的，所以API是异步的；在你请求位置的时候你给它一个回调方法。
+
+TL;DR
+简而言之
+
+  ·Check for Compatibility before you use the API
+  在你使用API之前检查兼容性
+  ·Minimize the use of watching the user's location to save battery
+  最小化对观察用户位置的使用以节省电量
+  ·Always handle errors
+  总是要处理错误
+
+When to use Geolocation to watch the user’s location
+何时使用Geolocation来观察用户位置
+
+  ·You want to obtain a more precise lock on the user location
+  你想要获得更精确地锁定用户位置
+  ·Your application needs to update the user interface based on new location information
+  你的应用需要基于新的位置信息来更新用户界面
+  ·You applications needs to update business logic when the user enters a certain defined zone
+  你的应用需要在用户进入某些指定区域时更新商业逻辑
+
+Watching the users location
+持续观察用户位置
+
+The Geolocation API allows you to obtain the user’s location (with user consent) with a single call to getCurrentPosition().
+Geolocation API允许你通过单独调用 getCurrentPosition()获得用户的位置(需要用户同意)。
+
+If you want to continually monitor the location of the user, the geolocation API has a method called watchPosition(). It operates in a similar way to getCurrentPosition() yet it will fire multiple times as the positioning software:
+如果你想持续地监控用户位置，geolocation API有一个叫watchPosition()的方法。它以简单的方法操作getCurrentPosition()而且像定位软件一样多次发起。
+
+  01 Gets a more accurate lock on the user
+  对用户更精确锁定
+  02 The user’s position changes.
+  用户的位置在变化
+
+var watchId = navigator.geolocation.watchPosition(function(position) {
+  document.getElementById('currentLat').innerHTML = position.coords.latitude;
+  document.getElementById('currentLon').innerHTML = position.coords.longitude;
+});
+
+Always clear up and conserve battery
+总是清除以节省电量
+
+Watching for changes to a geolocation is not a free operation. Whilst operating systems might be introducing platform features to let applications hook in to the geo subsystem, you as a web developer have no idea what support the user’s device has for monitoring the user’s location and whilst you are watching a position you are engaging the device in a lot of extra processing
+持续观察地理位置的变化不是个自由的操作。操作系统可能引入平台特征以让应用与定位子系统挂钩，你作为web开发人员，完全不知道用户设备对监控用户位置的支持，而且你在持续定位的时候你要做大量额外的处理。
+
+Once you have no need to track the user’s position call clearWatch to turn of the geolocation systems.
+当你不需要跟踪用户位置的时候调用clearWatch来关闭地理位置系统。
+
+Always Handle Errors
+总是处理错误
+
+Unfortunately, not all location lookups are successful. Perhaps a GPS could not be located or the user has suddenly disabled location lookups. A second, optional, argument to getCurrentPosition() will be called in the event of an error, so you can notify the user inside the callback:
+不幸的是，不是所有的定位都能成功。也许GPS无法定位或用户突然禁用了定位。一秒钟后，可选的，getCurrentPosition()的参数将被一个错误事件调用，这样你就能在回调里提示用户。
+
+window.onload = function() {
+  var startPos;
+  var geoSuccess = function(position) {
+    startPos = position;
+    document.getElementById('startLat').innerHTML = startPos.coords.latitude;
+    document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+  };
+  var geoError = function(position) {
+    console.log('Error occurred. Error code: ' + error.code);
+    // error.code can be:
+    //   0: unknown error
+    //   1: permission denied
+    //   2: position unavailable (error response from location provider)
+    //   3: timed out
+  };
+  navigator.geolocation.watchPosition(geoSuccess, geoError);
 };
 
