@@ -14,6 +14,72 @@ Warning
   在决定使用设备运动和方向事件的时候一定要格外小心。不幸的是不是所有的浏览器都使用相同的坐标系统，而且可能在同一条件下同的值。
 
 
+Which end is up?
+哪一端在上面？
+
+In order to use the data returned by the device orientation and motion events, it is important to understand the values provided.
+为了使用设备方向和运动事件返回的数据，理解提供的值是很重要的。
+
+Earth coordinate frame
+地球坐标系
+
+The Earth coordinate frame, described by the values X, Y and Z, are aligned based on gravity and standard magnetic orientation.
+地球坐标系，以X，Y和Z值来描述，对齐重力和标准磁场方向。
+
+  ·X: represents the east-west direction (where east is positive).
+  X：呈现东西方向(东边是正极)
+  ·Y: represents the north-south direction (where north is positive).
+  Y：呈现南北方向(北边是正极)
+  ·Z: represents an up-down direction, perpendicular to the ground (where up is positive).
+  Z：呈现上下方向，与地面垂直(上边是正极)
+
+Device coordinate frame
+设备坐标系
+
+The device coordinate frame described by the values x, y and z are aligned based on the center of the device.
+以x，y和z值描述的设备坐标系与设备的中心对齐。
+
+  ·x: in the plane of the screen, positive to the right.
+  在屏幕平面上，右边是正极
+  ·y: in the plane of the screen, positive towards the top.
+  在屏幕平面上，向顶部是正极
+  ·z: perpendicular to the screen or keyboard, positive extending away.
+  垂直于屏幕或键盘，远离的方向是正极
+
+On a phone or tablet, the orientation of the device is based on the typical orientation of the screen. For phones and tablets, it is based on the device being in portrait mode. For desktop or laptop computers, the orientation is considered in relation to the keyboard.
+在手机或平板上，设备方向典型的是基于屏幕方向。对于手机和平板，是以设备在画像模式为准。对于桌面或膝上型电脑，方向被认为和键盘有关。
+
+Rotation data
+旋转数据
+
+Rotation data is returned as a Euler angle, representing the number of degrees of difference between the device’s coordinate frame and the Earth coordinate frame.
+旋转数据是以欧拉角的形式返回的，描述设备坐标系与地球坐标系之间的角度差值。
+
+alpha: The rotation around the z axis and is 0° when the top of the device is pointed directly north. As the device is rotated counter-clockwise the `alpha` value increases.
+alpha：围绕z轴的旋转当设备的顶部指向北边时为0°。当设备逆时针旋转时alpha值增加。
+
+beta: The rotation around the x axis and is 0° when the top and bottom of the device are equidistant from the surface of the earth. The value increases as the top of the device is tipped toward the surface of the earth.
+beta：围绕x轴的旋转当设备的顶部和底部与地面距离相等时为0°。当设备的顶部向地面倾斜时beta值增加。
+
+gamma: The rotation around the y axis and is 0° when the left and right of the device are equidistant from the surface of the earth. The value increases as the the right side is tipped towards the surface of the earth.
+gamma：围绕y轴的旋转当设备的左右两边与地面距离相等时为0°。当设备的右侧向地面倾斜时gamma值增加。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
