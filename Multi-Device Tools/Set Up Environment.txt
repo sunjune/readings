@@ -18,6 +18,94 @@ Choose a Good Editor
 Your code editor is your main development tool; you use it to write and save lines of code. Write better code faster by learning your editor's shortcuts and installing key plugins.
 你的代码编辑器是你的主要开发工具；你用它编写并保存代码。通过学习编辑的快捷方式并安装关键插件来写得又好又快。
 
+In this guide
+本节主要内容
+
+  ·Truly learn to use your editor
+  深入学习如何使用编辑器
+  ·Install the package manager
+  安装扩展包管理器
+  ·There’s a plugin for that
+  有插件是干那个的
+
+TL;DR
+简而言之
+
+  ·Choose an editor that lets you customize short-cuts and has lots of plugins to help you write better code.
+  选一个编辑器能够定制快捷方式并有大量的插件可以让你写出更好的代码。
+  ·Consider installing a package manager to make it easier to discover, install, and update plugins.
+  考虑安装扩展包管理器让你更容易发现、安装和升级插件。
+  ·Use the package manager to install plugins that help keep you productive during development; start with the recommendations in this guide.
+  使用扩展包管理器来安装让你在开发时保持高产的插件；以本教程的推荐开始吧。
+
+Truly learn to use your editor
+深入学习使用你的编辑器
+
+Code editors are the quintessential development tool. But what makes an editor more than a simple word processor are its shortcuts that get you working faster.
+代码编辑器是开发工具的精髓。但是让编辑器有别于简单字处理器的是它的快捷方式给你工作带来的便利。
+
+You know you’ve truly learned to use your editor when you are able to quickly move around your code using a range of keyboard short-cuts and editor commands. It’s always good to keep a cheatsheet handy for editor commands. Top editors also let you customize commands and keyboard shortcuts so that you only have to remember your own implementations.
+你知道在你深入学习了编辑器的使用之后你就能用一系列键盘快捷方式和编辑命令在你的代码中快速游移。对编辑器命令做个备忘单总是能派上用场的。最好的编辑器能让你定制命令和键盘快捷方式而你只要记住自己的执行方式即可。
+
+Sublime is a great editor with tons of plugins to help you write better code faster. It also has a package manager that makes it easy to install new plugins. Though Sublime costs money, you can try it for free and this guide assumes Sublime as the default editor of choice.
+Sublime(http://www.sublimetext.com/)是一款非常棒的编辑器，有无数的插件可以帮你把代码写得更好更快。它也有扩展包管理器非常容易安装新插件。虽然Sublime是收费的，但你可以试用它的免费版，本教程假设Sublime是你的默认编辑器选择。
+
+Note
+切记
+
+Rob Dodson's blog post on how to get to know and love Sublime is a great reference for getting the most out of your editor. The concepts are relevant to any text editor, not just Sublime.
+Rob Dodson关于如何了解并爱上Sublime的博客文章(http://robdodson.me/blog/2012/06/23/sublime-text-2-tips-and-shortcuts/)是一篇如何有效利用你的编辑器的非常棒的参考。这些概念适用于任何文本编辑器，不仅是Sublime。
+
+Install the package manager
+安装扩展包管理器
+
+Package managers make it easy to find, install, and keep packages / plugins up-to-date.
+扩展包管理器将查找、安装以及保持扩展包/插件更新变得很容易。
+
+Here’s a sneak peak at what you can do with the Sublime Text package manager.
+到这里看看能用Sublime扩展包管理器做什么。(https://sublime.wbond.net/)
+
+
+There’s a plugin for that
+有插件是干那个的
+
+Plugins help you stay more productive. What are the things you keep having to go back out to other tools to do?
+Linting - there’s a plugin for that. Showing what changes haven’t been committed - there are plugins for that. Integration with other tools, such as GitHub, there are plugins for that.
+
+
+Package managers make it very easy to find, install, and update plugins. In the Sublime editor, open your package manager (ctrl+shift+p), enter ‘Install Package’, and then enter the name of the plugin you are looking for (or else browse all plugins).
+
+
+Check out these trending lists of Sublime plugins. Here are the plugins we love and recommend you install because they help you speed up your development:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
