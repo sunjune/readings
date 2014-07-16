@@ -71,20 +71,125 @@ There’s a plugin for that
 
 Plugins help you stay more productive. What are the things you keep having to go back out to other tools to do?
 Linting - there’s a plugin for that. Showing what changes haven’t been committed - there are plugins for that. Integration with other tools, such as GitHub, there are plugins for that.
-
+插件能带给你很多好处。有啥事是你想要通过其他工具来完成的吗？排查错误 - 有插件是做这个的。把提交的改变显示出来 - 有插件做这个。与其他工具结合，比如GitHub，有插件做这个。
 
 Package managers make it very easy to find, install, and update plugins. In the Sublime editor, open your package manager (ctrl+shift+p), enter ‘Install Package’, and then enter the name of the plugin you are looking for (or else browse all plugins).
-
+扩展包管理器使得寻找、安装以及更新插件非常容易。在Sublime编辑器中，打开你的扩展包管理器(ctrl+shift+p)，输入‘Install Package’，然后输入你要找的插件名字(或者浏览所有插件)。
 
 Check out these trending lists of Sublime plugins. Here are the plugins we love and recommend you install because they help you speed up your development:
+查阅Sublime插件趋势列表(https://sublime.wbond.net/browse)。下面是一些我们喜欢并推荐你安装的插件，因为它们可以帮你加快你的开发速度：
+
+Plugin	Description
+
+Autoprefixer	Uses Autoprefixer library to prefix properties and values according to the Can I Use database.
+ColorPicker	Pick any color from the palette.
+Emmet	Web developer toolkit.
+GitGutter	Shows an icon in the gutter area indicating whether a line has been inserted, modified or deleted.
+HTML-CSS-JS Prettify	Formats your HTML, CSS, JavaScript and JSON code so it looks pretty.
+LiveReload	Live reloading browser support. If you're using the Web Starter Kit, you don't need this plugin.
+PolymerSnippets	Keyboard short-cuts to create Polymer and Web Component snippets fast.
+sublime-github	Useful GitHub commands like opening and editing files in GitHub.
+SublimeLinter	Code linter to help you write cleaner and bug-free code.
+Tag	Set of utilities to work with HTML/XML tags.
+Theme - Soda	Dark and light custom UI themes.
+
+===========================
+Set Up Developer Tools
+配置开发工具
+===========================
+
+Learn how to set up essential tools for the multi-device development workflow. Your tools should test your site's responsiveness and performance with minimum manual effort.
+学习如何为多设备开发工作流配置必需的工具。你的工具应该以最少的手工操作来测试网站的响应和性能。
+
+In this guide
+本节主要内容
+
+  ·Tools you need and why
+  你需要的工具以及为什么需要
+  ·Set up aliases for common commands
+  为常用命令设置别名
+  ·Set up responsive tools
+  配置响应工具
+  ·Set up build and live reloading tools
+  配置构造和动态重载工具
+  ·Set up emulation and debugging tools
+  配置模拟和调试工具
+
+TL;DR
+简而言之
+
+  ·Make the command line work for you; create aliases that are easy to remember and fast to type.
+  使用命令行工作，创建别名便于记忆并容易输入。
+  ·Don't check responsive layouts manually; get a tool to resize and capture screen views.
+  不要手动检查响应式布局，找一个工具来调整大小并捕捉屏幕视图。
+  ·Set up build tools that automatically optimize, build, and live reload your testing URL.
+  配置构造工具实现自动优化、构造和动态重载测试URL。
+  ·Don't wait to see your site on a device; use device emulation and remote debugging now not later.
+  不用在你的设备上等着查看网站；使用设备模拟器并马上远程调试。
+
+Tools you need and why
+你所需要的工具以及为什么需要
+
+There’s no shortage of options when it comes to tools in the web development world. There’s often so much choice, it’s daunting. You find the simplest path to building a great site and stick with it as long as it’s working for you.
+在Web开发的世界里就没有缺少选择的时候。经常会有太多可选的，想想就头疼。你就找最简单的办法来建造很棒的网站，只要能用就一直用下去。
+
+But if you want your site to work on small devices with unreliable network connectivity, you must invest the time and effort it takes to learn how to use build tools that will optimize performance and check your site’s responsiveness across devices.
+但是如果你想让你的网站运行在小一些而且网络连接也不稳定的设备上，你就得投入时间和精力用在学习如何搭建那些优化性能和检查网站跨设备响应性的工具上了。
+
+Tools for testing across devices include a combination of actual devices, device emulation, and device debugging tools. It’s kind of scary, the thought of testing your site on any number of devices. But you need to do this and you need the tools to make this possible:
+用于测试跨设备的工具包含实体设备、设备模拟以及设备调试工具的综合。想到要在无数设备上测试网站真是太可怕了。但是你需要这样做而且需要把这些变为可能的工具。
 
 
+Set up aliases for common commands
+为常用命令设置别名
+
+You need to save as much time as you can for the extra effort it takes to test across devices. If you are still looking at a list of command shortcuts every time you make your way into the terminal and/or you are manually typing the same long commands, it’s time to create some short-cuts.
+你需要节省尽可能多的时间用于跨设备测试。如果你每次在终端上都要看着命令快捷键列表以及/或者手工键入同样长的命令，是时候创建一些快捷方式了。
+
+How to create command-line short-cuts
+如何创建命令行快捷方式
+
+The easiest way create command-line short-cuts is to add aliases for common commands to your bashrc file. On Mac or Linux:
+创建命令行快捷方式最简单的办法就是在bashrc文件中给常用命令加别名。在Mac或Linux上：
+
+  ·From the command line anywhere, type open -a 'Sublime Text' ~/.bashrc.
+  在命令行的任意地方，输入open -a 'Sublime Text' ~/.bashrc。
+  ·Add a new alias, for example, alias master='git checkout master'.
+  添加新的别名，例如，alias master='git checkout master'。
+  ·From your source directory, run master.
+  在你的源代码目录里，运行master。
+
+Another slightly more advanced way to create short-cuts is to store dotfiles in GitHub. One major gain: your short-cuts won’t be device dependent.
+另一个稍微高级一点的创建快捷方式的办法是在GitHub里保存dotfile(http://dotfiles.github.io/)。主要的好处是：你的快捷方式将不依赖设备。
+
+Note
+备注
+
+See these instructions for setting up Windows aliases.
+查看关于设置Windows命令行别名(http://msdn.microsoft.com/en-us/library/windows/desktop/ms682057(v=vs.85).aspx)。
 
 
+Set up responsive tools
+配置响应式工具
 
+Checking your site’s responsiveness needn’t be a manual task. Get at least one tool to resize the browser, and preferably one with image capturing so that you can compare multiple views.
+不需要手工检查你的网站响应性。找至少一种来调整浏览器大小的工具，而且最好是能截屏的这样你就能比较多种视图了。
 
+For Chrome, the Responsive Inspect Chrome extension visually shows the media queries of an opened site, including the min-width and max-width of each media query specified in CSS stylesheets. Use this tool to resize the site in the browser and take a screenshot:
+在Chrome上，Responsive Inspect Chrome扩展(http://outof.me/responsive-inspector-beta-released/)能可视化地展示一个网站打开时的媒体侦测，包括每一次在CSS样式表中指定的媒体侦测min-width和max-width。使用这个工具在浏览器中重设网站大小并可以截屏：
 
+To set up and use the extension:
+要配置并使用这个扩展：
 
+  ·Download the extension from the Chrome Web Store.
+  从Chrome Web Store里下载这个扩展。
+  ·On any opened site, press the Responsive Inspect icon in the extension tool bar.
+  在任何一个打开的网站上，在扩展工具栏中点击Responsive Inspect的图标。
+  ·Resize screen and take a screen shot.
+  重设屏幕大小并截屏。
+
+To test on the Firefox browser, enable the Responsive Design View. Use this view to change the size of content area without having to resize the entire browser window.
+要在Firefox浏览器中测试，启用Responsive Design视图。使用该视图改变内容区域大小而不用调整整个浏览器窗口大小。
 
 
 
