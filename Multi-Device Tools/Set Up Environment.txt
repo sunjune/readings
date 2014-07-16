@@ -192,6 +192,27 @@ To test on the Firefox browser, enable the Responsive Design View. Use this view
 要在Firefox浏览器中测试，启用Responsive Design视图。使用该视图改变内容区域大小而不用调整整个浏览器窗口大小。
 
 
+Set up build and live reloading tools
+
+
+Build tools streamline the process of transferring source files to a target result. You want build tools that keep track of your site’s performance; they optimize source files automatically and measure your site’s performance. We recommend Gulp. Other examples include: Grunt, Broccoli, Make.
+
+
+You also want live reloading which will automatically update the page with any changes you make to your HTML, CSS, Javascript and images. No more manual refreshing of the page after every tweak.
+
+
+Examples:
+
+  ·Ghostlab (commercial)
+  
+  ·LiveReload (commercial)
+  
+  ·Adobe Edge Inspect
+  
+  ·Emmet LiveStyle
+  
+
+The Web Starter Kit does all this and more: watches for changes, optimizes files, builds your site, reloads the browser live and synchronizes scrolling, clicks, and navigation across all your devices. Follow the instructions in the next guide to set up the Web Starter Kit.
 
 
 
