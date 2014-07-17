@@ -193,26 +193,61 @@ To test on the Firefox browser, enable the Responsive Design View. Use this view
 
 
 Set up build and live reloading tools
-
+配置构造和动态重载工具
 
 Build tools streamline the process of transferring source files to a target result. You want build tools that keep track of your site’s performance; they optimize source files automatically and measure your site’s performance. We recommend Gulp. Other examples include: Grunt, Broccoli, Make.
-
+构造工具简化将源文件处理成目标结果的过程。你想要持续追踪网站性能的构造工具；它们自动对源文件进行优化并且测量网站性能。我们推荐Gulp(http://gulpjs.com/)。其他还包括：Grunt(http://gruntjs.com/)，Broccoli(https://github.com/broccolijs/broccoli)，Make(http://www.gnu.org/software/make/)。
 
 You also want live reloading which will automatically update the page with any changes you make to your HTML, CSS, Javascript and images. No more manual refreshing of the page after every tweak.
-
+你也想在对HTML、CSS、JavaScript和图片进行修改之后自动更新页面的动态重载。不用每次调整后都手动刷新页面。
 
 Examples:
 
   ·Ghostlab (commercial)
-  
+  Ghostlab(http://vanamco.com/ghostlab/) (商业版)
   ·LiveReload (commercial)
-  
+  LiveReload(http://livereload.com/) (商业版)
   ·Adobe Edge Inspect
-  
+  Adobe Edge Inspect(http://html.adobe.com/edge/inspect/)
   ·Emmet LiveStyle
-  
+  Emmet LiveStyle(http://livestyle.emmet.io/install/)
 
 The Web Starter Kit does all this and more: watches for changes, optimizes files, builds your site, reloads the browser live and synchronizes scrolling, clicks, and navigation across all your devices. Follow the instructions in the next guide to set up the Web Starter Kit.
+这些用Web Starter Kit都可以做到而且还可以做得更多：观察变更、优化文件、构建网站、动态且同步滚动重新加载浏览器、点击以及在你所有的设备上导航。跟随接下来的说明教程来配置Web Starter Kit。
+
+Set up emulation and debugging tools
+配置模块和调试工具
+
+Don’t put off debugging your site across multiple devices. A very simple first step is to set up device emulation that integrates with debugging tools.
+不要在多种设备上直接调试你的网站。非常简单的第一步就是配置整合了调试工具的设备仿真。
+
+Using device emulators, such as iOS Safari Simulator, GenyMotion and the Official Android Emulator for Android devices as well as Modern.ie for versions of IE; you can see how your site works across a range of devices.
+使用设备模拟器，比如iOS Safari Simulator(https://developer.apple.com/library/ios/documentation/IDEs/Conceptual/iOS_Simulator_Guide/Introduction/Introduction.html)、GenyMotion(http://www.genymotion.com/)和官方Android设备模拟器(http://developer.android.com/tools/devices/emulator.html)以及模拟各版本IE的Modern.ie(https://modern.ie/)；你可以看看你的网站在各种设备上表现如何。
+
+Chrome DevTools has a device emulation feature built in which mimics some device behaviors such as screen size, screen density and touch support; learn how to use DevTools emulation.
+Chrome开发工具有内置的设备仿真功能，可以模拟一些设备行为例如屏幕大小、屏幕密度并且支持触摸；在这里(https://developers.google.com/web/fundamentals/tools/test/emulator.html)学习如何使用开发工具的仿真功能。
+
+Emulation is a good start, but it’s no substitute for the real thing. Eventually, preferably as soon as possible, you must debug your site on actual devices. Remote debugging tools let you debug your site on a desktop and see changes on remote devices.
+仿真是个好的开始，但不能代替真机。最终，只要有可能，你必须在真实设备上调试你的网站。远程调试工具可以让你在桌面上调试网站并能看到它在远程设备上的表现。
+
+Here’s a brief comparison of remote debugging options, with links to set-up documentation:
+这里是一个关于远程调试选项的简明对照表，附有配置文档链接：
+
+  Remote Debugging Tool   	Description
+  Chrome DevTools Remote Debugging	Use Chrome DevTools on your development machine to inspect, debug, and analyze browser tabs and WebViews on your Android device.
+  https://developer.chrome.com/devtools/docs/remote-debugging
+  
+  Weinre	Remote debugger for web pages. This is helpful when there is no remote debug tools available for a browser, for example the Android Browser on older devices (pre-KitKat).
+  http://people.apache.org/~pmuellr/weinre/docs/latest/Installing.html
+  
+  Firefox for Android + ADB	Inspect or debug code running in Firefox for Android over USB.
+  https://developer.mozilla.org/en-US/docs/Tools/Remote_Debugging/Firefox_for_Android
+  
+  Safari Web Inspector - Safari on iOS	Debug web content on iOS device directly from your desktop.
+  https://developer.apple.com/library/safari/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/GettingStarted/GettingStarted.html#//apple_ref/doc/uid/TP40007874-CH2-SW1
+
+
+
 
 
 
