@@ -246,15 +246,143 @@ Here’s a brief comparison of remote debugging options, with links to set-up do
   Safari Web Inspector - Safari on iOS	Debug web content on iOS device directly from your desktop.
   https://developer.apple.com/library/safari/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/GettingStarted/GettingStarted.html#//apple_ref/doc/uid/TP40007874-CH2-SW1
 
+=============================
+Set Up Web Starter Kit
+配置Web Starter Kit
+=============================
+
+Follow this guide to set up the Web Starter Kit. Simply pick a layout and start coding. For help building a responsive and performant site, set up the build tools.
+跟随本教程来配置Web Starter Kit。随便选一个布局开始编码。要有助于构建响应式且高性能的网站，把构建工具配置起来。
+
+In this guide
+本节主要内容
+
+  ·Clone repository
+  克隆项目
+  ·Install tooling
+  安装工具集
+  ·Pick a layout
+  挑选布局
+  ·Build the project
+  构建项目
+  ·Review the build output
+  审查构建的输出
+  ·Stage the build output
+  完成构建的输出
+  ·Open emulation tool
+  打开仿真工具
+  ·What’s Next?
+  接下来是什么？
 
 
+TL;DR
+简而言之
+
+  ·Decide how much UX to inherit from the Web Starter Kit. Do you want a responsive layout or a basic boilerplate?
+  决定要从Web Starter Kit继承多少UX。你是想做一个响应式布局还是简单的示例？
+  ·The Web Starter Kit tools are optional, but if you don't have a set of build tools, use them.
+  Web Starter Kit工具是可选的，但是如果你没有一套构造工具，就用它吧。
+  ·Once you've successfully set up the build tools, the site automatically loads in the browser.
+  一旦你成功地配置好了构建工具，网站就会自动在浏览器中加载。
+
+Clone repository
+克隆项目
+
+To use the Web Starter Kit, simply clone the repository or download the latest release and build on what’s included in the app directory:
+为使用Web Starter Kit，只要克隆项目或下载最新的版本并在app目录里构建即可：
+
+git clone https://github.com/google/web-starter-kit.git
+
+$ cd web-starter-kit/app
+
+Install tooling
+安装工具集
+
+If you’re using the Web Starter Kit tools, make sure your system has Node, Ruby, Gulp, and the Sass gem installed.
+如果你在使用Web Starter Kit工具，请确认你的系统里已经安装了Node(http://nodejs.org/)、Ruby(https://www.ruby-lang.org/)、Gulp(http://gulpjs.com/)以及Sass gem(http://sass-lang.com/install)。
+
+Note
+备注
+
+Most of your interactions with the Web Starter Kit will be through the command line. Run commands in the Terminal app if you’re on Mac, your shell in Linux, or cmd.exe if you are on Windows.
+你与Web Starter Kit的大部分交互都是通过命令行进行的。如果你是在Mac里打开终端应用运行命令，如果是Linux在Shell里，如果是Windows在cmd.exe里。
+
+Node
+
+Check if you already have Node installed. Bring up a terminal and type node -v. If Node responds, and if it shows a version at or above v0.10.x, proceed to checking if you have Ruby installed too. If you require Node, go to NodeJS.org and click on the big green Install button.
+检查你是否已经完成了Node的安装。打开终端键入node -v。如果Node有响应，而且如果它显示0.10.x以上的版本，继续检查是否安装了Ruby。如果你需要Node，访问NodeJS.org点击那个大大的绿色Install按钮。
+
+Ruby
+
+Bring up a terminal and type ruby -v. If Ruby responds, and if it shows a version number at or above 1.8.7, then type gem --version. If you don’t see any errors, proceed to installing the Sass gem. If you require Ruby, it can be installed from the Ruby downloads page.
+打开一个终端键入ruby -v。如果ruby有响应，而且如果它显示的版本号在1.8.7以上，然后键入gem --version。如果你看不到任何错误，继续安装Sass gem。如果你需要Ruby，可以从Ruby下载页(https://www.ruby-lang.org/en/downloads/)安装。
+
+Sass gem
+
+Bring up a terminal and type sass -v. If Sass is installed, it should return a version number at or above 3.3.x. If you don’t see any errors, proceed to the Gulp installation. If you need to install Sass, see the command-line instructions on the Sass installation page.
+打开终端键入sass -v。如果Sass已经安装，它会返回3.3.x以上的版本号。如果看不到任何错误，继续进行Gulp的安装。如果需要安装Sass，请参考Sass安装页(http://sass-lang.com/install)的命令行说明。
+
+Gulp
+
+Bring up a terminal and type gulp -v. If Gulp is installed it should return a version number at or above 3.5.x. If you don’t see any errors, proceed to the Gulp commands section. If you need to install Gulp, open up a terminal and type in the following:
+打开终端键入gulp -v。如果Gulp已经安装，它会返回3.5.x以上的版本号。如果你看不到任何错误，继续进行Gulp命令的部分。如果你需要安装Gulp，打开终端键入下面的命令：
+
+$ sudo npm install --global gulp
+
+This will install Gulp globally. Next, install the local dependencies Web Starter Kit requires:
+
+$ cd web-starter-kit $ npm install
+
+That’s it! You should now have everything needed to use the Gulp tools in Web Starter Kit.
 
 
+Pick a layout
+挑选布局
+
+Pick one of these layouts in the web-starter-kit/app folder that most fits your needs:
+在web-starter-kit/app目录里的布局里选一个最适合你需要的：
+
+Starter File	Description
+  index.html	Default starting point. Includes a slide-out menu. To choose this as your starting point, remove the alternative basic.html file.
+  默认的起点。包括滑动菜单。要选择这个作为你的起始点，请把basic.html文件删除。
+
+  basic.html	Very basic starting point. No navigation. Simple, but responsive styles. To choose this as your starting point, remove the alternative index.html file.
+  非常基本的起始点。没有导航。简单，但有响应式的样式。要选择这个作为你的起始点，请把index.html文件删除。
 
 
+Build the project
+构建项目
+
+In the root of the project web-starter-kit, run the gulp tool to build the current project. The first time you run this tool, it creates the project directory: web-starter-kit/dist.
+在web-starter-kit项目的根目录，运行gulp工具来构建当前项目。首次运行该工具，它会创建项目目录：web-starter-kit/dist。
+
+Review the build output
+审核构建输出
+
+Here’s a snapshot of the project files in the web-starter-kit/dist directory:
+这是web-starter-kit/dist目录里的项目文件截屏：
+
+Stage the build output
+完成构建输出
+
+From the web-starter-kit folder, run the gulp serve tool to open up a local staged version of the project (for more information on this tool, see Track code changes and optimize). The tool opens up the build version of your starter file, index.html.
+在web-starter-kit目录下，运行gulp serve工具来打开项目的本地阶段版本(关于该工具的更多信息，请查阅Track code changes and optimize https://developers.google.com/web/fundamentals/tools/build/build_site.html#track-code-changes-and-optimize)。该工具会打开起始文件的构建版本，index.html。
+
+Collapsed and expanded views on desktop:
+
+Default and expanded menu views on mobile:
 
 
+Open emulation tool
 
+
+Once your site is running in a browser, open the Chrome DevTools emulation panel, select a mobile device, and emulate:
+
+
+What’s Next?
+
+
+Now that you’ve set up the Web Starter Kit, try building a site.
 
 
 
