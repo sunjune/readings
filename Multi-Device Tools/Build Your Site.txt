@@ -1,3 +1,53 @@
+Build Your Site
+构建你的网站
+
+Build your multi-device site from the ground up. Learn what a build process is, the tasks to automate, and how to build a site with the Web Starter Kit. Learn how to debug with Chrome Developer Tools.
+从零开始构建你的多设备网站。学习构建的流程，自动化任务以及如果用Web Starter Kit来构建网站。学习如何用Chrome开发人员工具来调试。
+
+Web developers have to think about a million things at once and the build step is one of the most critical, yet most cumbersome to get started with. You have to work out all the tasks that you need to automate such as: Image compression, CSS minification, JavaScript concatenation, Responsive testing, Unit testing, the list goes on…
+Web开发人员要同时思考很多事情，而构建步骤是其中最关键的一件，也是开始最麻烦的事。你得把所有要自动化处理的都做出来，比如：图片压缩、CSS缩小、JavaScript相关的事、响应性测试、单元测试，还有很多…
+
+Follow these guides and learn the best way to structure your workflow so that the sites that you create already follow all the best practices from the minute you start.
+跟随本教程学习构造工作流的最佳途径，这样你创建的网站在你刚开始的那一刻就在按最佳实践进行了。
+
+You can also use Web Starter Kit to begin your projects with an amazing default workflow and great looking templates right out of the box.
+你也可以用Web Starter Kit以不可思议的默认工作流和漂亮的模板来开始你的项目。
+
+===========================
+What Is a Build Process
+什么是构建流程
+===========================
+
+A build process is a set of tasks to compile and test code before deployment. Learn which tasks to include in your build process and why.
+构建流程是一系列在部署之前的编译和测试代码的任务。学习哪些任务要包含在你的构建流程中及其原因。
+
+In this guide
+本节主要内容
+
+  ·How should the build process be used in your workflow?
+  构建流程应该如何用于你的工作流？
+  ·What tasks should the build process automate?
+  何种任务应该是自动化的构建流程？
+  ·Automate testing
+  自动化测试
+  ·Integrate with debugging tools
+  与调试工具结合
+  ·What’s in the Web Starter Kit build process?
+  Web Starter Kit构建流程中有什么？
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
