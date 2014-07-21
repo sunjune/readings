@@ -301,7 +301,17 @@ document.body.appendChild(loadTime);
 Reload the browser:
 重新加载浏览器：
 
+Check performance
+检查性能
 
+Now that you’ve added some html, CSS, and JavaScript, it’s time to checkout how the project is performing.
+现在你已经加入了一些HTML、CSS还有JavaScript，是时候看看项目是怎么执行的了。
+
+The Web Starter Kit integrates with PageSpeed Insights. If you haven’t used PageSpeed Insights, you are about to start.
+Web Starter Kit集成了PageSpeed Insights。如果你还没用过PageSpeed Insights，你该开始用用了。
+
+Once you’ve got a chunk of work done and you want to check your site’s speed and user experience, stop gulp serve (control-C), and run gulp pagespeed:
+一旦你已经完成了主要的工作而且想要检查网站的速度和用户体验，停止gulp serve(control-C)，并且运行gulp pagespeed：
 
 
 
