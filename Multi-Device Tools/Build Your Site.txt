@@ -134,12 +134,172 @@ At a glance, the Web Starter Kit build tools automate these tasks:
 The next section covers the Web Starter Kit build process in detail.
 下一节将详细讲解Web Starter Kit构建过程。
 
+====================================
+Build Site with Web Starter Kit
+以Web Starter Kit构建网站
+====================================
 
+The Web Starter Kit starter files and tools provide most of what you need to incorporate responsive and performance checks as part of your developer workflow. Use this guide to build a site using the Web Starter Kit. Learn how to track code changes, apply responsive styles, optimize, and debug across devices.
+Web Starter Kit初始文件和工具提供了大多数在开发者工作流中把响应和性能检查合并所需要的。利用本教程通过Web Starter Kit来构建一个站点。学习如何跟踪代码变更、应用响应式样式、优化以及跨设备调试。
 
+In this guide
+本节主要内容
 
+  ·Build this sample app
+  构建示例应用
+  ·Track code changes and optimize
+  跟踪代码变更并优化
+  ·Add an image
+  加入图片
+  ·Add CSS
+  加入样式
+  ·Apply UX patterns
+  应用UX模式
+  ·Add JavaScript
+  加入JavaScript
+  ·Check performance
+  检查性能
+  ·Debug your code on multiple devices
+  在多个设备上调试你的代码
+  ·Summary of Web Starter Kit tools
+  Web Starter Kit工具摘要
 
+TL;DR
+简而言之
 
+  ·Don't wait to test how your site looks across devices; check your site's responsiveness as you code.
+  别等着测试你的网站在不同设备上的显示效果；编码的时候就要检查网站的响应性。
+  ·Optimize your site as you code; make PageSpeed checks an iterative step in your coding workflow.
+  编码的时候就优化你的网站；让PageSpeed在你的工作流中检查重复的步骤。
+  ·Identify and follow UX patterns; style guidelines aren't optional.
+  决定并遵从UX模式；样式指导方针不是可有可无的。
+  ·Debug on multiple devices; use the Web Starter Kit live loading and browser developer tools to debug on as many devices as you can.
+  在多设备上调试；使用Web Starter Kit动态重载和浏览器开发人员工具在尽量多的设备上调试。
 
+Build this sample app
+构建示例应用
+
+To see the Web Starter Kit tools in action, this guide walks you through the build process as you add an image, update HTML and CSS, and add some JavaScript to your starter project. If you want a quick peak at what the Web Starter Kit tools can do, skip ahead to this quick summary.
+为在实际中了解Web Starter Kit工具，本教程逐步带你了解构建过程，加入图片、更新HTML和CSS并给你的起步项目加一些JavaScript。如果你想快点知道Web Starter Kit工具都能干啥，请直接查阅快速摘要。
+
+Before you start, make sure you’ve set up the Web Starter Kit. When you are finished the walking through the steps in this guide, this is what you’ll see in your browser:
+在你开始之前，请确认你已经配置好了Web Starter Kit。当你结束本教程的所有步骤之后，你在浏览器里会看到下面的内容：
+
+Track code changes and optimize
+跟踪代码变更并优化
+
+When you’re ready to write code, run gulp serve. This tool tracks changes as you code, reloads live changes in your browser, and automatically runs optimization tools specific to the changes made. For example, when you add an image, the image is automatically optimized and loaded in any browser instance open on any device.
+当你准备好编码的时候，运行gulp serve。这个工具跟踪你代码的变化，在你浏览器动态重载，并且自动运行针对这些变化的优化工具。例如，当你加入一个图片，图片就被自动优化并在任何设备上任何浏览器进程中加载。
+
+Important
+重点
+
+Check responsiveness as often as possible. Shrink the browser to tablet and phone size to see how content behaves all the time.
+尽可能频繁地检查响应性。一直记得将浏览器缩小到平板和手机的大小来查看内容有何种表现。
+
+Add an image
+加一个图片
+
+To see the gulp serve tool in action: add awesome-photo.jpg to the images folder.
+在实际操作中看看gulp serve工具：将awesome-photo.jpg加到images文件夹中。
+
+$ cp awesome-photo.jpg web-starter-kit/app/images
+$ git add awesome-photo.jpg
+
+Add the image to main in index.html:
+将图片加入到index.html的main标签中：
+
+<main>
+  <h1>Hello.</h1>
+  <p>Welcome to Web Starter Kit.</p>
+  <div><img src="/images/awesome-photo.jpg"></div>
+</main>
+
+As you save index.html, watch your terminal. The gulp serve tool runs the image through imagemin and outputs the optimized image in the dist folder.
+当你保存index.html的时候，观察终端。gulp serve工具将图片通过imagemin(https://www.npmjs.org/package/gulp-imagemin)进行处理并将优化过的图片输出到dist文件夹中。
+
+Note
+备注
+
+  ·You can also run gulp images to manually optimize images across your project.
+  你也可以手工运行gulp images在你的项目间优化图片。
+
+Reload the browser live to see the image:
+实时重载浏览器看到如下图所示：
+
+Don’t forget to resize the browser to see how the image looks on different device sizes.
+不要忘记改变浏览器大小来观察图片在不同设备尺寸上的显示效果。
+
+Remember
+切记
+
+As you code, keep your terminal and local staged version open in your browser. Watch the terminal for tooling results; watch the browser for newly staged content.
+在你编码的时候，保持你的终端和本地阶段版本都在浏览器中打开着。观察终端的工具化结果；观察浏览器的新阶段内容。
+
+Add CSS
+加CSS
+
+When you add style changes, gulp serve runs the gulp-minify-css tool, minifying CSS and injecting it into all connected browsers.
+当你给样式加入变更时，gulp serve会运行gulp-minify-css工具，缩小CSS并将它注入到所有连接着的浏览器。
+
+Add this style change to the main.css in web-starter-kit/apps/styles folder:
+把这些样式变更加入到web-starter-kit/apps/styles目录下的main.css中：
+
+main {
+    margin: 0 auto;
+    /* Height of the header */
+    padding: 60px 16px 16px 16px;
+    font-size: 16px;
+    font-weight: bold;
+    color: red;
+}
+
+Reload and resize the browser to see how the styles look:
+重载并改变浏览器大小来查看样式显示结果：
+
+Note
+备注
+
+Run gulp styles tool to manually check CSS across your project. The gulp serve tool automatically runs this tool when you change CSS files.
+运行gulp样式工具在你的项目间检查CSS。gulp serve工具会在你修改了CSS文件后自动运行该工具。
+
+Apply UX patterns
+应用UX模式
+
+Don’t write a style guide as an afterthought. Start your project off with UX patterns, and apply these patterns as you code. Don’t have a style guide? Use the Web Starter Kit style guide which aligns with the Web Fundamentals Style Guidelines.
+别在事后再想起编写样式指导。在你的项目开始时就要遵从UX模式，并在你编码的时候就应用这些模式。没有样式指导？使用Web Starter Kit样式指引吧，它与Web Fundamentals Style是一致的。
+
+$ cd web-starter-kit/app/styleguide/
+
+Add JavaScript
+加入JavaScript
+
+The gulp serve tool minifies your JavaScript (gulp-jsmin) and detects errors using gulp jshint.
+gulp serve工具缩小你的JavaScript(gulp-jsmin https://www.npmjs.org/package/gulp-jsmin)并使用gulp jshint(https://www.npmjs.org/package/gulp-jshint)检查错误。
+
+Update index.html to call a new script, app.js:
+更新index.html来调用新的脚本app.js：
+
+<main>
+    <h1>Hello.</h1>
+    <p>Welcome to <span></span>Web Starter Kit.</p>
+    <div><img src="/images/awesome-photo.jpg"></div>
+    <script src="/scripts/app.js" async></script> 
+</main>
+
+Create app.js in web-starter-kit/app/scripts:
+
+var span = document.getElementsByTagName('span')[0];
+span.textContent = 'the amazing '; // change DOM text content
+span.style.display = 'inline';  // change CSSOM property
+// create a new element, style it, and append it to the DOM
+var loadTime = document.createElement('div');
+loadTime.textContent = 'You loaded this page on: ' + new Date();
+loadTime.style.color = 'blue';
+document.body.appendChild(loadTime);
+
+Reload the browser:
+重新加载浏览器：
 
 
 
