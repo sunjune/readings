@@ -35,6 +35,110 @@ In this guide
   ·What’s in the Web Starter Kit build process?
   Web Starter Kit构建流程中有什么？
 
+TL;DR
+简而言之
+
+  ·Build steps shouldn't be linear and manually driven; they should be cyclical and automatic.
+  构建的步骤不应该是线性且手动的；它们应该可以重复并自动化。
+  ·Your build process tools must optimize for performance; they should automatically minify and concatenate JavaScript, CSS, HTML, and images.
+  你的构建过程工具应该为性能优化；它们应该自动把JavaScript、CSS、HTML以及图片缩小并联系起来。
+  ·Testing across many devices is a laborious task. Automate as much as you can!
+  在多种设备上进行测试是很困难的任务。尽可能让这些操作自动化。
+  ·Limit context switching; integrate build tools with debugging tools so you can iterate with ease.
+  减少环境切换；把构建工具和调试工具整合在一起这样你就可以轻松多了。
+
+How should the build process be used in your workflow?
+构建过程应该如何用于你的工作流？
+
+Your build process shouldn’t be a separate set of tasks that you run towards the end of your development workflow. Instead, integrate your build process with your coding, testing, and iterative debugging cycles.
+你的构建过程不应该是你开发工作流结束前单独的一部分任务。相反，要把构建过程与编码、测试、重复调试循环结合起来。
+
+What tasks should the build process automate?
+构建过程应该把什么任务自动化？
+
+Get tools that automatically run these build tasks so that you can keep coding:
+弄一些把下面这些构建任务自动化的工具这样你就可以好好编码了：
+
+  ·Test the code compiles and report errors.
+  测试代码的编译并报告错误。
+  ·Optimize the code by minifying and concatenating JavaScript, CSS, HTML, and images.
+  通过缩小并把JavaScript、CSS、HTML以及图片联系起来达到优化效果。
+  ·Test responsiveness.
+  测试响应性。
+  ·Test performance.
+  测试性能。
+  ·Compile optimized code.
+  编译优化过的代码。
+  ·Reload code in the browser.
+  在浏览器里重载代码。
+
+We prefer and recommend Gulp because it’s an expressive, streaming build system that’s easy to set up.
+我们选择并推荐Gulp(http://gulpjs.com/)因为它是一套易于搭建的富于表现力、流式构建系统。
+
+Regardless of whether you’re using a command-line set of tools or a GUI like CodeKit, your build process tools should automatically optimize your code as you work, and iteratively update compiled code.
+不管你是在用命令行工具还是像CodeKit(https://incident57.com/codekit/)这样的GUI工具，你的构建工具应该在你工作的时候自动优化代码并能不断更新编译过的代码。
+
+Additional build tools that support this workflow:
+其他支持工作流的构建工具：
+
+  ·Grunt (http://gruntjs.com/)
+  ·Make (http://www.gnu.org/software/make/)
+  ·Broccolli (https://github.com/broccolijs/broccoli)
+
+Automate testing
+自动测试
+
+Testing across many devices is a laborious task. Automate as much as you can!
+在很多设备上做测试是一项困难的任务。尽量让它自动化进行！
+
+Your build process should integrate with live reloading and support synchronized navigation so you can test your site on many devices in one-click.
+你的构建过程应该结合到动态重载并支持同步导航这样你就能一次点击后在多个设备上测试你的站点了。
+
+Integrate your build process with a responsive screenshot tool like BrowserStack (commercial) so you can check your site’s layout across lots and lots of devices.
+把构建过程与响应式截屏工具比如BrowserStack(http://www.browserstack.com/)结合起来这样你就能在大量的设备上检查你的网站。
+
+Integrate your build process with a performance tool like PageSpeed. Make it easy to check performance all the time and on any device.
+把构建过程与PageSpeed这样的性能工具结合起来。在任何设备任何时间查看性能都很容易。
+
+Get your build process to kick off unit tests that ‘emulate’ your site on as many devices as possible. Mimic hardware and network constraints as much as possible in these tests.
+让构建过程甩掉单元测试而在尽可能多的设备上仿真你的网站。在这些测试中尽可能多地模拟硬件地网络参数。
+
+Integrate with debugging tools
+整合调试工具
+
+Limit context switching; integrate build tools with debugging tools so you can integrate with ease. Avoid at all costs the separation between debugging your code and seeing the results on a range of devices. This slows your development to a halt and you’ll start to think maybe it’s OK to just have a site that works nice on a desktop.
+减少环境切换；将构建工具和调试工具整合起来这样你就能轻松了。避免了所有调试代码与在各种设备上观察结果这种分裂的消耗。这会将你的开发拖慢到停滞，你会去想或许只要网站在桌面上显示正常就行了。
+
+Seamless integration with debugging tools means you can debug your code and see it live on as many real and emulated devices as you deem necessary. You can keep debugging your code, and the build tools automatically push code changes live.
+与调试工具的无缝结合意味着你可以调试代码并在必要的时候尽可能实时并仿真地看到执行结果。你能继续调试代码，而构建工具自动将代码变更实时推送。
+
+What’s in the Web Starter Kit build process?
+Web Starter Kit构建过程有什么？
+
+At a glance, the Web Starter Kit build tools automate these tasks:
+简单说，Web Starter Kit构建工具将如下任务自动化了：
+
+  ·Cross-device synchronization; synchronizes clicks, scrolls, forms, and live-reload across multiple devices as you edit your code.
+  跨设备同步；同步点击、滚动、表单，以及在你编码代码的时候在多设备上动态加载。
+  ·Live browser reloading; reloads the browser in real-time anytime you edit code.
+  浏览器动态重载；在你编辑代码的时候实时重载浏览器。
+  ·Built in HTTP Server for previewing your site so you can test your pages without setting up other tools.
+  内置HTTP服务器用于预览你的站点这样你不用配置其他工具就可以测试页面。
+  ·PageSpeed Insights Reporting.
+  PageSpeed Insights Reporting工具.
+  ·Performance optimization; minifies and concatenates JavaScript, CSS, HTML, and images.
+  性能优化；缩小并将JavaScript、CSS、HTML以及图片联系起来。
+  ·Compiles Sass into CSS.
+  将Sass编译成CSS。
+
+The next section covers the Web Starter Kit build process in detail.
+下一节将详细讲解Web Starter Kit构建过程。
+
+
+
+
+
+
 
 
 
