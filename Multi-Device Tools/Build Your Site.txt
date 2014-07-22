@@ -313,6 +313,20 @@ Web Starter Kit集成了PageSpeed Insights。如果你还没用过PageSpeed Insi
 Once you’ve got a chunk of work done and you want to check your site’s speed and user experience, stop gulp serve (control-C), and run gulp pagespeed:
 一旦你已经完成了主要的工作而且想要检查网站的速度和用户体验，停止gulp serve(control-C)，并且运行gulp pagespeed：
 
+The good news: you got a perfect User Experience score. Yay!
+好消息是：你达到了完美的用户体验得分。
+
+The Speed Score is off by 1 point; compression isn’t enabled. You won’t compress your site until you are ready to host it.
+Speed得分还差一点儿；压缩没有启用。等你准备好托管网站的时候再压缩。
+
+For more information on how to fix your site based on these PageSpeed results, see PageSpeed Rules and Recommendations.
+关于如何参照PageSpeed结果来调整网站的更多住处，请参阅PageSpeed Rules and Recommendations(https://developers.google.com/web/fundamentals/performance/critical-rendering-path/page-speed-rules-and-recommendations)。
+
+
+
+
+
+
 
 
 
