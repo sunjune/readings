@@ -1,3 +1,40 @@
+Types of Testing
+测试的类型
+
+Learn about testing for the multi-device web. Test your site's responsive layouts and performance on real and virtual devices in the cloud.
+学习关于多种设备页面的测试。在真机和云端虚拟设备上测试你网站的响应式布局和性能。
+
+Nearly every developer hates testing on the web. Not only do you have to contend with all the different browsers and all of their different versions, you now have to also manage the vast array of devices and form factors that now exist.
+几乎每个开发人员都痛恨测试网页。你不仅要应付所有不同的浏览器和它们的各种版本，现在还要管理无数设备和现存的各种型号。
+
+Follow these guides to learn about the tools at your disposal that will make your life a lot easier when it comes to testing your site.
+跟随下面的教程来学习当要测试你的网站时能让你轻松处置的那些工具。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
