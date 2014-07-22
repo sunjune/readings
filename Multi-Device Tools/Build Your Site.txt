@@ -467,34 +467,29 @@ Important
 See Critical Rendering Path and Profiling Mobile HTML5 Apps With Chrome DevTools for more insight on using the network timeline.
 查阅关键渲染路径(https://web-central.appspot.com/web/fundamentals/performance/critical-rendering-path/analyzing-crp.html)和用Chrome开发工具分析移动HTML5应用(http://www.html5rocks.com/en/mobile/profiling/)获得对于使用网络时间线的更多认识。
 
+Debug page responsiveness
+调试页面响应性
 
+Use the emulation tool to check the layout of your site on a range of devices. This tool automatically sets the layout of a URL to the selected device.
+使用模拟工具(https://developers.google.com/web/fundamentals/tools/test/emulator.html)在多种设备上检查你网站的布局。该工具自动把URL的布局配置到所选设备上。
 
+Dive deeper into the responsiveness of your site on an emulated device, by changing the settings in the Screen pane:
+通过改变屏幕选项的来深入研究你的网站在模拟设备上的响应性。
 
+Setting	Description
+Emulate screen resolution	By default, matches the actual dimensions of the selected device. Uncheck the Emulate screen setting and enter any new dimensions.
+    默认匹配所选设备的真实分辨率。选空该项可输入新的分辨率。
 
+Enable text autosizing	Emulate font boosting which occurs on mobile devices. Android artificially increases the font metrics used by text autosizing. Enabled by default only when emulating an Android device.
+    模拟发生在移动设备上的字体增强。Android出于字体自适应大小而人为地增加了字体的单位。只有模拟Android设备的时候才默认启用该项。
 
+Emulate viewport	Zooms the page out to the physical default viewport of that device.
+    将页面缩放到设备默认的物理屏显区域。
 
+Shrink to fit	Ensures the emulated device screen is completely visible within your browser window. This setting does not emulate the device differently.
+    确保模拟设备的屏幕在你的浏览器窗口中完整可见。该项设置不会把设备模拟成不同的。
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+CSS media	Print is the default media type; additional media types include tv, speech, projection, and more. This setting does not emulate the device differently.
+    Print是默认的媒体侦测类型；其他的媒体类型包括tv、speech、projection等等。该项设置不会把设备模拟成不同的。
 
 
