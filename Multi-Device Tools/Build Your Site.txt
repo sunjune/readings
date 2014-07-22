@@ -194,8 +194,8 @@ When you’re ready to write code, run gulp serve. This tool tracks changes as y
 Important
 重点
 
-Check responsiveness as often as possible. Shrink the browser to tablet and phone size to see how content behaves all the time.
-尽可能频繁地检查响应性。一直记得将浏览器缩小到平板和手机的大小来查看内容有何种表现。
+  ·Check responsiveness as often as possible. Shrink the browser to tablet and phone size to see how content behaves all the time.
+  尽可能频繁地检查响应性。一直记得将浏览器缩小到平板和手机的大小来查看内容有何种表现。
 
 Add an image
 加一个图片
@@ -233,8 +233,8 @@ Don’t forget to resize the browser to see how the image looks on different dev
 Remember
 切记
 
-As you code, keep your terminal and local staged version open in your browser. Watch the terminal for tooling results; watch the browser for newly staged content.
-在你编码的时候，保持你的终端和本地阶段版本都在浏览器中打开着。观察终端的工具化结果；观察浏览器的新阶段内容。
+  ·As you code, keep your terminal and local staged version open in your browser. Watch the terminal for tooling results; watch the browser for newly staged content.
+  在你编码的时候，保持你的终端和本地阶段版本都在浏览器中打开着。观察终端的工具化结果；观察浏览器的新阶段内容。
 
 Add CSS
 加CSS
@@ -260,8 +260,8 @@ Reload and resize the browser to see how the styles look:
 Note
 备注
 
-Run gulp styles tool to manually check CSS across your project. The gulp serve tool automatically runs this tool when you change CSS files.
-运行gulp样式工具在你的项目间检查CSS。gulp serve工具会在你修改了CSS文件后自动运行该工具。
+  ·Run gulp styles tool to manually check CSS across your project. The gulp serve tool automatically runs this tool when you change CSS files.
+  运行gulp样式工具在你的项目间检查CSS。gulp serve工具会在你修改了CSS文件后自动运行该工具。
 
 Apply UX patterns
 应用UX模式
@@ -321,6 +321,78 @@ Speed得分还差一点儿；压缩没有启用。等你准备好托管网站的
 
 For more information on how to fix your site based on these PageSpeed results, see PageSpeed Rules and Recommendations.
 关于如何参照PageSpeed结果来调整网站的更多住处，请参阅PageSpeed Rules and Recommendations(https://developers.google.com/web/fundamentals/performance/critical-rendering-path/page-speed-rules-and-recommendations)。
+
+Debug your code on multiple devices
+在多种设备上调试代码
+
+Up till now, you’ve checked your code by resizing the browser. This is a good first step, but it’s no substitute for debugging your code on actual devices. The gulp serve tool makes it easy to access staged content on multiple devices. You can then use the browser developer tools to debug, just the same as your current development workflow.
+到目前为止，你已经通过调整浏览器大小检查了代码。这是个好的开端，但是这不能替代在真机上调试代码。使用gulp serve工具很容易在多种设备上访问已开发的内容。你接下来可以使用浏览器开发人员工具来调试，就象你当前的开发工作流一样。
+
+Important
+重点
+
+  ·There's no substitute for a real device. Access the externally friendly staging address on a phone and tablet that you keep handy for debugging purposes. If you're limited to a desktop, use the Chrome DevTools emulation tool.
+  真实设备是没法替代的。为了调试用你手边的平板或手机去访问友好的外部阶段性地址。如果你只有桌面系统，请使用Chrome开发工具中的仿真工具。
+
+Access staged content on external devices
+在外部设备上访问阶段性内容
+
+The gulp serve tool makes it easy to access a staged version of your content on external devices.
+使用gulp serve工具很容易在外部设备上访问阶段性版本的内容。
+
+In your terminal, notice two access points: a local address (for example, http://localhost:3002) and an externally friendly address for accessing on other devices (for example, http://123.45.67.103:3002).
+在终端中，注意两个访问点：一个本地地址(比如，http://localhost:3002)以及一个外部友好地址用于在其他设备上访问(比如，http://123.45.67.103:3002)。
+
+Navigate to the second address on any other device. Any changes you make to your site are automatically pushed to all local instances; you just have to reload.
+用任意其他设备打开第二个地址。对你网站的任何修改都会自动推送到所有本地实例；你只要重新加载就好。
+
+Remember
+切记
+
+  ·External devices must be on the same network as your development machine to accesses the external address.
+  外部设备必须和你的开发机在相同的网络环境中访问外部地址。
+
+Use Chrome DevTools to remote debug your code
+使用Chrome开发工具远程调试代码
+
+You can use the full suite of Chrome DevTools (including performance profiling with Timeline) to debug any page in your site on any device. Assuming you can connect your phone to the same network as your development machine, simply load the page on the device using the externally friendly URL returned by gulp serve.
+你能用全套的Chrome开发工具(包含带时间轴的性能分析)在任何设备上调试你网站上的任何页面。假设你可以把手机连接到和你开发机相同的网络中，只要在设备上打开由gulp serve提供的页面外部地址就好了。
+
+Any changes you make to a page using Chrome DevTools are automatically visible in all open instances of your staged site. Don’t reload a URL, or you will lose DevTools changes.
+用Chrome开发工具对页面所作的任何修改都会自动你阶段性站点打开的实例中展示出来。不要重新加载URL，那会丢失开发工具的修改。
+
+You can also debug using port forwarding. Port forwarding makes it easy to connect Chrome on Android to a web server running on your localhost, something that some network environments make difficult without some DNS tricks.
+你也可以使用端口转发来调试。用端口转发(https://developer.chrome.com/devtools/docs/remote-debugging#reverse-port-forwarding)很容易就把Android上的Chrome连接到你本机运行的网站服务器，有某些网络环境中不在DNS上下点工夫是很难实现的。
+
+Follow the port forwarding set-up instructions (you need to set up remote debugging first). Then enter the desired port number and externally friendly IP address of your staged site:
+跟随端口转发配置说明(你需要先把远程调试https://developer.chrome.com/devtools/docs/remote-debugging#remote-debugging-overview设置好)。然后输入想要的端口号以及你阶段性网站的外部友好IP地址。
+
+Summary of Web Starter Kit tools
+Web Starter Kit工具摘要
+
+A quick summary of the Web Starter Kit Tools:
+对Web Starter Kit工具的简明摘要：
+
+Tool	Description
+gulp	Runs all gulp tools and outputs the results to the distribution folder.
+      运行所有的gulp工具并把结果输出到发布目录中。
+gulp html	Minifies the content using gulp-minify and pushes it distribution folder. New content is staged live automatically.
+      使用gulp-minify(https://www.npmjs.org/package/gulp-minify-html)缩小内容并推送到发布目录。新的内容会自动动态展示出来。
+gulp images	Runs images through imagemin and outputs optimized images in the distribution folder.
+      使用imagemin(https://www.npmjs.org/package/gulp-imagemin)处理图片并输出优化过的图片到发布目录。
+gulp jshint	Detects JavaScript errors using gulp jshint.
+      使用gulp jshint(https://www.npmjs.org/package/gulp-jshint)检查JavaScript错误。
+gulp pagespeed	Checks your site's speed and user experience using PageSpeed Insights rules and returns the results.
+      使用PageSpeed Insights(https://developers.google.com/speed/pagespeed/insights/)规则检查网站运行速度和用户体验并返回检查结果。
+gulp serve	Serves the files in the distribution folder to your local machine and an external URL. It also tracks changes as you code: reloads live changes in your browser and automatically runs optimization tools specific to the changes made.
+      为发布目录中的文件提供本机和外部URL服务。它也会跟踪代码变更：在浏览器里动态加载变更并对产生的修改自动运行优化工具。
+gulp styles	Minifies CSS using the gulp-minify-css tool, and injects it into all connected browsers.
+      使用gulp-minify-css工具(https://www.npmjs.org/package/gulp-minify-css)缩小CSS，并将其注入到所有连接的浏览器中。
+
+
+
+
+
 
 
 
