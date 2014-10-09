@@ -1,20 +1,21 @@
 Introduction
+概述
 
 jQuery Mobile is a touch-friendly UI framework built on jQuery Core that works across all popular mobile, tablet and desktop platforms.
+jQuery Mobile是一个创建于jQuery内核基础上的触摸友好的用户界面框架，支持所有流行的移动设备、平板电脑以及桌面平台。
 
-Quick Links
 Introduction
+介绍
 
 jQuery Mobile is a user interface framework based on jQuery that works across all popular phones, tablet, e-reader, and desktop platforms. Built with accessibility and universal access in mind, we follow progressive enhancement and responsive web design (RWD) principles. HTML5 Markup-driven configuration makes it easy to learn, but a powerful API makes it easy to deeply customize the library.
+jQuery Mobile是一套基于jQuery的用户界面框架，可在所有流行的手机、平板、电子书阅读器以及桌面平台上工作。注重可访问性和通用性，遵循渐进增强和响应性设计的原则。HTML5标记驱动的配置使得它易于学习，且有强大的API使得对库的定制很容易。
 
-Top
 Pages & Dialogs
 
 A page in jQuery Mobile consists of an element with a data-role="page" attribute. Within the "page" container, any valid HTML markup can be used, but for typical pages in jQuery Mobile, the immediate children of a "page" are divs with data-role="header", class="ui-content", and data-role="footer". The baseline requirement for a page is only the page wrapper to support the navigation system, the rest is optional.
 
 A page can be styled as a dialog that makes the page look like it's a modal style overlay. To give a standard page the appearance of a modal dialog, add the data-rel="dialog" attribute to the link. Transitions can also be set on dialog links.
 
-Top
 Ajax Navigation & Transitions
 
 jQuery Mobile includes an Ajax navigation system to support a rich set of animated page transitions by automatically 'hijacking' standard links and form submissions and turning them into an Ajax request. The back button is fully supported and there are features to prefetch & cache, dynamically inject, and script pages for advanced use cases.
@@ -25,7 +26,6 @@ When the requested page loads, jQuery Mobile parses the document for an element 
 
 Now that the requested page is in the DOM and enhanced, it is animated into view with a transition. By default, the framework applies a fade transition. To set a custom transition effect, add the data-transition attribute to the link.
 
-Top
 Content & Widgets
 
 Inside your content container, you can add any standard HTML elements - headings, lists, paragraphs, etc. You can write your own custom styles to create custom layouts by adding an additional stylesheet to the head after the jQuery Mobile stylesheet.
