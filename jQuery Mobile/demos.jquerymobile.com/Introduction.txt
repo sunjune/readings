@@ -1,0 +1,72 @@
+Introduction
+
+jQuery Mobile is a touch-friendly UI framework built on jQuery Core that works across all popular mobile, tablet and desktop platforms.
+
+Quick Links
+Introduction
+
+jQuery Mobile is a user interface framework based on jQuery that works across all popular phones, tablet, e-reader, and desktop platforms. Built with accessibility and universal access in mind, we follow progressive enhancement and responsive web design (RWD) principles. HTML5 Markup-driven configuration makes it easy to learn, but a powerful API makes it easy to deeply customize the library.
+
+Top
+Pages & Dialogs
+
+A page in jQuery Mobile consists of an element with a data-role="page" attribute. Within the "page" container, any valid HTML markup can be used, but for typical pages in jQuery Mobile, the immediate children of a "page" are divs with data-role="header", class="ui-content", and data-role="footer". The baseline requirement for a page is only the page wrapper to support the navigation system, the rest is optional.
+
+A page can be styled as a dialog that makes the page look like it's a modal style overlay. To give a standard page the appearance of a modal dialog, add the data-rel="dialog" attribute to the link. Transitions can also be set on dialog links.
+
+Top
+Ajax Navigation & Transitions
+
+jQuery Mobile includes an Ajax navigation system to support a rich set of animated page transitions by automatically 'hijacking' standard links and form submissions and turning them into an Ajax request. The back button is fully supported and there are features to prefetch & cache, dynamically inject, and script pages for advanced use cases.
+
+Whenever a link is clicked or a form is submitted, that event is automatically intercepted by the Ajax nav system and is used to issue an Ajax request based on the href or form action instead of reloading the page. While the framework waits for the Ajax response, a loader overlay is displayed.
+
+When the requested page loads, jQuery Mobile parses the document for an element with the data-role="page" attribute and inserts that code into the DOM of the original page. Next, any widgets in the incoming page are enhanced to apply all the styles and behavior. The rest of the incoming page is discarded so any scripts, stylesheets or other information will not be included. The framework will also note the title of the incoming page to update the title when the new page is transitioned into view.
+
+Now that the requested page is in the DOM and enhanced, it is animated into view with a transition. By default, the framework applies a fade transition. To set a custom transition effect, add the data-transition attribute to the link.
+
+Top
+Content & Widgets
+
+Inside your content container, you can add any standard HTML elements - headings, lists, paragraphs, etc. You can write your own custom styles to create custom layouts by adding an additional stylesheet to the head after the jQuery Mobile stylesheet.
+
+jQuery Mobile includes a wide range of touch-friendly UI widgets: form elements, collapsibles, collapsible sets (accordions), popups, dialogs, responsive tables, and much more. For best performance, use the download builder to pick the components you need.
+
+Listviews
+
+jQuery Mobile includes a diverse set of common listviews that are coded as lists with a data-role="listview" added. Here is a simple linked list that has a role of listview. We're going to make this look like an inset module by adding a data-inset="true" attribute and we add a dynamic search filter with data-filter="true" and a text field.
+
+
+Acura
+Audi
+BMW
+Cadillac
+Ferrari
+View Source
+Form elements
+
+The framework contains a full set of form elements that are automatically enhanced into touch-friendly styled widgets. Here's a slider made with the new HTML5 input type of range, no data-role needed. Be sure to wrap these in a form element and always properly associate a label with every form element.
+
+Text Input:
+
+Select:
+One
+
+Input slider:
+
+View Source
+Top
+Responsive Design
+
+jQuery Mobile has always been designed to work within a responsive web design (RWD) context and our docs and forms had a few responsive elements from the very start. All the widgets are built to be 100% flexible in width to fit easily inside any responsive layout system you choose to build.
+
+The library also includes a number of responsive widgets like responsive grids, reflow tables and column chooser tables, and sliding panels.
+
+Top
+Theming
+
+jQuery Mobile has a robust theme framework that supports up to 26 sets of toolbar, content and button colors, called a "swatch". Just add a data-theme="b" attribute to any of the widgets on this page to turn it black.
+
+Cool party trick: add the theme swatch to the page and see how all the widgets inside the content will automatically inherit the theme.
+
+When you're ready to build a custom theme, use ThemeRoller to drag and drop, then download a custom theme.
