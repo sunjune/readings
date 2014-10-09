@@ -1,0 +1,614 @@
+Add Touch to Your Site
+给你的网站加上触控
+
+Touchscreens are available on more and more devices, ranging from phones up to desktop screens. When your users choose to interact with your UI, your app should respond to their touch in intuitive and beautiful ways.
+从手机到桌面越来越多的设备都使用了触摸屏。当用户决定要和你的用户界面交互时，你的app应该能用简洁优雅的方式来做出响应。
+
+2 Guides available
+2篇教程可用
+
+=========================================
+Stateful Elements Respond to Touch
+有状态的元素来响应触控
+=========================================
+
+The simplest way to reassure a user that their touch isn't ignored is to change your UI as they press down. Changing a background color can make all the difference and is simple to do.
+在用户触摸的时候改变用户界面是最简单的打消他们疑虑的办法（否则他们会以为没按对）。改变背景颜色就可以明显区别出来而且很容易实现。
+
+Add Touch States
+添加触摸状态
+
+Have you ever touched or clicked an element on a web page and questioned whether the site actually detected it?
+你是否有过这样的经历，在一个网页上点击一个元素却不知道网站有没有正确地觉察到？
+
+Simply altering the color of elements as users touch parts of your UI gives a basic reassurance that your site is working. Not only does this alleviate frustration, but can also give a snappy and responsive feel to your site.
+当用户在你的界面某部分的元素上按下时只要简单地改一下它的颜色就可以给出一个坚定的信号显示你的网站工作正常。这不仅能减轻用户的沮丧感，而且还能让你的网站让人感觉反应很灵敏。
+
+Use Pseudo Classes to Change UI for each Touch State
+使用伪类为每个触摸状态改变界面
+
+The fastest way to support touch is to change the UI in response to a DOM element’s change in state.
+要支持触摸最快的实现方法就是改变界面来回应DOM元素的状态变化。
+
+TL;DR
+简而言之
+
+  ·Make your site feel snappy and responsive: change the UI for each state :hover, :active and :focus.
+  要让你的网站感觉响应灵敏：为每种状态改变界面，比如 :hover、:active、:focus。
+  ·Don’t override a browser’s default responses to touch and focus unless you are implementing your own UI changes.
+  尽量不要覆盖浏览器默认的触摸和获得焦点的响应方式，除非你要优化自己的界面变化。
+  ·Disable text selection on elements user’s will touch, unless there’s a good reason why users might need to copy / select the text.
+  禁用那些用户会触摸到的元素的文本选择，除非有非常好的理由解释用户为什么需要复制或选择这些文本。
+
+DOM elements can be in one of the following states, default, focus, hover, and active. To change our UI for each of these states, we need to apply styles to the following pseudo classes :hover, :focus and :active as shown below:
+DOM树中的元素会有以下状态之一：default、focus、focus、hover以及active。为了在这些状态发生时改变界面，我们需要应用这些伪类 :hover、:focus、:active，举例如下：
+
+    .btn {
+      background-color: #4285f4;
+    }
+
+    .btn:hover {
+      background-color: #296CDB;
+    }
+
+    .btn:focus {
+      background-color: #0F52C1;
+    
+      /* The outline parameter surpresses the border
+      color / outline when focused */
+      outline: 0;
+    }
+
+    .btn:active {
+      background-color: #0039A8;
+    }
+
+参考资料：See Pseudo classes for touch states
+https://developers.google.com/web/fundamentals/input/touch-input/activestates/#pseudo-classes-for-touch-states
+
+Hover and Focus Stickiness
+悬浮和获得焦点粘性
+
+  On most mobile browsers hover and/or focus states will apply to an element after it’s been tapped.
+  在大多数移动浏览器上一个元素被点按时悬停和获得焦点状态都被应用。
+  
+  Consider carefully what styles you set and how they will look to the user after they finish their touch.
+  一定要考虑清楚设置什么样式，以及用户触摸之后看上去是怎样的。
+  
+  Bear in mind that anchor tags and buttons may have different behaviour in different browsers, so assume in some cases hover will remain and in others focus will remain.
+  考虑到锚点标签和按钮在不同的浏览器里会有不同的表现，可能在某些情况下保持悬停某些时候又保持获得焦点。
+
+
+Enabling Active State Support on iOS
+启用iOS的active状态支持
+
+Unfortunately, Safari on iOS does not apply the active state by default, to get it working you need to add a touchstart event listener to the document body or to each element.
+不幸的是，iOS的Safari默认不能应用active状态，要用到它你需要给document body或每个元素加一个touchstart事件监听器。
+
+You should do this behind a user agent test so it’s only run on iOS devices.
+你应该先探测一下用户代理再加，这样就只在iOS设备上运行。
+
+Adding a touch start to the body has the advantage of applying to all elements in the DOM, however this may have performance issues when scrolling the page.
+给body加上touchstart好处是可以应用于DOM里的所有元素，但是当滚动页面的时候可能会造成性能问题。
+
+window.onload = function() {
+  if(/iP(hone|ad)/.test(window.navigator.userAgent)) {
+    document.body.addEventListener('touchstart', function() {}, false);
+  }
+};
+
+The alternative is to add the touch start listeners to all the interactable elements in the page, alleviating some of the performance concerns.
+为所有可交互的页面元素上加上touchstart监听，和尽量减少性能问题之间，要做个取舍。
+
+window.onload = function() {
+  if(/iP(hone|ad)/.test(window.navigator.userAgent)) {
+    var elements = document.querySelectorAll('button');
+    var emptyFunction = function() {};
+    for(var i = 0; i < elements.length; i++) {
+      elements[i].addEventListener('touchstart', emptyFunction, false);
+    }
+  }
+};
+
+Override Default Browser Styles for Touch States
+为触摸状态覆盖浏览器默认样式
+
+Once you add styles for the different states, you’ll notice that most browsers implement their own styles to respond to a user’s touch, you should override these defaults when you’ve added your own styles.
+当你为不同的状态加样式时，你会注意到大部分浏览器对用户触摸执行自己的样式，你要加自己的样式就应该覆盖这些默认值。
+
+Remember
+切记
+  ·Only override browser styles if you are implementing your own!
+  仅在执行你自己的样式时才要覆盖浏览器样式！
+
+Override Tap Highlight Styles
+覆盖点按高亮样式
+
+When mobile devices first launched, a number of sites didn’t have styling for the active state. As a result, many browsers add a highlight color or style to elements when a user touches them.
+当移动设备刚问世的时候，很多网站都没有为active状态准备样式。于是，很多浏览器都为用户触摸动作给元素加了样式或颜色。
+
+Safari and Chrome add a tap highlight color which can be prevented with the -webkit-tap-highlight-color CSS property:
+Safari和Chrome加的点按高亮颜色可以用-webkit-tap-highlight-color这个CSS属性来阻止：
+
+    /* Webkit / Chrome Specific CSS to remove tap
+    highlight color */
+    .btn {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+Internet Explorer on Windows Phone has a similar behavior, but is suppressed via a meta tag:
+Windows Phone上面的Internet Explorer也有类似的行为，不过是通过meta标签来阻止的：
+
+<meta name="msapplication-tap-highlight" content="no">
+
+Override FirefoxOS Button State Styles
+覆盖FirefoxOS按钮状态样式
+
+The Firefox -moz-focus-inner pseudo class includes an outline on touchable elements. You can remove this outline by setting the border: 0.
+Firefox的-moz-focus-inner伪类在可触摸元素包含了一个外廓线。将border设为0可以移除这个外廓线。
+
+If you are using a <button> element, you get a gradient applied to your button which you can remove by setting background-image: none.
+如果你在用button元素，会有一个渐变应用于按钮上，可以通过设置background-image: none来消除它。
+
+    /* Firefox Specific CSS to remove button
+    differences and focus ring */
+    .btn {
+      background-image: none;
+    }
+
+    .btn::-moz-focus-inner {
+      border: 0;
+    }
+
+Override Element Outline in Focus State
+在获得焦点状态下覆盖元素外廓线
+
+Suppress the outline color when an element is focused using outline: 0.
+使用outlive: 0为一个元素获得焦点时阻止其外廓线颜色。
+
+.btn:focus {
+  outline: 0;
+
+  // Add replacement focus styling here (i.e. border)
+}
+
+Disable user-select on UI which Responds to Touch
+在响应触摸的界面上禁止用户选定
+
+Some mobile browsers will select text if the user long presses on the screen. This can result in a bad user experience if the user accidentally presses down on a button for too long. You can prevent this from happening using the user-select CSS property.
+一些移动浏览器会在用户长按屏幕的时候选定文本。这会造成很坏的用户体验，比如用户不小心在一个按钮上按的时间长了一点。你可以用user-select样式属性来阻止这种情况的发生。
+
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+Remember
+切记
+
+  You should be cautious not to disable user selection if the information on the element may be useful to the user (phone number, e-mail address, and so on).
+  要注意的是，如果元素上的信息对用户可能是有用的，这时不要禁止用户选定。
+
+
+
+=========================================
+Implement Custom Gestures
+自定义手势
+=========================================
+
+Using touch events you can create custom interactions for your UI. The question is how can you do this efficiently, keeping your frame rate high and your users happy.
+使用触摸事件可以为你的用户界面创建自定义交互。问题是你怎么高效地来做这个事，要保持帧速率较高且让用户满意。
+
+If you have an idea for custom interactions and gestures for your site there are two topics to keep in mind, how do I support the range of mobile browsers and how do I keep my frame rate high. In this article we'll look at exactly this.
+如果你想给网站加上自定义交互和手势操作，有两点是要好好考虑的：如何对移动浏览器的支持更广泛，如何保持较高的帧率。本篇文章就来探讨这两个方面。
+
+In this lesson
+本节内容：
+
+  ·Respond to Touch Input Using Events
+  使用事件来响应触摸输入
+  ·60fps while Using Touch
+  触摸操作时操持60fps
+  ·Control Scrolling using Touch Actions
+  使用触摸动作控制滚动
+  ·Reference
+  参考
+
+Respond to Touch Input Using Events
+使用事件来响应触摸输入
+
+Depending on what you would like to do with touch, you’re likely to fall into one of two camps:
+根据你想要用触摸来做什么操作，你有以下两种可能：
+
+  ·I want the user to interact with one particular element.
+  让用户与一个特定的元素互动
+  ·I want the user to interact with multiple elements at the same time.
+  让用户同时与多个元素互动
+
+There are trade offs to be had with both.
+两都都要有就得好好权衡一下了。
+
+If the user will only be able to interact with one element, you might want all touch events to be given to that one element, as long as the gesture initially started on the element itself. For example, moving a finger off the swipable element can still control the element.
+如果用户只能与一个元素交互，你可能想在元素的手势初始化的时候就把所有的触摸事件都加到它上面。例如，不在那个可移动的元素上划动手指依然能控制它。
+
+If, however, you expect users to interact with multiple elements at the same time (using multi-touch), you should restrict the touch to the specific element.
+然而，如果你希望用户同时与多个元素交互（使用多点触控），你应该限制触摸只对特定元素生效。
+
+TL;DR
+简而言之
+
+  ·For full device support, handle touch, mouse and MS Pointer Events.
+  为支持各种设备，要处理触摸、鼠标、指针事件。
+  ·Always bind start event listeners to the element itself.
+  总是要为元素本身绑定起始事件监听器
+  ·If you want the user to interact with one particular element, bind your move and end listeners to the document in the touchstart method; ensure you unbind them from the document in the end listener.
+  如果想让用户与特定的元素交互，绑定你的划动与结束监听器到document的touchstart方法上；确保在结束监听器从document解绑。
+  ·If you want to support multi-touch, either restrict move and end touch events to the element itself or handle all the touches on an element.
+  如果要支持多点触控，既要限制划动和结束触摸事件到元素自身，也要处理一个元素上所有的触摸操作。
+
+Add Event Listeners
+添加事件监听器
+
+Touch events and mouse events are implemented on most mobile browsers.
+触摸事件和鼠标事件在大部分移动浏览器上都可以执行。
+
+The event names you need to implement are touchstart, touchmove, touchend and touchcancel.
+要执行的事件名称有：touchstart、touchmove、touchend以及touchcancel。
+
+For some situations, you may find that you would like to support mouse interaction as well; which you can do with the mouse events: mousedown, mousemove, and mouseup.
+在某些情况下，你会发现同时想要支持鼠标交互；你可以用鼠标事件来做到这一点：mousedown、mousemove和mouseup。
+
+For Windows Phone devices, you need to support Pointer Events which are a new set of events. Pointer Events merge mouse and touch events into one set of callbacks. This is currently only supported in Internet Explorer 10+ with the events MSPointerDown, MSPointerMove, and MSPointerUp.
+对于Windows Phone设备来说，你需要支持一套新的指针事件。指针事件把鼠标和触摸事件整合到一套回调里了。只有在IE10以上的版本会支持MSPointerDown、MSPointerMove以及MSPointerUp。
+
+Touch, mouse and Pointer Events are the building blocks for adding new gestures into your application (see Touch, mouse and MS Pointer events).
+触摸、鼠标和指针事件都是组成你应用的构件。
+
+Include these events in the addEventListener() method, along with the event’s callback function and a boolean. The boolean determines whether you should catch the event before or after other elements have had the opportunity to catch and interpret the events (true means we want the event before other elements):
+将这些事件包含在addEventListener()方法中，连同事件的回调函数以及一个布尔值。这个布尔值将决定你是否应该先于其他元素捕捉该事件，或在其他元素有机会捕捉并解释这个事件之后（返回true值意味着我们想赶在其他元素之前获得这个事件）。
+
+    // Check if pointer events are supported.
+    if (window.navigator.msPointerEnabled) {
+      // Add Pointer Event Listener
+      swipeFrontElement.addEventListener('MSPointerDown', this.handleGestureStart, true);
+    } else {
+      // Add Touch Listener
+      swipeFrontElement.addEventListener('touchstart', this.handleGestureStart, true);
+    
+      // Add Mouse Listener
+      swipeFrontElement.addEventListener('mousedown', this.handleGestureStart, true);
+    }
+
+This code first checks to see if Pointer Events are supported by testing for window.navigator.msPointerEnabled. If they aren’t, we add listeners for touch and mouse events instead.
+这段代码首先通过window.navigator.msPointerEnabled来确定是否支持Pointer事件。如果不支持，就添加触摸和鼠标事件的监听器。
+
+Handle Single-Element Interaction
+处理单个元素交互
+
+In the short snippet of code above you may have noticed that we only add the starting event listener, this is a conscious decision.
+你可能注意到在上面的代码片段里我们只添加了开始事件的监听器，这是有意识这样做的。
+
+By adding the move and end event listeners once the gesture has started on the element itself, the browser can check if the touch occured in a region with a touch event listener and if it’s not, can handle it faster by not having to run any additional javascript.
+当手势在该元素上开始进行的时候再添加划动和结束事件，浏览器可以用触摸事件监听器在一个区域范围内检查是否发生了触摸动作，而且不用添加其他任何其他的脚本就可以快速处理。
+
+The steps taken to implement this are:
+执行的步骤如下：
+
+  1、Add the start events listener to an element.
+  给一个元素加上开始事件监听器。
+  2、Inside your touch start method, bind the move and end elements to the document. The reason for binding the move and end events to the document is so that we receive all events regardless of whether they occur on the original element or not.
+  在你的触摸开始文件中，给document绑定划动和结束元素。给document绑定划动和结束事件的原因是不管它们是否发生在原来的元素上我们都可以接收到所有的事件。
+  3、Handle the move events.
+  处理划动事件。
+  4、On the end event, remove the move and end listeners from the document.
+  在结束事件上，从document中移除划动和结束监听器。
+  
+Below is a snippet of our handleGestureStart method which adds the move and end events to the document:
+下面一段代码就是我们的handleGestureStart方法，给document添加了划动和结束事件。
+
+    // Handle end gestures
+    this.handleGestureEnd = function(evt) {
+      evt.preventDefault();
+
+      if(evt.touches && evt.touches.length > 0) {
+        return;
+      }
+
+      isAnimating = false;
+    
+      // Remove Event Listeners
+      if (window.navigator.msPointerEnabled) {
+        // Remove Pointer Event Listeners
+        document.removeEventListener('MSPointerMove', this.handleGestureMove, true);
+        document.removeEventListener('MSPointerUp', this.handleGestureEnd, true);
+      } else {
+        // Remove Touch Listeners
+        document.removeEventListener('touchmove', this.handleGestureMove, true);
+        document.removeEventListener('touchend', this.handleGestureEnd, true);
+        document.removeEventListener('touchcancel', this.handleGestureEnd, true);
+    
+        // Remove Mouse Listeners
+        document.removeEventListener('mousemove', this.handleGestureMove, true);
+        document.removeEventListener('mouseup', this.handleGestureEnd, true);
+      }
+    
+      updateSwipeRestPosition();
+    }.bind(this);
+    
+Mouse events follow this same pattern since it’s easy for a user to accidentally move the mouse outside of the element, which results in the move events no longer firing. By adding the move event to the document, we’ll continue to get mouse movements regardless of where they are on the page.
+鼠标事件也跟从同样的模式，因为对用户来说很容易不小心把鼠标移动元素外面，这将导致移动事件不再有效。而将移动事件加到document上面，我们可以继续获得鼠标的位移不管它在页面的什么地方。
+
+You can use the "Show potential scroll bottlenecks" feature in Chrome DevTools to show how the touch events behave:
+你可以使用Chrome开发人员工具中的“显示潜在的滚动瓶颈”功能来观察触摸事件的表现。
+
+Handle Multi-Element Interaction
+处理多个元素交互
+
+If you expect your users to use multiple elements at once, you can add the move and end events listeners directly to the elements themselves. This applies to touch only, for mouse interactions you should continue to apply the mousemove and mouseup listeners to the document.
+如果你想让用户在同一时间使用多个元素，你可以把移动和结束事件监听器直接加到这些元素本身。这只应用于触摸，对于鼠标交互你该继续给document应用mousemove和mouseup监听器。
+
+Since we only wish to track touches on a particular element, we can add the move and end listeners for touch and pointer events to element straight away:
+既然我们只想对特定的元素跟踪触摸操作，我们可以立即给元素加上触摸和指针的移动和结束监听器。
+
+    // Check if pointer events are supported.
+    if (window.navigator.msPointerEnabled) {
+      // Add Pointer Event Listener
+      elementHold.addEventListener('MSPointerDown', this.handleGestureStart, true);
+      elementHold.addEventListener('MSPointerMove', this.handleGestureMove, true);
+      elementHold.addEventListener('MSPointerUp', this.handleGestureEnd, true);
+    } else {
+      // Add Touch Listeners
+      elementHold.addEventListener('touchstart', this.handleGestureStart, true);
+      elementHold.addEventListener('touchmove', this.handleGestureMove, true);
+      elementHold.addEventListener('touchend', this.handleGestureEnd, true);
+      elementHold.addEventListener('touchcancel', this.handleGestureEnd, true);
+
+      // Add Mouse Listeners
+      elementHold.addEventListener('mousedown', this.handleGestureStart, true);
+    }
+
+In our handleGestureStart and handleGestureEnd function, we add and remove the mouse event listeners to the document.
+在我们的handleGestureStart和handleGestureEnd函数里，我们给document添加又移动了鼠标事件监听器。
+
+    // Handle the start of gestures
+    this.handleGestureStart = function(evt) {
+      evt.preventDefault();
+
+      var point = getGesturePointFromEvent(evt);
+      initialYPos = point.y;
+    
+      if (!window.navigator.msPointerEnabled) {
+        // Add Mouse Listeners
+        document.addEventListener('mousemove', this.handleGestureMove, true);
+        document.addEventListener('mouseup', this.handleGestureEnd, true);
+      }
+    }.bind(this);
+
+    this.handleGestureEnd = function(evt) {
+      evt.preventDefault();
+    
+      if(evt.targetTouches && evt.targetTouches.length > 0) {
+        return;
+      }
+    
+      if (!window.navigator.msPointerEnabled) {
+        // Remove Mouse Listeners
+        document.removeEventListener('mousemove', this.handleGestureMove, true);
+        document.removeEventListener('mouseup', this.handleGestureEnd, true);
+      }
+
+      isAnimating = false;
+      lastHolderPos = lastHolderPos + -(initialYPos - lastYPos);
+    }.bind(this);
+
+60fps while Using Touch
+触摸操作时达到60fps
+
+Now that we have the start and end events taken care of we can actually respond to the touch events.
+现在我们有了起始和结束事件就可以准确地响应触摸事件了。
+
+Get and Store Touch Event Coordinates
+获取并保存触摸事件的坐标
+
+For any of the start and move events, you can easily extract x and y from an event.
+对于任何的开始和结束事件，你都能很容易地从事件中提取x和y坐标。
+
+The following code snippet checks whether the event is from a touch event by looking for targetTouches, if it is then it extracts the clientX and clientY from the first touch. If the event is a mouse or pointer event then we extract clientX and clientY directly from the event itself.
+下面的代码片段通过查找targetTouches来检查事件是否来自触摸操作，如果是就从第一次触摸提取clientX和clientY。如果事件是鼠标或指针那么我们就直接从事件本身得到clientX和clientY。
+
+    function getGesturePointFromEvent(evt) {
+        var point = {};
+
+        if(evt.targetTouches) {
+          // Prefer Touch Events
+          point.x = evt.targetTouches[0].clientX;
+          point.y = evt.targetTouches[0].clientY;
+        } else {
+          // Either Mouse event or Pointer Event
+          point.x = evt.clientX;
+          point.y = evt.clientY;
+        }
+
+        return point;
+      }
+
+Each touch event has three lists containing touch data (see also Touch lists):
+每个触摸事件都有三个列表，包含了相关触摸数据：
+
+  ·touches: list of all current touches on the screen, regardless of DOM element they are on.
+  touches: 列出屏幕上所有当前的触摸操作，而不管他们所在的DOM元素。
+  ·targetTouches: list of touches currently on the DOM element the event is bound to.
+  targetTouches: 列出事件所绑定的DOM元素上当前的触摸操作。
+  ·changedTouches: list of touches which changed resulting in the event being fired.
+  changedTouches: 列出事件触发时变化了的触摸操作。
+
+In most cases, targetTouches gives you everything you need.
+大多数情况下，targetTouches都能给你想要的一切。
+
+Request Animation Frame
+请求动画帧
+
+Since the event callbacks are fired on the main thread, we want to run as little code as possible in the callback to keep our frame rate high, preventing jank.
+因为事件的回调发生在主线程，我们在回调中运行一段尽可能小的代码来保持高的帧率，以防止卡顿。
+
+Use requestAnimationFrame to change the UI in response to an event. This gives you an opportunity to update the UI when the browser is intending to draw a frame and will help you move some work out of your callback.
+使用requestAnimationFrame在响应一个事件的时候改变用户界面。这将给你一个机会在浏览器准备绘制一个框架页的时候更新用户界面，并且能帮你从回调里移除一些任务。
+
+A typical implementation is to save the x and y coordinates from the start and move events and request an animation frame in the move event callback.
+一次典型的执行过程就是从开始和移动事件中保存x和y坐标，并且在移动事件的回调中请求动画帧。
+
+In our demo, we store the initial touch position in handleGestureStart:
+下面的示例中，我们在handleGestureStart保存了初始的触摸位置：
+
+    // Handle the start of gestures
+    this.handleGestureStart = function(evt) {
+      evt.preventDefault();
+
+      if(evt.touches && evt.touches.length > 1) {
+        return;
+      }
+
+      // Add the move and end listeners
+      if (window.PointerEventsSupport) {
+        // Pointer events are supported.
+        document.addEventListener(pointerMoveName, this.handleGestureMove, true);
+        document.addEventListener(pointerUpName, this.handleGestureEnd, true);
+      } else {
+        // Add Touch Listeners
+        document.addEventListener('touchmove', this.handleGestureMove, true);
+        document.addEventListener('touchend', this.handleGestureEnd, true);
+        document.addEventListener('touchcancel', this.handleGestureEnd, true);
+    
+        // Add Mouse Listeners
+        document.addEventListener('mousemove', this.handleGestureMove, true);
+        document.addEventListener('mouseup', this.handleGestureEnd, true);
+      }
+    
+      initialTouchPos = getGesturePointFromEvent(evt);
+
+      swipeFrontElement.style.transition = 'initial';
+    }.bind(this);
+
+The handleGestureMove method stores the y position before requesting an animation frame if we need to, passing in our onAnimFrame function as the callback:
+如果我们需要的话，handleGestureMove方法在请求动画帧之前保存了y坐标，通过作为回调的onAnimFrame。
+
+    var point = getGesturePointFromEvent(evt);
+    lastYPos = point.y;
+    
+      if(isAnimating) {
+        return;
+      }
+
+      isAnimating = true;
+      window.requestAnimFrame(onAnimFrame);
+    
+It’s in the onAnimFrame function that we change our UI to move the elements around. Initially we check to see if the gesture is still on-going to determine whether we should still animate or not, if so we use our initial and last y positions to calculate the new transform for our element.
+在onAnimFrame函数里我们改变用户界面将元素四处移动。最初我们检查手势是否还在继续，从而决定我们是否要继续动画，需要的话就用起始和最终的y坐标来计算元素新的动作。
+
+Once we’ve set the transform, we set the isAnimating variable to false so the next touch event will request a new animation frame.
+一旦我们设置了动作，要把isAnimating变量设置为false这样下次的触摸事件将请求一个新的动画帧。
+
+    function onAnimFrame() {
+        if(!isAnimating) {
+          return;
+        }
+    
+        var newYTransform = lastHolderPos + -(initialYPos - lastYPos);
+    
+        newYTransform = limitValueToSlider(newYTransform);
+    
+        var transformStyle = 'translateY('+newYTransform+'px)';
+        elementHold.style.msTransform = transformStyle;
+        elementHold.style.MozTransform = transformStyle;
+        elementHold.style.webkitTransform = transformStyle;
+        elementHold.style.transform = transformStyle;
+    
+        isAnimating = false;
+      }
+
+Control Gestures using Touch Actions
+用触摸动作来控制手势
+
+The CSS property touch-action allows you to control the default touch behavior of an element. In our examples, we use touch-action: none to prevent the browser from doing anything with a users touch, allowing us to intercept all of the touch events.
+touch-action这个CSS属性允许你控制一个元素默认的触摸行为。在下面的示例里，我们用touch-action: none来阻止浏览器对用户触摸做任何反应，我们可用它拦截所有触摸事件。
+
+    /* Pass all touches to javascript */
+    -ms-touch-action: none;
+    touch-action: none;
+    
+touch-action allows to disable gestures implemented by a browser, for example IE10+ supports double-tap zoom and by setting a touch-action of pan-x | pan-y | manipulation you are preventing the double-tap behavior.
+touch-action可以禁用由浏览器执行的手势，比如IE10以上的版本支持连按缩放，通过给touch-action设置pan-x|pan-y|manipulation你就能阻止连按行为。
+
+The benefit of this is that it allows you to implement these gestures yourself, but in the case of IE10+ you also remove the 300ms click delay.
+这样做的好处是允许你自己来执行这些手势，但是在诸如IE10以上版本的情况你也消除了300ms的点击延迟。
+
+Below is a list of the available parameters for touch-action.
+下面是touch-action的可用参数列表。
+
+  touch-action: auto	The browser will add the normal touch interactions which it supports. For example, scrolling in the x-axis, scrolling in the y-axis, pinch zoom and double tap.
+  浏览器会加入它所能支持的普通触摸交互。比如滚动x或y轴，捏或连按来缩放等。
+
+  touch-action: none	No touch interactions will be handled by the browser.
+  浏览器不再处理任何触摸交互。
+
+  touch-action: pan-x	Only horizontal scrolling will be handled by the browser; vertical scrolling and gestures will be disabled.
+  浏览器只处理水平方向滚动，垂直方向的滚动和手势都被禁止。
+
+  touch-action: pan-y	Only vertical scrolling will be handled by the browser; horizontal scrolling and gestures will be disabled.
+  浏览器只处理垂直方向的滚动，水平方向的滚动和手势都被禁止。
+
+  touch-action: manipulation	Scrolling in both directions and pinch zooming will be handled by the browser; all other gesture will be ignored by the browser.
+  浏览器处理垂直和水平方向的滚动以及捏缩放，所有其他的手势都被忽略。
+
+Remember
+切记
+
+Using touch-action: pan-x or touch-action: pan-y are great for being explicit in your intention that a user should only ever scroll vertically or horizontally on an element.
+使用touch-action: pan-x或touch-action: pan-y对于想要专注于用户只能在某个元素上朝某一个方向滚动很有用。
+
+Reference
+参考
+
+The definitive touch events reference can be found here: w3 Touch Events.
+触摸事件的定义参考可以在这里找到：http://www.w3.org/TR/touch-events/
+
+Touch, Mouse, and Pointer events
+触摸、鼠标和指针事件
+
+These events are the building blocks for adding new gestures into your application:
+为你的应用添加手势的话，这些事件就是基石。
+
+  touchstart, mousedown, pointerdown	This is called when a finger first touches an element or when the user clicks down on the mouse.
+  在手指第一次触摸某个元素或用户按下鼠标时被调用。
+  
+  touchmove, mousemove, pointermove	This is called when the user moves their finger across the screen or drags with the mouse.
+  用户在屏幕上划动手指或拖动鼠标时被调用。
+  
+  touchend, mouseup, pointerup	This is called when the user lifts their finger off of the screen or releases the mouse.
+  用户手指抬离屏幕或放开鼠标时被调用。
+  
+  touchcancel	This is called when the browser cancels the touch gestures.
+  当浏览器取消触摸手势时被调用。
+  
+
+Touch Lists
+触摸数据列表
+
+Each touch event includes three list attributes:
+每个触摸事件包含三个属性列表。
+
+  touches	List of all current touches on the screen, regardless of elements being touched.
+  列出当前屏幕上所有的触摸，无论是否有元素被触摸。
+
+  targetTouches	List of touches that started on the element that is the target of the current event. For example, if you bind to a <button>, you'll only get touches currently on that button. If you bind to the document, you'll get all touches currently on the document.
+  列出当前事件所在的元素上开始的触摸。例如，如果你绑定到按钮上，你只会得到在那个按钮上正在进行的触摸数据。如果你绑定到document上，你将获得当前document上所有的触摸数据。
+
+  changedTouches	List of touches which changed resulting in the event being fired:
+  列出事件触发后改变了的触摸数据。
+    ·For the touchstart event-- list of the touch points that just became active with the current event.
+    对于touchstart事件来说--列出当前事件中激活了的触摸点。
+    ·For the touchmove event-- list of the touch points that have moved since the last event.
+    对于touchmove事件来说--列出自上个事件以来移动了的触摸点。
+    ·For the touchend and touchcancel events-- list of the touch points that have just been removed from the surface.
+    对于touchend和touchcancel事件来说--列出只是被从表面移除的触摸点。
+

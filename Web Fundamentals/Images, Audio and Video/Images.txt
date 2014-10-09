@@ -1,0 +1,497 @@
+Images
+图片
+
+A picture is worth 1000 words, and images play an integral part of every page. But they also often account for most of the downloaded bytes. With responsive web design not only can our layouts change based on device characteristics, but images as well.
+一幅图胜过千言万语，而且图片是每个页面的组成部分。但它们往往占用了大部分的下载流量。使用响应式设计不仅我们的布局可以根据设备规格来变化，图片同样也可以。
+
+Responsive images
+响应式图片
+
+Responsive web design means that not only can our layouts change based on device characteristics, but content as well. For example, on high resolution (2x) displays, high resolution graphics are needed to ensure sharpness. An image that is 50% width may work just fine when the browser is 800px wide, but will use too much real estate on a narrow phone, and still comes at the same bandwidth overhead when scaled down to fit on a smaller screen.
+响应式设计意味着不仅我们的布局能够基于设备规格改变，对于内容也一样。例如，在高分辨率显示屏上，高分辨率的图片要确保清晰。当浏览器有800px宽的时候50%宽的图片显示得还不错，但在一个窄屏幕手机上就会占太多地方，要占用同样的带宽而且被缩放以适应较小的屏幕。
+
+Art direction
+艺术方向
+
+Other times the image may need to be changed more drastically: changing the proportions, cropping and even replacing the entire image. In this case, changing the image is usually referred to as art direction. See responsiveimages.org/demos/ for more examples.
+另一些时候图片可能需要更大的变化：改变比例、裁切甚至替换掉整个图片。这时改变图片通常称之为艺术方向。可以在http://responsiveimages.org/demos/看到更多示例。
+
+Guides
+教程
+
+  01. Images in Markup — The `img` element is powerful – it downloads, decodes and renders content – and modern browsers support a range of image formats.
+  标记带来的图片 — img元素很强大 — 它可以下载、解码以及渲染内容 — 而且现代浏览器支持的图片格式很多。
+  
+  02. Images in CSS — The CSS `background` property is a powerful tool for adding complex images to elements, making it easy to add multiple images, cause them to repeat, and more.
+  CSS里的图片 —CSS的background属性是个强大的工具，可用于给元素添加复杂的图片，让添加多个图片变得容易，还能让它们重复等等。
+
+  03. Use SVG for icons — When adding icons to your page, use SVG icons where possible or in some cases, unicode characters.
+  用SVG做图标 — 在给你的页面加入图标的时候，可能的话请使用SVG图标或者在某些时候使用unicode字符。
+
+  04. Optimize images for performance — Images often account for most of the downloaded bytes and also often occupy a significant amount of the visual space on the page.
+  为性能而优化图片 — 图片通常会消耗大部分的下载流量，而且经常占用页面上很多可视面积。
+
+  05. Avoid images completely — Sometimes, the best image isn't actually an image at all. Whenever possible, use the native capabilities of the browser to provide the same or similar functionality.
+  避免使用全图片 — 有时候，最好的图片并不只是一个图片。无论何时，尽可能使用浏览器的本地能力来提供相同或相近的功能。
+
+=========================================
+Images in Markup
+标记带来的图片
+=========================================
+
+The `img` element is powerful – it downloads, decodes and renders content – and modern browsers support a range of image formats. Including images that work across devices is no different than for desktop, and only requires a few minor tweaks to create a good experience.
+img元素很强大 — 它可以下载、解码以及渲染内容 — 而且现代浏览器支持的图片格式很多。包括可以适应多种设备而与桌面保持一致的图片，而只需很少优化就能创建很好的体验。
+
+In this lesson
+本节主要内容
+
+  ·Enhance img’s with srcset for high DPI devices
+  通过srcset为高DPI设备强化img标签
+  
+  ·Other image techniques
+  其他的图片技术
+
+Remember to use relative units when specifying widths for images to prevent them from accidentally overflowing the viewport. For example, width: 50%;, will cause the image width to be 50% of the containing element (not the viewport or actual pixel size).
+为避免图片不小心从可视屏显溢出，指定宽度的时候切记使用相对单位。例如：width: 50%;，会指定图片宽度为容器元素（不是可视屏显或实际的像素大小）的50%。
+
+Because CSS allows content to overflow it’s container, it may be necessary use max-width: 100% to prevent images and other content from overflowing. For example:
+因为CSS允许内容从它所在的容器溢出，所以可能有必要用到max-width: 100%来避免图片和其他内容溢出。例如：
+
+  img, embed, object, video {
+    max-width: 100%;
+  }
+
+Be sure to provide meaningful descriptions via the alt attribute on img elements; these help make your site more accessible by providing context to screen readers and other assistive technologies.
+请确保在img的alt属性中提供有意义的注释；通过对屏幕用户提供上下文和其他无障碍技术会有助于使你的网站提高可访问性。
+
+Enhance img’s with srcset for high DPI devices
+以srcset为高DPI设备强化图片
+
+The srcset attribute enhances the behavior of the img element, making it easy to provide multiple image files for different device characteristics. In the same way that the image-set CSS function works, srcset allows the browser to choose the best image depending on the characteristics of the device, for example using a 2x image on a 2x display, or a 1x image on a 2x device when on a limited bandwidth network.
+srcset属性可以强化img元素的行为，使得为不同设备规格提供多个图片文件变得很容易。CSS的image-set函数也是同样的原理，srcset允许浏览器根据设备规格选择最佳图片，例如在2x显示屏选择2x图片，或者在2x设备带宽有限的时候选择1x图片。
+
+<img src="photo.png" srcset="photo@2x.png 2x" ...>
+
+On browsers that don’t support srcset, the browser simply uses the default image file specified by the src attribute. This is why it is important to always include a 1x image that can be displayed on any device, regardless of capabilities. When srcset is supported, the comma-separated list of image/conditions is parsed and only the most appropriate image is downloaded and displayed.
+不支持srcset的浏览器，它只使用src属性指定的图片文件。无论浏览器能否支持，总是包含一个可以显示在任何设备上的1x图片是很重要的。当支持srcset的时候，逗号分隔的图片/条件列表就被解析而且只有最合适的图片会被下载和显示。
+
+While the conditions can include everything from pixel density to viewport width to viewport height, only pixel density is well supported today. To balance current behavior with future features, stick with simply providing the 2x image in the attribute.
+虽然条件可以包含从像素密度到可视屏显的宽度以及可视屏显的高度，但目前只有像素密度能被很好地支持。为了平衡当前行为与未来的功能，只要简单地坚持为这个属性提供2x图片吧。
+
+Other image techniques
+其他图片技术
+
+Compressive images
+压缩图片
+
+The compressive image technique serves a highly compressed 2x image to all devices, no matter the actual capabilities of the device. Depending on the type of image and level of compression, image quality may not appear to change, but the file size drops significantly.
+图片压缩技术为各种设备提供高压缩比的2x图片，无论该设备实际能力如何。视图片类型和压缩比而定，图片质量看上去没什么变化，但是文件大小会有大幅下降。
+
+Important
+重要
+
+  ·Use caution with the compressive technique because of the increased memory and decoding costs it requires. Resizing large images to fit on smaller screens is expensive and can be particularly painful on low-end devices where both memory and processing is limited.
+  要谨慎使用压缩技术因为它会增加内存与解码开销。调整大图片以适应小屏幕开销很大，尤其是在内存和处理器都受限的低端设备上会很痛苦。
+
+JavaScript image replacement
+JavaScript图片替换
+
+JavaScript image replacement checks the capabilities of the device and “does the right thing”. You can determine device pixel ratio via window.devicePixelRatio, get screen width and height, and even potentially do some network connection sniffing via navigator.connection or issuing a fake request. Once you’ve collected all of this information, you can decide which image to load.
+JavaScript图片替换会检查设备的支持能力并做出正确选择。你可以通过window.devicePixelRatio测定设备的像素比、得到屏幕宽和高、甚至有可能通过navigator.connection做一些网络连接的嗅探或发出一个伪装请求。一旦你收集了所有这些信息，你就能决定加载哪个图片。
+
+One big drawback to this approach is that using JavaScript means that you will delay image loading until at least the look-ahead parser has finished. This means that images won’t even start downloading until after the pageload event fires. In addition, the browser will most likely download both the 1x and 2x images, resulting in increased page weight.
+这种方法的一大缺点是，使用JavaScript意味着你会迟延图片的加载直到至少等前面的解析程序结束。这意味着图片在pageload事件发生之前甚至都不会开始下载。另外，浏览器将最有可能把1x和2x图片都下载，从而增加页面大小。
+
+
+=========================================
+Images in CSS
+CSS里的图片
+=========================================
+
+The CSS `background` property is a powerful tool for adding complex images to elements, making it easy to add multiple images, cause them to repeat, and more. When combined with media queries, the background property becomes even more powerful, enabling conditional image loading based on screen resolution, viewport size and more.
+CSS里的background属性对于给元素添加复杂的背景是个强大的工具，很容易加入多个图片，将它们重复显示等等。当与媒体侦测结合，background属性变得更加强大，使得有条件的图片加载可以基于屏幕分辨率、可视屏显大小等。
+
+In this lesson
+本节主要内容
+
+  ·Use media queries for conditional image loading or art direction
+  使用媒体侦测来作有条件的图片加载或艺术方向
+  ·Use image-set to provide high res images
+  使用image-set提供高分辨率图片
+  ·Use media queries to provide high res images or art direction
+  使用媒体侦测提供高分辨率图片或艺术方向
+
+TL;DR
+简而言之
+
+  ·Use the best image for the characteristics of the display, consider screen size, device resolution and page layout.
+  针对显示器规格使用最佳图片，要考虑显示屏大小、设备分辨率以及页面布局。
+  ·Change the background-image property in CSS for high DPI displays using media queries with min-resolution and -webkit-min-device-pixel-ratio.
+  使用min-resolution和-webkit-min-device-pixel-ratio媒体侦测在CSS中为高DPI显示屏改变background-image属性
+  ·Use srcset to provide high resolution images in addition to the 1x image in markup.
+  除1x图片以外在标记中使用srcset提供高分辨率图片。
+  ·Consider the performance costs when using JavaScript image replacement techniques or when serving highly compressed high resolution images to lower resolution devices.
+  对较低分辨率设备，要考虑到使用JavaScript图片替换技术以及对高分辨率图片提供高压缩率时的性能开销。
+
+Use media queries for conditional image loading or art direction
+使用媒体侦测来实现图片有条件加载或艺术方向
+
+Media queries not only affect the page layout, but can also be used to conditionally load images or to provide art direction depending on the viewport width.
+媒体侦测不仅影响页面布局，而且可用于按条件加载图片或根据可视屏显宽度提供艺术方向。
+
+For example in the sample below, on smaller screens, only small.png is downloaded and applied to the content div, while on larger screens, background-image: url(body.png) is applied to the body and background-image: url(large.png) is applied to the content div.
+例如下面的示例，在较小的屏幕上，只下载small.png并应用于内容div，而在较大屏幕上，background-image: url(body.png)应用于body，background-image: url(large.png)应用于内容div。
+
+    .example {
+      height: 400px;
+      background-image: url(small.png);
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position-x: center;
+    }
+
+    @media (min-width: 500px) {
+      body {
+        background-image: url(body.png);
+      }
+      .example {
+        background-image: url(large.png);
+      }
+    }
+
+Use image-set to provide high res images
+使用image-set提供高res图片
+
+The image-set() function in CSS enhances the behavior background property, making it easy to provide multiple image files for different device characteristics. This allows the browser to choose the best image depending on the characteristics of the device, for example using a 2x image on a 2x display, or a 1x image on a 2x device when on a limited bandwidth network.
+CSS里的image-set()函数加强了background属性的行为，很容易为不同规格的设备提供多个图片文件。这就能让浏览器根据设备规格选择最佳图片，例如在2x显示器上使用2x图片，或者当网络带宽有限的情况下在2x显示器上使用1x图片。
+
+  background-image: image-set(
+    url(icon1x.jpg) 1x,
+    url(icon2x.jpg) 2x
+  );
+
+In addition to loading the correct image, the browser will also scale it accordingly. In other words, the browser assumes that 2x images are twice as large as 1x images, and so will scale the 2x image down by a factor of 2, so that the image appears to be the same size on the page.
+除了加载合适的图片，浏览器也会相应地缩放它。换句话说，浏览器会假定2x图片是1x图片的两倍大，会将其缩小2倍，这样图片就会在页面上显示成同样的大小。
+
+Support for image-set() is still new and is only supported in Chrome and Safari with the -webkit vendor prefix. Care must also be taken to include a fallback image for when image-set() is not supported, for example:
+对image-set()的支持还比较新而且只有Chrome和Safari通过-webkit厂商前缀来支持。同时必须注意要包含一个回调图片以防image-set()不被支持时用，例如：
+
+    .sample {
+      width: 128px;
+      height: 128px;
+      background-image: url(icon1x.png);
+      background-image: -webkit-image-set(
+        url(icon1x.png) 1x,
+        url(icon2x.png) 2x
+      );
+      background-image: image-set(
+        url(icon1x.png) 1x,
+        url(icon2x.png) 2x
+      );
+    }
+
+The above will load the appropriate asset in browsers that support image-set, and fall back to the 1x asset otherwise. The obvious caveat is that while image-set() browser support is low, most browsers will get the 1x asset.
+以上代码在支持image-set的浏览器里会加载适当的资源，否则就加载1x的资源。显然还得提醒一下image-set()的浏览器支持程度还很低，大部分浏览器都会加载1x资源。
+
+
+Use media queries to provide high res images or art direction
+使用媒体侦测提供高res图片或艺术方向
+
+Media queries can create rules based on the device pixel ratio, making it possible to specify different images for 2x vs 1x displays.
+媒体侦测可以创建基于设备像素比的规则，使得为2x及1x显示器指定不同的图片变得可能。
+
+  @media (min-resolution: 2dppx),
+  (-webkit-min-device-pixel-ratio: 2)
+  {
+    /* High dpi styles & resources here */
+  }
+
+Chrome, Firefox and Opera all support the standard (min-resolution: 2dppx), while Safari and Android Browser both require the older vendor prefixed syntax without the dppx unit. Remember, these styles are only loaded if the device matches the media query, and you must specify styles for the base case. This also provides the benefit of ensuring something will be rendered if the browser doesn’t support resolution specific media queries.
+Chrome、Firefox以及Opera都支持这个标准(min-resolution: 2dppx)，只是Safari和Android浏览器都要用旧版厂商前缀而且不带dppx单位。切记，只有在设备与媒体侦测相匹配的时候这些样式才会被加载，而且你必须为一般条件指定样式。这也有个好处就是确保在浏览器不支持特殊的媒体侦测时也可以渲染页面。
+
+    .sample {
+      width: 128px;
+      height: 128px;
+      background-image: url(icon1x.png);
+    }
+
+    @media (min-resolution: 2dppx), /* Standard syntax */
+    (-webkit-min-device-pixel-ratio: 2)  /* Safari & Android Browser */
+    {
+      .sample {
+        background-size: contain;
+        background-image: url(icon2x.png);
+      }
+    }
+
+You can also use the min-width syntax to display alternative images depending on the viewport size. This technique has the advantage that the image is not downloaded if media query doesn’t match. For example, bg.png is only downloaded and applied to the body if the browser width is 500px or greater:
+你也可以使用min-width基于可视屏显大小来显示替换图片。这个技术有个好处就是媒体侦测不匹配的话图片不会被下载。举例来说，如果浏览器宽度大于等于500px，就只下载bg.png并应用于body。
+
+  @media (min-width: 500px) {
+    body {
+      background-image: url(bg.png);
+    }
+  }
+
+
+=========================================
+Use SVG for icons
+为图标使用SVG
+=========================================
+
+When adding icons to your page, use SVG icons where possible or in some cases, unicode characters.
+在给你的页面添加图标的时候，尽可能使用SVG图标或者在某些情况下，使用unicode字符。
+
+In this lesson
+本节主要内容
+
+  ·Replace simple icons with unicode
+  将简单的图标替换为unicode
+  ·Replace complex icons with SVG
+  将复杂的图标替换为SVG
+  ·Use icon fonts with caution
+  要注意图标所用字体
+
+
+TL;DR
+简而言之
+
+  Use SVG or unicode for icons instead of raster images.
+  尽量用SVG或unicode来做图标而不是图片。
+
+Replace simple icons with unicode
+
+
+Many fonts include support for the myriad of unicode glyphs, which can be used instead of images. Unlike images, unicode fonts scale well, and look good no matter matter how small or large they appear on screen.
+很多字体都包含对无数可以用来替代图片的unicode字符和图形的支持。不象图片那样，unicode字体易于缩放，无论多大或多小它们显示在屏幕上看起来都很棒。
+
+Beyond the normal character set, unicode may include symbols for number forms (⅐), arrows (←), math operators (√), geometric shapes (★), control pictures (▶), braille patterns (⠏), music notation (♬), Greek letters (Ω), even chess pieces (♞).
+Including a unicode character is done in the same way named entities are: &#XXXX, where XXXX represents the unicode character number. For example:
+超越一般字符集的是，unicode可能包含数字符号(⅐)、箭头(←)、数学操作符(√)、几何图形(★)、操控指示图(▶),盲文模式(⠏)、乐谱标记(♬)、希腊字母(Ω),、甚至象棋的棋子(♞)。包含一个unicode字符同与命名一个实体一样的结束方式：&#XXXX，XXXX是unicode字符编码。例如：
+
+You're a super &#9733;
+
+You’re a super ★
+
+
+=========================================
+Replace complex icons with SVG
+用SVG替换复杂图标
+=========================================
+
+For more complex icon requirements, SVG icons are generally lightweight, easy to use and can be styled with CSS. SVG have a number of advantages over raster images:
+对于更复杂的图标需求，SVG图标通常是轻量的，易用且能通过CSS应用样式。相比静态图片SVG有很多优势：
+
+  ·They’re vector graphics that can be infinitely scaled.
+  它们是矢量图所以可以被无限缩放。
+  ·CSS effects such as color, shadowing, transparency and animations are straightforward.
+  诸如颜色、阴影、透明和动画等CSS效果是可以直接应用的。
+  ·SVG images can be inlined right in the document.
+  SVG图像可以正确地放在正文行内。
+  ·They are semantic.
+  它们是有语义的。
+  ·Provide better accessibility with the appropriate attributes.
+  通过适当的属性提供很好的可访问性。
+
+With SVG icons, you can either add icons using inline SVG, like this checkmark:
+对于SVG图标，你既可以使用行内SVG标签添加图标，象这个复选框：
+
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+             xmlns:xlink="http://www.w3.org/1999/xlink"
+             width="32" height="32" viewBox="0 0 32 32">
+          <path d="M27 4l-15 15-7-7-5 5 12 12 20-20z" fill="#000000"></path>
+        </svg>
+
+or by using an image tag, like this credit card icon:
+也可以使用图片标签，像这个信用卡图标：
+
+    <img src="credit.svg">.
+
+
+=========================================
+Use icon fonts with caution
+谨慎使用图标字体
+=========================================
+
+Icon fonts are popular, and can be easy to use, but have some drawbacks compared to SVG icons.
+图标字体很流行
+
+  ·They’re vector graphics that can be infinitely scaled, but may be anti-aliased resulting in icons that aren’t as sharp as expected.
+  它们是矢量图形可以被无限缩放，但是可能会做抗锯齿处理从而看起来不象期望中那么锐利。
+  ·Limited styling with CSS.
+  CSS应用样式有限。
+  ·Pixel perfect positioning can be difficult, depending on line-height, letter spacing, etc.
+  像素级的位置调整很困难，要看行间距、字符间距等等。
+  ·Are not semantic, and can be difficult to use with screen readers or other assistive technology.
+  非语义化的，而且很难用于读屏软件或其他无障碍技术。
+  ·Unless properly scoped, can result in a large file size for only using a small subset of the icons available.
+  除非有正确地范围划定，否则会产生只为一小部分图标可用而加载一个大的字体文件。
+
+There are hundreds of free and paid icon fonts available including Font Awesome, Pictos and Glyphicons.
+有数百种免费或收费的图标字体可用，其中包括Font Awesome(http://fortawesome.github.io/Font-Awesome/)、Pictos(http://pictos.cc/)以及Glyphicons(http://glyphicons.com/)。
+
+Be sure to balance the weight of the additional HTTP request and file size with the need for the icons. For example, if you only need a handful of icons, it may be better to use an image or an image sprite.
+一定要在对图标的需求和它所带来的额外的HTTP请求以及文件大小之间做好平衡。例如，如果你只是需要很少的几个图标，可能用图片或图片精灵更好一些。
+
+
+=========================================
+Optimize images for performance
+为提高性能优化图片
+=========================================
+
+Images often account for most of the downloaded bytes and also often occupy a significant amount of the visual space on the page. As a result, optimizing images can often yield some of the largest byte savings and performance improvements for your website: the fewer bytes the browser has to download, the less competition there is for client's bandwidth and the faster the browser can download and display all the assets.
+图片通常会占很大的下载开销而且占据大量的页面可见区域。因此，优化图片通常能给你的网站带来最大的流量节约并提升性能：浏览器要下载的字节越少，对客户端的带宽占用就越少这样浏览器就可以更快地加载并显示所有的内容。
+
+In this lesson
+本节主要内容
+
+  ·Choose the right format
+  选择正确的格式
+  ·Reduce the file size
+  减小文件大小
+  ·Use image sprites
+  使用图片精灵
+  ·Consider lazy loading
+  考虑延迟加载
+
+TL;DR
+简而言之
+
+  ·Don't just randomly choose an image format, understand the different formats available, and use the format best suited.
+  不要随机选择图片格式，要理解不同格式的可用性，使用最合适的格式。
+  ·Include image optimization and compression tools into your workflow to reduce file sizes.
+  把图片优化和压缩工具包含到你的工作流中以减小文件体积。
+  ·Reduce the number of http requests by placing frequently used images into image sprites.
+  把常用图片合并到图片精灵中以减少http请求次数。
+  ·Consider loading images only after they’ve scrolled into view to improve the initial page load time and reduce the initial page weight.
+  只有在页面滚动到要显示的时候才加载图片以提高首屏页面加载速度并减少首屏大小。
+
+Choose the right format
+选择正确的格式
+
+There are two types of images to consider: vector images and raster images. For raster images, you also need to choose the right compression format, for example: GIF, PNG, JPG.
+有两种图片可以考虑：矢量图和光栅图。对于光栅图，你还需要选择正确的压缩格式，例如：GIF、PNG、JPG。
+
+Raster images, like photographs and other images which are represented as a grid of individual dots or pixels. Raster images typically come from a camera or scanner, or can be created in the browser with the canvas element. As the image size gets larger, the file size grows as well. When scaled larger than their original size, raster images get blurry as the browser needs to guess how to fill in the missing pixels.
+像照片或其他的一些光栅图呈现为单独的点或像素组成的格子。光栅图一般来自照片或扫描仪，或者通过canvas元素创建。图片尺寸越大，文件体积也就越大。当光栅图片被放大到超过它们的原始大小时会变得模糊，因为浏览器需要猜测如何填充多出来的像素。
+
+Vector images, such as logos and line art are be defined by a set of curves, lines, shapes and fill colors. Vector images are created with programs like Adobe Illustrator or Inkscape and saved to a vector format like SVG. Because vector images are built on simple primitives, they can be scaled without any loss in quality without a change in file size.
+矢量图，像那些由一系列曲线、直线、图形以及颜色填充来定义的logo和线条画。矢量图由Adobe Illustrator或Inkscape等软件生成并且保存为SVG之类的矢量格式。因为矢量图由基础图形构成，它们可以在不改变文件体积的情况下被任意缩放而不会有质量损失。
+
+When choosing the right format, it is important to consider both the origin of the image (raster or vector), and the content (colors, animation, text, etc). No one format will fit all image types and each has it’s own strengths and weaknesses.
+在选择了正确的格式之后，对原始图片(光栅或矢量)和内容(颜色、动画、文本等等)同时考虑是很重要的。没有一种格式能适合所有的图片类型，每种都有其优缺点。
+
+Start with these guidelines when choosing the right format:
+下面是选择正确格式的指导方针：
+
+  ·Use JPG for photographic images.
+  照片图像选JPG
+  ·Use SVG for vector art and solid color graphics such as logos and line art. If vector art is unavailable, try WebP or PNG.
+  为矢量图、logo和线条画等纯色图像选择SVG。如果矢量图不可用，试试WebP或者PNG。
+  ·Use PNG rather than GIF as it allows for more colors and offers better compression ratios.
+  优先考虑PNG，相比GIF它支持更多的颜色和更大的压缩比。
+  ·For longer animations, consider using <video> which provide better image quality and gives the user control over playback.
+  对于长的动画，考虑使用<video>，它提供更好的图像质量而且让用户进行播放控制。
+
+Reduce the file size
+减少文件体积
+
+Image file size can be considerably reduced by ‘post-processing’ them after saving. There are a number of tools for image compression – lossy and lossless, online, GUI, command line. Where possible, it’s best to try automating image optimization so that it’s a first-class citizen in your workflow.
+图像文件体积可以考虑在它们被保存之后通过“后处理”来减小。有很多图片压缩工具——有损和无损的、在线的、图界面的以及命令行的。有可能的话，最好试一下自动图片优化，在你的工作流程中它是最佳人选。
+
+Several tools are available that perform further, lossless compression on JPG and PNG files, with no effect on image quality. For JPG, try jpegtran or jpegoptim (available on Linux only; run with the –strip-all option). For PNG, try OptiPNG or PNGOUT.
+给出几种用来进一步无损压缩JPG和PNG文件且不影响图像质量的工具。对于JPG，试一下jpegtran(http://jpegclub.org/)或jpegoptim(http://freshmeat.net/projects/jpegoptim/ 只有Linux版)。对于PNG，试一下OptiPNG(http://optipng.sourceforge.net/)或PNGOUT(http://www.advsys.net/ken/util/pngout.htm)。
+
+Use image sprites
+使用图片精灵
+
+CSS spriting is a technique whereby a number of images are combined in a single ‘sprite sheet’ image. Individual images can then be used by specifying the background image for an element (the sprite sheet) plus an offset to display the correct part.
+CSS的精灵技术是一项把大量图片结合在一个单独的精灵层图片。单独图片可通过为某个元素指定背景图加上偏移量来显示正确的部分。
+
+    .sprite-sheet {
+      background-image: url(sprite-sheet.png);
+      width: 40px;
+      height: 25px;
+    }
+
+    .google-logo {
+      width: 125px;
+      height: 45px;
+      background-position: -190px -170px;
+    }
+
+    .gmail {
+      background-position: -150px -210px;
+    }
+
+    .maps {
+      height: 40px;
+      background-position: -120px -165px;
+    }
+
+Consider lazy loading
+考虑使用延迟加载
+
+Lazy loading can significantly speed up loading on long pages that include many images below the fold by loading them either as needed or once the primary content has finished loading and rendering. In addition to performance improvements, using lazy loading can create infinite scrolling experiences.
+延迟加载可以大大提高长页面加载速度，那些折叠起来的大量图片，可以需要显示的时候才加载，或者在主要内容结束加载和渲染之后再加载。
+
+Be careful when creating infinite scrolling pages, because content is loaded as it becomes visible, search engines may never see that content. In addition, users who are looking for information they expect to see in the footer will never see the footer because new content is always loaded.
+创建可以无限滚动的页面时要多加注意，因为内容要加载后才可见，搜索引擎将不会看到页面源码。此外，想在页面底部找信息的用户将看不到底因为新的内容一直在加载。
+
+Related information
+参考资料
+
+  ·Image optimization
+  https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer#image-optimization
+  ·Optimizing content efficiency
+  https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/
+
+
+=========================================
+Avoid images completely
+避免全部使用图片
+=========================================
+
+Sometimes, the best image isn't actually an image at all. Whenever possible, use the native capabilities of the browser to provide the same or similar functionality. Browsers generate visuals that would have previously required images. This means that browsers no longer need to download separate image files and prevents awkwardly scaled images. Icons can be rendered using unicode or special icon fonts.
+有时候，最好的图像实际上根本不是图片。尽可能使用浏览器本地的能力来提供相同或相尽的功能。以前需要图片的地方可由浏览器生成可视化效果。这意味着浏览器不再需要下载单独的图片文件而且避免难看的缩放图片。图标可用unicode或特殊的图标字体来渲染。
+
+In this lesson
+本节主要内容
+
+  ·Place text in markup, instead of embedded in images
+  文本放在标记里，而不是嵌入到图片中
+  ·Use CSS to replace images
+  用CSS替代图片
+
+TL;DR
+简而言之
+
+  ·Avoid images whenever possible, instead, leverage browser capabilities for shadows, gradients, rounded corners and more.
+  尽可能避免图片，取而代之多用浏览器来实现诸如阴影、渐变、圆角等等。
+
+Place text in markup, instead of embedded in images
+将文本放在标记中，而不是嵌入到图片里
+
+Wherever possible, text should be text, and not embedded into images, for example using images for headlines, or placing contact information like phone numbers or addresses directly into images. This prevents people from being able to copy and paste the information, makes it inaccessible for screen readers, and isn’t responsive. Instead, place the text in your markup and if necessary use webfonts to achieve the style you need.
+只要有可能，文本就应该是文本，而不是嵌入在图片里，例如使用图片做大标题、把联系人信息的电话号码或地址直接放在图片里。这会让人不能复制粘贴这些信息、让读屏器无法访问、而且也不是响应式。把文本放在标记里，有必要的话使用webfont来实现你要的样式。
+
+
+Use CSS to replace images
+使用CSS替代图片
+
+Modern browsers can use CSS features to create styles that would previously required images. For examples, complex gradients can be created using the background property, shadows can be created using box-shadow and rounded corners can be added with the border-radius property.
+现代浏览器能用CSS的功能来创建那些以前需要用图片来实现的样式。例如，复杂的渐变能用background属性生成，阴影可以用box-shadow而圆角可用添加border-radius属性来实现。
+
+  <style>
+    div#noImage {
+      color: white;
+      border-radius: 5px;
+      box-shadow: 5px 5px 4px 0 rgba(9,130,154,0.2);
+      background: linear-gradient(rgba(9, 130, 154, 1), rgba(9, 130, 154, 0.5));
+    }
+  </style>
+
+Keep in mind that using these techniques does require rendering cycles, which can be significant on mobile. If over-used, you’ll lose any benefit you may have gained and may hinder performance.
+切记使用这些技术是需要渲染周期的，这在移动设备上可能会带来严重的问题。如果过度使用，你将失去所有已得到的好处并影响性能。
+
+

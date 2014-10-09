@@ -1,0 +1,93 @@
+Types of Testing
+测试的类型
+
+Learn about testing for the multi-device web. Test your site's responsive layouts and performance on real and virtual devices in the cloud.
+学习关于多种设备页面的测试。在真机和云端虚拟设备上测试你网站的响应式布局和性能。
+
+Nearly every developer hates testing on the web. Not only do you have to contend with all the different browsers and all of their different versions, you now have to also manage the vast array of devices and form factors that now exist.
+几乎每个开发人员都痛恨测试网页。你不仅要应付所有不同的浏览器和它们的各种版本，现在还要管理无数设备和现存的各种型号。
+
+Follow these guides to learn about the tools at your disposal that will make your life a lot easier when it comes to testing your site.
+跟随下面的教程来学习当要测试你的网站时能让你轻松处置的那些工具。
+
+===========================
+Real Device Testing
+真机测试
+===========================
+
+Always test on real devices. Don't waste time on manually setting up each testing device. Choose tools that let you test across many devices in one-click.
+总是要在真实设备上测试。不要浪费时间在每个测试设备上手动设置。
+
+In this guide
+本节主要内容
+
+  ·Set up device testing in one click
+  配置设备一键式测试
+  ·Live browser reloading
+  动态浏览器重载
+  ·Synchronize testing across devices
+  跨设备同步测试
+  ·Which devices you need and how to get them
+  你需要什么设备以及如何得到它们
+  ·Summary of device testing tools
+  设备测试工具摘要
+
+TL;DR
+简而言之
+
+  ·There's no substitute for real device testing. You must test on real devices.
+  真机测试是不可替代的。你必须在真实设备上测试。
+  ·You don't need to dread the set-up and manual testing process anymore. Testing your site on real devices need only be a click away.
+  你无需再害怕配置并手动测试了。在真实设备上测试你的网站只需要一次点击。
+  ·Choose a testing solution that has live reloading. Change in one place and see those changes everywhere.
+  选择带有动态重载的测试解决方案。一处修改后在所有地方都能看到更新。
+  ·Synchronized testing lets you test user interaction on all devices at the same time.
+  同步测试可以让你在所有设备上同时测试用户交互。
+
+Set up device testing in one click
+配置一键式设备测试
+
+If you’ve started testing your site on different devices within the last two years, it’s likely you’ve gone through set up steps for the different platforms multiple times.
+如果你在近两年间开始对你的网站在不同设备上做测试，看起来你已经在不同平台上有过多次配置经验了。
+
+You’ve experienced the frustration of using your site on a device, seeing something wrong, having to switch back to your development environment, fix it, rebuild, push to each device again, maybe having to repeat some or all of the set-up steps.
+你经历过在某个设备上使用你网站的沮丧，看到各种错误，切换回开发环境，修改、重建、再推送到每个设备上，可能得重复一些或全部的配置步骤吧。
+
+Testing on a mobile device away from your development environment isn’t a practical workflow.
+离开你的开发环境在移动设备上测试不是可行的工作流。
+
+What you need is a tool that lets you connect to any device in one-click. Once connected to any device, changes made in your development environment are automatically pushed to connected devices.
+你所需要的是一个让你一键式连接到任何设备的工具。一旦连接上任何的设备，在你开发环境中所做的修改就会自动推送到连接的设备上。
+
+The Web Starter Kit has a built in HTTP Server for previewing your site. This means that you can test your pages on any device without messing with other tools. So long as your development environment and devices can be on the same network, you can access the same local version of your site on any external devices.
+Web Starter Kit内置了HTTP Server来预览你的网站。这意味着你能在任何设备上测试你的页面而不会被其他工具干扰。只要你的开发环境和设备在相同的网络中，你可以在任何外部设备上访问同样的本地版本。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

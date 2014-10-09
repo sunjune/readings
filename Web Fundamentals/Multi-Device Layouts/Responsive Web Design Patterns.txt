@@ -1,0 +1,304 @@
+Responsive Web Design Patterns
+响应式网页设计模式
+
+Responsive web design patterns are quickly evolving, but there are a handful of established patterns that work well across the desktop and mobile devices.
+响应式网页设计模式发展迅猛，但是只有少数既定的模式能都很好地适用于桌面和移动设备。
+
+In this lesson
+本节主要内容
+
+Mostly fluid  
+Column drop 
+Layout shifter  
+Tiny tweaks 
+Off canvas  
+
+Most layouts used by responsive web pages can be categorized into one of five patterns: mostly fluid, column drop, layout shifter, tiny tweaks and off canvas. In some cases, a page may use a combination of patterns, for example column drop and off canvas. These patterns, originally identified by Luke Wroblewski, provide a solid starting point for any responsive page.
+响应式网页使用的大部分布局都可以归类于以下5种模式之一：mostly fluid, column drop, layout shifter, tiny tweaks and off canvas。在某些情况下，页面可能用到多种模式的组合，比如column drop and off canvas。这些模式最初由Luke Wroblewski(http://www.lukew.com/ff/entry.asp?1514)总结并定义，为任何响应式网页提供了坚实的起点。
+
+The patterns
+模式
+To create simple, easy-to-understand samples, each the samples below were created with real markup using flexbox, typically with three content div’s contained within a primary container div. Each sample was written starting with the smallest view first and breakpoints were added when necessary. The flexbox layout mode is well supported for modern browsers, though may still require vendor prefixing for optimal support.
+为了创建简单易解的例子，以下几个示例均以使用flexbox(https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Flexible_boxes)的真实标签构建，典型的一个容器div里面包含三个内容div。每个示例均从最小化视图写起并在必要的时候加入断点。现代浏览器可以很好地支持flexbox布局模型(http://caniuse.com/#search=flexbox)，但可能仍然需要加上厂商前缀以获得更好的支持。
+
+
+Mostly fluid
+流动为主
+The mostly fluid pattern consists primarily of a fluid grid. On large or medium screens, it usually remains the same size, simply adjusting the margins on wider screens. On smaller screens, the fluid grid causes the main content to reflow, while columns are stacked vertically. One major advantage of this pattern is that it usually only requires one breakpoint between small screens and large screens.
+大部分流动模式主要由流动的网格构成。在大型或中型屏幕上，通常保持相同的大小，只是简单的调整屏幕较宽边的外空白边距。在较小的屏幕上，流动的网格会使正文内容在一列上垂直堆叠。此模式主要优势在于通常只需要一个断点来适应不同大小的屏幕。
+
+In the smallest view, each content div is stacked vertically. Once the screen width hits 600px, the primary content div remains at width: 100%, while the secondary div’s are shown as two columns below the primary div. Beyond 800px, the container div becomes fixed width and is centered on the screen.
+在最小的视图中，各内容div垂直堆叠。当屏幕宽度达到600px，主内容div保持100%，而其余的div在主div之下排成两列显示。超过800px，容器div以固定宽度在屏幕居中显示。
+
+Sites using this pattern include:
+使用该模式的网站有：
+  ·A List Apart  http://mediaqueri.es/ala/
+  ·Media Queries http://mediaqueri.es/
+  ·SimpleBits  http://simplebits.com/
+
+    .container {
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-flow: row wrap;
+      flex-flow: row wrap;
+    }
+
+    .c1, .c2, .c3 {
+      width: 100%;
+    }
+
+    @media (min-width: 600px) {
+      .c2, .c3 {
+        width: 50%;
+      }
+    }
+
+    @media (min-width: 800px) {
+      .container {
+        width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+Column drop
+单列堆叠
+For full-width multi-column layouts, column drop simply stacks the columns vertically as the window width becomes too narrow for the content. Eventually this results in all of the columns being stacked vertically. Choosing breakpoints for this layout pattern is dependent on the content and will change for each design.
+对于全宽度多列布局，当浏览器窗口宽度相对内容宽度变得过窄时将各块内容单列垂直堆叠。为该模式选择断点要依照内容并为每个设计作修改。
+
+Like the mostly fluid sample, content is stacked vertically in the smallest view, but as the screen expands beyond 600px, the primary and secondary content div’s take the full width of the screen. The order of the div’s is set using the order CSS property. At 800px all three content div’s are shown, using the full screen width.
+与流动为主的示例类似，在最小的视图中内容也是垂直堆叠的，但当屏幕超过600px，第一和第二内容div占了屏幕的全部宽度。div的顺序由CSS的order来设置。在800px时所有三个内容div都显示出来占满全部屏幕宽度。
+
+Sites using this pattern include:
+使用该模式的网站有：
+  ·Modernizr  http://modernizr.com/
+  ·Wee Nudge  http://weenudge.com/
+
+    .container {
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-flow: row wrap;
+      flex-flow: row wrap;
+    }
+
+    .c1, .c2, .c3 {
+      width: 100%;
+    }
+
+    @media (min-width: 600px) {
+      .c1 {
+        width: 60%;
+        -webkit-order: 2;
+        order: 2;
+      }
+
+      .c2 {
+        width: 40%;
+        -webkit-order: 1;
+        order: 1;
+      }
+
+      .c3 {
+        width: 100%;
+        -webkit-order: 3;
+        order: 3;
+      }
+    }
+
+
+    @media (min-width: 800px) {
+      .c2 {
+        width: 20%;
+      }
+
+      .c3 {
+        width: 20%;
+      }
+    }
+
+Layout shifter
+布局位移
+The layout shifter pattern is the most responsive to with multiple breakpoints across several screen widths. Key to this layout is the way content moves about, instead of reflowing and dropping below other columns. Due to the significant differences between each major breakpoint, it is more complex to maintain and likely involves changes within elements, not just overall content layout.
+该模式对于在多种屏幕宽度下设置多个断点的情况最具有响应性。关键之处在于内容的移动方式，而不是回流或者堆叠到其他列块下面。由于各主要断点间的差别很大，维护起来更加复杂而且可能涉及到元素间的改变，而不只是整个的内容布局。
+
+This simplified example shows the layout shifter pattern, on smaller screens content is stacked vertically, but changes significantly as the screen becomes larger, with a left div and two stacked div’s on the right.
+这个简单的示例演示了布局位移模式，在较小的屏幕上内容垂直堆叠，但是当屏幕变得很大时变化非常明显，变成了一个左侧div和两个右侧堆叠的div。
+
+Sites using this pattern include:
+使用该模式的站点有：
+
+  ·Food Sense  http://foodsense.is/
+  ·Seminal Responsive Design Example http://alistapart.com/d/responsive-web-design/ex/ex-site-FINAL.html
+  ·Andersson-Wise Architects http://www.anderssonwise.com/
+
+    .container {
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-flow: row wrap;
+      flex-flow: row wrap;
+    }
+
+    .c1, .c2, .c3, .c4 {
+      width: 100%;
+    }
+
+    @media (min-width: 600px) {
+      .c1 {
+        width: 25%;
+      }
+
+      .c4 {
+        width: 75%;
+      }
+
+    }
+
+    @media (min-width: 800px) {
+      .container {
+        width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+    
+Tiny tweaks
+微调
+
+Tiny tweaks simply makes small changes to the layout, such as adjusting font size, resizing images or moving content around in very minor ways. It works well on single column layouts such as one page linear websites, text heavy articles.
+该模式只是简单地对布局进行小的调整，比如调节字体大小，缩放图像或者将内容往旁边稍微移动一下。它很适合用于单列布局比如一个页面的线性网站以及以文本为重点的文章。
+
+As its name implies, little changes with this sample as the screen size changes. As the screen width gets larger, so do the font size and padding.
+就象它的名字指出的那样，当屏幕大小改变时示例中只有轻微的改变。当屏幕宽度变大了许多时，字体小大和内边距也跟着改变。
+
+Sites using this pattern include:
+使用该模式的站点有：
+
+  ·Opera’s Shiny Demos  http://shinydemos.com/
+  ·Ginger Whale http://gingerwhale.com/
+  ·Future Friendly  http://futurefriendlyweb.com/
+
+    .c1 {
+      padding: 10px;
+      width: 100%;
+    }
+
+    @media (min-width: 500px) {
+      .c1 {
+        padding: 20px;
+        font-size: 1.5em;
+      }
+    }
+
+    @media (min-width: 800px) {
+      .c1 {
+        padding: 40px;
+        font-size: 2em;
+      }
+    }
+
+Off canvas
+放在画面外
+Rather than stacking content vertically, the off canvas pattern places less frequently used content, perhaps navigation or app menus off screen, only showing it when the screen size is large enough, and on smaller screens, content is only a click away.
+与垂直堆叠内容不同的是，该模式将那些很少用到的内容，比如导航和菜单等放在屏幕以外的地方，只有当屏幕足够大的时候才显示出来，在小一点的屏幕上，只有在点击的时候才出来。
+
+Rather than stacking content vertically, this sample hides two of the content divs off screen by using a transform: translate(-250px, 0). JavaScript is used to show the divs by adding an open class to the element to make visible. As the screen gets wider, the off-screen positioning is removed from the elements and they’re shown within the visible viewport.
+与垂直堆叠内容不同的是，这个示例中将两个内容div隐藏到屏幕以外，使用样式transform: translate(-250px, 0)。将div显示出来是用Javascript给元素加上相应的样式。当屏幕宽到一定程度，这些对象的屏幕以外定位样式就被移除而它们也将显示在可视范围内。
+
+Note in this sample, Safari for iOS 6 and Android Browser do not support the flex-flow: row nowrap feature of flexbox, so we’ve had to fallback to absolute positioning.
+注意在这个示例中，iOS 6设备中的Safari和Android浏览器不支持flexbox中的flex-flow: row nowrap，所以只能用回绝对定位的办法。
+
+Sites using this pattern include:
+使用该模式的网站有：
+
+  ·HTML5Rocks Articles  http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/
+  ·Google Nexus http://www.google.com/nexus/
+  ·Facebook’s Mobile Site https://m.facebook.com/
+
+    body {
+      overflow-x: hidden;
+    }
+    
+    .container {
+      display: block;
+    }
+
+    .c1, .c3 {
+      position: absolute;
+      width: 250px;
+      height: 100%;
+    
+      /*
+        This is a trick to improve performance on newer versions of Chrome
+        #perfmatters
+      */
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+
+      -webkit-transition: -webkit-transform 0.4s ease-out;
+      transition: transform 0.4s ease-out;
+    
+      z-index: 1;
+    }
+
+    .c1 {
+      /*
+      Using translate3d as a trick to improve performance on older versions of Chrome
+      See: http://aerotwist.com/blog/on-translate3d-and-layer-creation-hacks/
+      #perfmatters
+      */
+      -webkit-transform: translate(-250px,0);
+      transform: translate(-250px,0);
+    }
+
+    .c2 {
+      width: 100%;
+      position: absolute;
+    }
+    
+    .c3 {
+      left: 100%;
+    }
+
+    .c1.open {
+      -webkit-transform: translate(0,0);
+      transform: translate(0,0);
+    }
+
+    .c3.open {
+      -webkit-transform: translate(-250px,0);
+      transform: translate(-250px,0);
+    }
+    
+    @media (min-width: 500px) {
+      /* If the screen is wider then 500px, use Flexbox */
+      .container {
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-flow: row nowrap;
+        flex-flow: row nowrap;
+      }
+      .c1 {
+        position: relative;
+        -webkit-transition: none 0s ease-out;
+        transition: none 0s ease-out;
+        -webkit-transform: translate(0,0);
+        transform: translate(0,0);
+      }
+      .c2 {
+        position: static;
+      }
+    }
+
+    @media (min-width: 800px) {
+      body {
+        overflow-x: auto;
+      }
+      .c3 {
+        position: relative;
+        left: auto;
+        -webkit-transition: none 0s ease-out;
+        transition: none 0s ease-out;
+        -webkit-transform: translate(0,0);
+        transform: translate(0,0);
+      }
+    }
