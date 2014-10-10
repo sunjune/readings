@@ -13,60 +13,58 @@ jQuery Mobile是一套基于jQuery的用户界面框架，可在所有流行的�
 Pages & Dialogs
 
 A page in jQuery Mobile consists of an element with a data-role="page" attribute. Within the "page" container, any valid HTML markup can be used, but for typical pages in jQuery Mobile, the immediate children of a "page" are divs with data-role="header", class="ui-content", and data-role="footer". The baseline requirement for a page is only the page wrapper to support the navigation system, the rest is optional.
+jQuery Mobile的一个页面由带有data-role="page"属性的元素构成。在"page"容器内，可以使用任何合法的HTML标记，不过对于典型的jQuery Mobile页面来说，紧随"page"其后的元素是带有data-role="header"、class="ui-content"以及data-role="footer"的div。对一个页面最基本的需求只是用来支持导航系统的页面包装，其他都是可选的。
 
 A page can be styled as a dialog that makes the page look like it's a modal style overlay. To give a standard page the appearance of a modal dialog, add the data-rel="dialog" attribute to the link. Transitions can also be set on dialog links.
+一个页面可以样式化成看上去像个对话框的模态浮层。要给一个标准页面显示成对话框模态，只要给链接添加data-rel="dialog"属性。也可以在对话框链接里设置。
 
 Ajax Navigation & Transitions
 
 jQuery Mobile includes an Ajax navigation system to support a rich set of animated page transitions by automatically 'hijacking' standard links and form submissions and turning them into an Ajax request. The back button is fully supported and there are features to prefetch & cache, dynamically inject, and script pages for advanced use cases.
+jQuery Mobile包含一个Ajax导航系统通过自动'hijacking'标准链接和表单提交将其转换成Ajax请求来支持丰富的动态页面变化。全面支持返回按钮而且有预读和缓存、动态注入、以及为高级应用场景准备的脚本页面等功能。
 
 Whenever a link is clicked or a form is submitted, that event is automatically intercepted by the Ajax nav system and is used to issue an Ajax request based on the href or form action instead of reloading the page. While the framework waits for the Ajax response, a loader overlay is displayed.
+当一个链接被点击或一个表单被提交时，事件自动被Ajax导航系统拦截并根据href或表单的action处理Ajax请求而不是重新加载页面。当框架等待Ajax响应的时候，会显示一个正在加载的浮层。
 
 When the requested page loads, jQuery Mobile parses the document for an element with the data-role="page" attribute and inserts that code into the DOM of the original page. Next, any widgets in the incoming page are enhanced to apply all the styles and behavior. The rest of the incoming page is discarded so any scripts, stylesheets or other information will not be included. The framework will also note the title of the incoming page to update the title when the new page is transitioned into view.
+当被请求的页面加载时，jQuery Mobile为带有data-role="page"属性的元素解析文档并把代码插入到原始页面的DOM中。接下来，进来的页面中任何的小组件都会用这些样式和行为来增强。进来的页面中其他的部分都被放弃，所有的脚本、样式或其他信息都不被包含。框架也会记住进来的页面title当新页面进入视窗的时候来更新它的title。
 
 Now that the requested page is in the DOM and enhanced, it is animated into view with a transition. By default, the framework applies a fade transition. To set a custom transition effect, add the data-transition attribute to the link.
+现在，被请求的页面已经在DOM中并已被增强，用动画的方式进入视图。默认情况下，框架应用的是淡入的动画。要设置自定义的动画效果，给链接添加data-transition属性。
 
 Content & Widgets
 
 Inside your content container, you can add any standard HTML elements - headings, lists, paragraphs, etc. You can write your own custom styles to create custom layouts by adding an additional stylesheet to the head after the jQuery Mobile stylesheet.
+在你的内容容器中，你可以添加任意标准的HTML元素 - 头信息、列表、段落等等。你可以写自定义的样式通过在jQuery Mobile样式后面添加额外的样式表来创建自定义的布局。
 
 jQuery Mobile includes a wide range of touch-friendly UI widgets: form elements, collapsibles, collapsible sets (accordions), popups, dialogs, responsive tables, and much more. For best performance, use the download builder to pick the components you need.
+jQuery Mobile包含广泛的触摸友好的用户界面组件：表单元素、折叠容器、弹出框、对话框、响应式表格以及更多。出于最佳性能的考虑，使用下载构造器来挑选你需要的组件。
 
 Listviews
 
 jQuery Mobile includes a diverse set of common listviews that are coded as lists with a data-role="listview" added. Here is a simple linked list that has a role of listview. We're going to make this look like an inset module by adding a data-inset="true" attribute and we add a dynamic search filter with data-filter="true" and a text field.
+jQuery Mobile包含了多种公用列表视图，代码里添加data-role="listview"就行。这里有一个简单的带有listview角色的列表。我们打算让它看起来像一个嵌入组件，添加data-inset="true"属性，而且我们以data-filter="true"的方式加入了动态搜索过滤器以及一个文本域。
 
-
-Acura
-Audi
-BMW
-Cadillac
-Ferrari
-View Source
 Form elements
 
 The framework contains a full set of form elements that are automatically enhanced into touch-friendly styled widgets. Here's a slider made with the new HTML5 input type of range, no data-role needed. Be sure to wrap these in a form element and always properly associate a label with every form element.
+框架包含一整套表单元素，均已自动在触摸友好的样式上被强化。下面是一个滑动条带有新的HTML5输入样式的范围，不需要data-role。要确定把这些包装在form元素中并给每个表单元素附带label。
 
-Text Input:
-
-Select:
-One
-
-Input slider:
-
-View Source
-Top
 Responsive Design
 
 jQuery Mobile has always been designed to work within a responsive web design (RWD) context and our docs and forms had a few responsive elements from the very start. All the widgets are built to be 100% flexible in width to fit easily inside any responsive layout system you choose to build.
+jQuery Mobile 一直被设计成以响应式web设计，而且我们的文档和表单从最开始就有一些响应式的元素。所有的组件都构建成100%宽度自适应，在你所选择的任何响应式布局系统中。
 
 The library also includes a number of responsive widgets like responsive grids, reflow tables and column chooser tables, and sliding panels.
+这个库也包含了大量的响应式组件，比如响应式的栅格、重组的表格、按列选择的表格以及滑动选择面板。
 
-Top
 Theming
 
 jQuery Mobile has a robust theme framework that supports up to 26 sets of toolbar, content and button colors, called a "swatch". Just add a data-theme="b" attribute to any of the widgets on this page to turn it black.
+jQuery Mobile有被称为“swatch”的强大主题框架，支持多达26套工具栏、内容和按钮颜色。只要给页面里的任意组件添加data-theme="b"属性就可以把它变黑。
 
 Cool party trick: add the theme swatch to the page and see how all the widgets inside the content will automatically inherit the theme.
+将swath主题添加到页面并看到所有内容中的组件都自动继承主题样式。
 
 When you're ready to build a custom theme, use ThemeRoller to drag and drop, then download a custom theme.
+在你准备好构建自定义主题时，使用ThemeRoller拖放调整，然后下载定制主题。
